@@ -1,0 +1,1 @@
+<script>window.open("/bk/login.html", "_self");</script>

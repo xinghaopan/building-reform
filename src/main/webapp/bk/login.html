@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>吉林省建设厅农户改造系统</title>
+<script src="/js/jquery.min.js" type="text/javascript"></script>
+<style type="text/css">
+<!--
+*{ margin:0; padding:0; _padding:0; word-break:break-all;}
+input, textarea, select, button { font:12px Helvetica, Arial, sans-serif; }
+html { overflow:-moz-scrollbars-vertical; HEIGHT:100%; width:100%}
+a {text-decoration:none;}
+a:hover { text-decoration:none; color:#cc0000;}
+.hide {display:none;}
+ul {  margin:0px; padding:0px; list-style:none;}
+body {
+background:url(/images/dl_01.jpg) repeat-x top;
+	background-color: #e4edf2;
+}
+.dl_01 { width:800px; height:730px; margin:0 auto; position:relative;}
+.dl_02 { width:800px; height:301px; background:url(/images/dl_02.jpg) center no-repeat; position:absolute; top:192px; left:0px;}
+.dl_03 { width:196px; height:30px; position:absolute; top:312px; left:329px;}
+.dl_04 { width:154px; height:30px; position:absolute; top:358px; left:329px;}
+.dl_05 { width:94px; height:30px; position:absolute; top:406px; left:329px;}
+.dl_06 { width:80px; height:30px; position:absolute; top:406px; left:445px;}
+.dl_07 { width:80px; height:31px; position:absolute; top:450px; left:360px;}
+.dl_07 a { width:80px; height:31px; float:left; display:block;}
+.dl_08 { width:220px; height:18px; position:absolute; top:290px; left:275px; font-size:12px; color:#cb0100;}
+.dl_09 { width:40px; height:30px; position:absolute; top:406px; left:538px;}
+.dl_09 a { width:40px; height:30px; display:block;}
+.biao1 { 
+display:inline;
+overflow:hidden;
+height:30px;
+border:none;
+background:none;
+line-height:30px;
+width:195px;
+color:#990000;
+}
+.biao2 { 
+display:inline;
+overflow:hidden;
+height:30px;
+border:none;
+background:none;
+line-height:30px;
+width:108px;
+color:#990000;
+}
+.web1 { width:80px; height:31px;}
+-->
+</style>
+</head>
+
+<body>
+<div class="dl_01">
+	<div class="dl_02"></div>
+	<div class="dl_03"><input type="text" id="userName" name="userName" class="biao1" value="" /></div>
+	<div class="dl_04"><input type="password" id="userPassword" name="userPassword" class="biao1" value="" /></div>
+	<div class="dl_05"><input name="codes" type="text" id="codes" maxlength="4" class="biao2"  /></div>
+	<div class="dl_06"><img id="kaptchaImage" class="kaptchaImage" /></div>
+	<div class="dl_09"><a href="javascript:void(0)" class="kaptchaImage"></a></div>
+	<div class="dl_07"><input id="btn_login" name="btn_login" type="image" class="web1" src="/images/dl_04.jpg" /></div>
+</div>
+</body>
+
+<script>
+    jQuery(document).ready(function ($) {
+    	$('.kaptchaImage').click(function (event) {//生成验证码  
+        	$('#kaptchaImage').hide().attr('src', '/kaptcha?' + Math.floor(Math.random()*100) ).fadeIn();    
+        	event.stopPropagation();   
+        });  
+    	
+    	$('#kaptchaImage').click();
+    	
+        $('#userName').focus();
+
+        $('#userName').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                $('#userPassword').focus();
+                event.stopPropagation();
+            }
+        });
+
+        $('#userPassword').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                $('#codes').focus();
+                event.stopPropagation();
+            }
+        });
+
+        $('#codes').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                $('#btn_login').click();
+                event.stopPropagation();
+            }
+        });
+
+        $('#btn_login').click(function () {
+        	if ($('#userName').val() == "") {
+        		alert("用户名不能为空！！！");
+        		$('#userName').focus();
+        		return;
+        	}
+            
+        	if ($('#userPassword').val() == "") {
+        		alert("密码不能为空！！！");
+        		$('#userPassword').focus();
+        		return;
+        	}
+            
+        	if ($('#codes').val() == "") {
+        		alert("验证码不能为空！！！");
+        		$('#codes').focus();
+        		return;
+        	}
+            
+        	$.ajax({
+                type: "get",
+                url: "/bk/user/login",
+                data: "radom=" + Math.random() + "&name=" + $('#userName').val() + "&password=" + $('#userPassword').val() + "&codes=" + $('#codes').val(),
+                dataType: "json",
+                success: function (msg) {
+                    if (msg == 0) {
+                        alert("系统错误！！！");
+                    }
+                    else if (msg == -1) {
+                        alert("用户密码错误！！！");
+                    }
+                    else if (msg == -2) {
+                    	alert("用户密码错误！！！");
+                    }
+                    else if (msg == -3) {
+                        alert("验证码错误！！！");
+                    }
+                    else if (msg == 1) {
+                        window.open("/bk/main", "_self");
+                    }
+                    else {
+                        alert("未知错误！！！");
+                    }
+                },
+                error: function (XMLHttpRequest, error, errorThrown) {
+                    alert(error);
+                    alert(errorThrown);
+                }
+            });
+        });
+    });
+</script>
+</html>
