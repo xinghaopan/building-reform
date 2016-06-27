@@ -10,5 +10,6 @@
 	    <mapping class="com.cc.buildingReform.form.User" />
 	    <mapping class="com.cc.buildingReform.form.Role" />
 	    <mapping class="com.cc.buildingReform.form.News" />
+	    <mapping class="com.cc.buildingReform.form.Department" />
 	</session-factory>
 </hibernate-configuration>
