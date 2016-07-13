@@ -54,8 +54,8 @@ public class NewsController {
 	@Permissions(target = "loginUser", url = "/bk/login")
 	@RequestMapping("/bk/news/list{path}/{mid}")
 	public String list(@PathVariable("mid") Integer mid, @PathVariable("path") String path, 
-			@RequestParam(value = "title", required = false) String title,
-			@RequestParam(value = "content", required = false) String content,
+			@RequestParam(value = "search_title", required = false) String title,
+			@RequestParam(value = "search_content", required = false) String content,
 			@RequestParam(value = "author", required = false) String author,
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
@@ -189,6 +189,8 @@ public class NewsController {
 					news.setSmallImage(fileName);
 				}
 			}  
+			
+			news.setContent(news.getSubTitle());
 			news.setUser(user);
 			newsService.save(news);
 		} catch (Exception e) {

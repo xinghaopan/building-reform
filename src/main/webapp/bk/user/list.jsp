@@ -4,60 +4,98 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ include file="/bk/top.jsp" %>
-<div class="mainFrame-center-navigation">
-	<p></p>
-	<span></span>
-</div>
-<div class="mainFrame-center-list">
-	<div class="mainFrame-center-search">
-		<p></p><span></span>
-		<em>
-			<a href="/bk/user/edit/${mid}/0">新建</a>
-		</em>
-	</div>
+<!-- Content -->
+<div id="content">
+	<ul class="breadcrumb">
+		<li><img src="/images/photo_02.jpg"  alt=""/>&nbsp;您当前的位置：</li>
+	    <li class="center-navigation">
+	    </li>
+	</ul>
 	
-	<table border=0 cellSpacing=1 summary="" cellPadding=3 width=732 bgColor="#cccccc" align="center" style="font-size:12px;">
-		<tr>
-			<td height=30 align="center" bgcolor="#45c8dc" ><p class="grzx_27">帐号</p></td>
-			<td width="20%" align="center" bgcolor="#45c8dc"><p class="grzx_27">真实姓名</p></td>
-			<td width="15%" align="center" bgcolor="#45c8dc"><p class="grzx_27">角色名称</p></td>
-			<td width="20%" align="center" bgcolor="#45c8dc"><p class="grzx_27">操作</p></td>
-		</tr>
-		<c:forEach items="${list}" var="suser">
-			<tr>
-				<td height="30" align="center" bgColor="#ffffff">
-					<p>${suser.name}</p>
-				</td>
-				<td bgColor="#ffffff" align="center">
-					<p>${suser.trueName}</p>
-				</td>
-				<td bgColor="#ffffff" align="center">
-					<p>
-						${suser.role.name}
-					</p>
-				</td>
-				<td bgColor="#ffffff" align="center">
-					<p>
-						<a class="centerFrame-list-initPs" href="javascript:void(0)" url="/bk/user/initPassword/${mid}" para="id=${suser.id}" bname="${suser.name}">重置密码</a>
-						<a class="centerFrame-list-edit" href="/bk/user/edit/${mid}/${suser.id}">编辑</a> 
-						<a class="centerFrame-list-del" href="javascript:void(0)" url="/bk/user/del/${mid}" para="id=${suser.id}" bname="${suser.name}">删除</a> 
-					</p>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
-</div>
+	<div class="row-fluid row-merge"></div>
 
+	<div class="innerLR">
+
+	    <!-- Modal -->
+		<div class="modal hide fade" id="modal-simple"></div>
+		<!-- // Modal END -->	
+	
+		<div class="separator bottom"></div>
+	
+	 
+	 	<div class="widget" data-toggle="collapse-widget">
+			<div class="widget-head">
+				<p class="heading glyphicons edit "></p>
+			</div>
+	         
+			<div class="widget-body">
+	           
+				<div class="row-fluid">
+					<div class="widget-titel">
+						<div class="span7">
+						</div>
+						
+			           	<div class=" pull-right">
+				           	<a href="#modal-simple" data-toggle="modal" url="/bk/user/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
+			           	</div>
+					</div>
+	           </div>
+	         
+				<div class="row-fluid">
+					<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs">
+					<thead>
+						<tr>
+							<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
+							<th class="center">帐号</th>
+							<th class="center">真实姓名</th>
+							<th class="center">角色名称</th>
+							<th class="center" style="width: 120px;">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${list}" var="suser">
+							<!-- Item -->
+							<tr class="selectable">
+								<td class="center uniformjs"><input type="checkbox" /></td>
+								<td class="center">${suser.name}</td>
+								<td class="center">${suser.trueName}</td>
+								<td class="center">${suser.role.name}</td>
+								<td class="center">
+									<a href="javascript:void(0)" url="/bk/user/initPassword/${mid}?id=${suser.id}" bname="${suser.name}" class="btn-action glyphicons pencil btn-success action-initPassword" ><i></i></a>
+									<a href="#modal-simple" data-toggle="modal" url="/bk/user/edit/${mid}?id=${suser.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
+									<a href="javascript:void(0);" url="/bk/user/del/${mid}?id=${suser.id}" bname="${suser.name}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
+								</td>
+							</tr>
+							<!-- // Item END -->
+						</c:forEach>
+					</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	    
+	 
+		<div class="separator bottom"></div> 
+	    
+		<div class="widget widget-tabs">		
+			<div class="widget-body">
+	
+			</div>
+		</div>
+		<!-- // Google Vizualization DataTable Widget END -->
+		
+	</div>	
+		
+</div>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('.centerFrame-list-initPs').click(function(){
+	$('.action-initPassword').click(function(){
 		if( confirm('您确定要重置【' + $(this).attr("bname") + '】密码吗？') ){
 			var url = $(this).attr("url");
-			var para = $(this).attr("para");
 			$.ajax({
 				type : "get",
 				url : url,
-				data : "radom=" + Math.random() + "&" + para,
+				data : "radom=" + Math.random(),
 				dataType : "text",
 				success : function(msg) {
 					if (msg == "-999") {
@@ -74,39 +112,103 @@ jQuery(document).ready(function($) {
 					}
 				},
 				error : function(XMLHttpRequest, error, errorThrown) {
-					alert("请求超时！！！");
+					//alert("请求超时！！！");
 				}
 			});
 		}
 	});
 	
-	$('.centerFrame-list-del').click(function(){
+	$('.action-del').click(function(){
 		if( confirm('您确定要删除【' + $(this).attr("bname") + '】吗？') ){
 			var url = $(this).attr("url");
-			var para = $(this).attr("para");
 			$.ajax({
 				type : "get",
 				url : url,
-				data : "radom=" + Math.random() + "&" + para,
+				data : "radom=" + Math.random(),
 				dataType : "text",
 				success : function(msg) {
 					if (msg == "-999") {
 		        		outLogin();
 		        	}
 	            	else if (msg == 1) {
-	            		location.reload();
+	            		window.location.reload();
 					}
 					else {
 						alert('【' + $(this).attr("bname") + '】删除失败！！！');
 					}
 				},
 				error : function(XMLHttpRequest, error, errorThrown) {
-					alert("请求超时！！！");
+					//alert("请求超时！！！");
 				}
 			});
 		}
 	});
 	
+	$('.action-edit').click(function(){
+		var url = $(this).attr("url");
+		
+		$.ajax({
+			type : "get",
+			url : url,
+			data : "radom=" + Math.random(),
+			dataType : "text",
+			success : function(text) {
+				$("#modal-simple").html(text);
+			},
+			error : function(XMLHttpRequest, error, errorThrown) {
+				//alert("请求超时！！！");
+			}
+		});
+	});
+	
+	$("#btn_Submit").live("click", function() { 
+		if (isNull($('#name').val())) {
+			alert("帐号不能为空！！！");
+			$('#name').focus();
+			return;
+		}
+		
+		if (isNull($('#trueName').val())) {
+			alert("真实姓名不能为空！！！");
+			$('#trueName').focus();
+			return;
+		}
+		
+		if ($('.role').val() == 0) {
+			alert("请为用户选择角色！！！");
+			return;
+		}
+		
+		if (!isUnsignedInteger($('#order').val())) {
+			alert("排序只能为数字！！！");
+			$('#order').focus();
+			return;
+		}
+		
+		var options = { 
+	            success : function(msg) {
+	            	if (msg == "-999") {
+		        		alert("999");
+		        	}
+	            	else if (msg == -1) {
+	            		alert("帐号：[" + $('#name').val() + "]已存在，无法保存！！！");
+		        	}
+	            	else if (msg == 1) {
+	            		if (id == 0) {
+	            			alert("用户信息保存成功！！！\n默认密码为：${password}");
+	            		}
+	            		else {
+	            			alert("用户信息保存成功！！！");
+	            		}
+	            		window.location.reload();
+	            	}
+	            	else {
+	            		alert("用户信息保存失败！！！");
+	            	}
+	            } 
+        }; 
+        $("#userForm").ajaxSubmit(options); 
+	});
 });
 </script>
 <%@ include file="/bk/bottom.jsp" %>

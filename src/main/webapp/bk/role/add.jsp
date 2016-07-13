@@ -2,7 +2,6 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="/bk/top.jsp" %>
 <form id="roleForm" method="post" name="roleForm" action="/bk/role/save/${mid}" enctype="multipart/form-data">
 <div class="mainFrame-center-navigation">
 	<p>${navigation}</p>
@@ -165,4 +164,3 @@ $(document).ready(function () {
 	});
 });
 </script> 
-<%@ include file="/bk/bottom.jsp" %>

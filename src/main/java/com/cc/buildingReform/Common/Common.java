@@ -95,23 +95,16 @@ public class Common {
 		int bi = 0;
 		int ei = 0;
 		
-		str = "<a class='btn_Search' href='javascript:void(0);' currentPage='0'>�? �?</a>";
-		if (currentPage != 0) {
-			if (currentPage == 1) {
-				str += "<a class='btn_Search' href='javascript:void(0);' currentPage='0'>上一�?</a>";
-			} else {
-				str += "<a class='btn_Search' href='javascript:void(0);' currentPage='" + (currentPage - 1) + "'>上一�?</a>";
-			}
-		}
+		str = "<li><a class='btn_Search' href='javascript:void(0);' currentPage='0'>&laquo;</a></li>";
 		if (maxPage <= 9) {
 			for (int i = 0; i < maxPage; i++) {
 				if (currentPage == i) {
-					str += "<a href='javascript:void(0);' class='red'>" + (i + 1) + "</a>";
+					str += "<li><a href='javascript:void(0);' class='active'>" + (i + 1) + "</a></li>";
 				} else {
 					if (i == 0) {
-						str += "<a class='btn_Search' href='javascript:void(0);' currentPage='0'>" + (i + 1) + "</a>";
+						str += "<li><a class='btn_Search' href='javascript:void(0);' currentPage='0'>" + (i + 1) + "</a></li>";
 					} else {
-						str += "<a class='btn_Search' href='javascript:void(0);' currentPage='" + i + "'>" + (i + 1) + "</a>";
+						str += "<li><a class='btn_Search' href='javascript:void(0);' currentPage='" + i + "'>" + (i + 1) + "</a></li>";
 					}
 				}
 			}
@@ -131,26 +124,23 @@ public class Common {
 
 			for (int i = bi; i <= ei; i++) {
 				if (currentPage == i) {
-					str += "<a href='javascript:void(0);' class='red'>" + (i + 1) + "</a>";
+					str += "<li><a href='javascript:void(0);' class='active'>" + (i + 1) + "</a></li>";
 				} else {
 					if (i == 0) {
-						str += "<a class='btn_Search' href='javascript:void(0);' currentPage='0'>" + (i + 1) + "</a>";
+						str += "<li><a class='btn_Search' href='javascript:void(0);' currentPage='0'>" + (i + 1) + "</a></li>";
 					} else {
-						str += "<a class='btn_Search' href='javascript:void(0);' currentPage='" + i + "'>" + (i + 1) + "</a>";
+						str += "<li><a class='btn_Search' href='javascript:void(0);' currentPage='" + i + "'>" + (i + 1) + "</a></li>";
 					}
 				}
 			}
 		}
-		if ((currentPage + 1) != maxPage) {
-			str += "<a class='btn_Search' href='javascript:void(0);' currentPage='" + (currentPage + 1) + "' >下一�?</a>";
-		}
 
 		if (maxPage == 1) {
-			str += "<a class='btn_Search' href='javascript:void(0);' currentPage='0'>�? �?</a>";
+			str += "<li><a class='btn_Search' href='javascript:void(0);' currentPage='0'>&raquo;</a></li>";
 		} else {
-			str += "<a class='btn_Search' href='javascript:void(0);' currentPage='" + (maxPage - 1) + "'>�? �?</a>";
+			str += "<li><a class='btn_Search' href='javascript:void(0);' currentPage='" + (maxPage - 1) + "'>&raquo;</a></li>";
 		}
-		str += "<em>当前页数&nbsp;" + (currentPage + 1) + "&nbsp;/&nbsp;" + maxPage + "</em>";
+		
 		return str;
 	}
 	
@@ -318,7 +308,7 @@ public class Common {
 			e.printStackTrace();
 		} finally {
 			time = new Date().getTime() - time;
-			System.out.println("重新生成地址�? " + httpUrl + ",执行时间: " + time + "毫秒.");
+			System.out.println("重新生成地址�? " + httpUrl + ",执行时间: " + time + "毫秒.");
 		}
 		return htmlCode;
 	}

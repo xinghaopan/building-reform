@@ -16,12 +16,11 @@ public class Department implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "DEPARTMENT_ID", unique = true, nullable = false)
-	private Integer id;
+	private String id;
 
 	@Column(name = "DEPARTMENT_FATHER_ID")
-	private Integer fatherId;
+	private String fatherId;
 
 	@Column(name = "DEPARTMENT_NAME")
 	private String name;
@@ -35,19 +34,19 @@ public class Department implements Serializable {
 	@Column(name = "DEPARTMENT_ORDER")
 	private Integer order;
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Integer getFatherId() {
+	public String getFatherId() {
 		return fatherId;
 	}
 
-	public void setFatherId(Integer fatherId) {
+	public void setFatherId(String fatherId) {
 		this.fatherId = fatherId;
 	}
 

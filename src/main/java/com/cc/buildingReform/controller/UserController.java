@@ -68,9 +68,10 @@ public class UserController {
 	 * @throws Exception
 	 */
 	@Permissions(target = "loginUser", url = "/bk/login")
-	@RequestMapping("/bk/user/edit/{mid}/{id}")
+	@RequestMapping("/bk/user/edit/{mid}")
 	public String edit(@PathVariable("mid") Integer mid, 
-			@PathVariable("id") Integer id, Model model) throws Exception {
+			@RequestParam(value = "id", required = false) Integer id, 
+			Model model) throws Exception {
 		try {
 			User user = new User();
 			if (id != null && id != 0) {
@@ -129,7 +130,7 @@ public class UserController {
 	 */
 	@Permissions(target = "loginUser", url = "")
 	@RequestMapping(value = "/bk/user/del/{mid}")
-	public void del(@PathVariable("mid") Integer mid, @RequestParam("id") Integer id, 
+	public void del(@PathVariable("mid") Integer mid, @RequestParam(value = "id", required = false) Integer id, 
 			HttpServletResponse response) throws Exception {
 		int msg = 1;
 		try {

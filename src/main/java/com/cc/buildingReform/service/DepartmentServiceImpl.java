@@ -20,11 +20,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 		departmentDAO.saveOrUpdate(department);
 	}
 
-	public void remove(Integer id) {
+	public void remove(String id) {
 		departmentDAO.delete(id);
 	}
 	
-	public Department findById(Integer id) {
+	public Department findById(String id) {
 		return departmentDAO.get(id);
 	}
 
@@ -32,14 +32,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return departmentDAO.findAll();
 	}
 	
-	public List<Department> findByFatherId(Integer fatherId) {
+	public List<Department> findByFatherId(String fatherId) {
 		return departmentDAO.findByFatherId(fatherId);
 	}
 	
-	public Department findFather(Integer id) {
-		if (id != 0) {
+	public Department findFather(String id) {
+		if (id != null) {
 			Department r = findById(id);
-			while (r != null && r.getFatherId() != 0) {
+			while (r != null && r.getFatherId() != "000") {
 				r = findById(r.getFatherId());
 			}
 			

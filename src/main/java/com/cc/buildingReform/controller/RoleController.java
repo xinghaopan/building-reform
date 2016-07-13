@@ -60,9 +60,10 @@ public class RoleController {
 	 * @throws Exception
 	 */
 	@Permissions(target = "loginUser", url = "/bk/login")
-	@RequestMapping("/bk/role/edit/{mid}/{id}")
+	@RequestMapping("/bk/role/edit/{mid}")
 	public String edit(@PathVariable("mid") Integer mid, 
-			@PathVariable("id") Integer id, Model model) throws Exception {
+			@RequestParam(value = "id", required = false) Integer id, 
+			Model model) throws Exception {
 		try {
 			Role role = new Role();
 			if (id != null && id != 0) {

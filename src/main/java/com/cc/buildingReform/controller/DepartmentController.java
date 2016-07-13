@@ -1,10 +1,5 @@
 package com.cc.buildingReform.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -21,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
 import com.cc.buildingReform.form.Department;
-import com.cc.buildingReform.form.User;
 import com.cc.buildingReform.service.DepartmentService;
 
 @RestController
@@ -30,22 +24,6 @@ public class DepartmentController {
 	private DepartmentService departmentService;
 
 	private static Logger log = LoggerFactory.getLogger(DepartmentController.class);
-	
-	@Permissions(target = "loginUser", url = "")
-	@RequestMapping(value = "/bk/department/listByJSon")
-	public void listByJSon(@RequestParam(value = "mid", required = false) Integer mid,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			User user = (User)request.getSession().getAttribute("loginUser");
-			map.put("department", departmentService.findFather(mid));
-			map.put("list", departmentService.findAll().stream().filter(c -> user.getRole().getPower().contains("," + c.getId() + ",")).collect(Collectors.toList()));
-		} catch (Exception e) {
-			log.error("/bk/department/listByJSon", e);
-		}
-		
-		Common.WriteJSON(response, map);
-	}
 	
 	/**
 	 * 列表页面 2015-07-30 by p
@@ -56,10 +34,10 @@ public class DepartmentController {
 	 */
 	@Permissions(target = "loginUser", url = "/bk/login")
 	@RequestMapping("/bk/department/list/{mid}")
-	public String list(@PathVariable("mid") Integer mid, @RequestParam(value = "fatherId", required = false) Integer fatherId, Model model) throws Exception {
+	public String list(@PathVariable("mid") Integer mid, @RequestParam(value = "fatherId", required = false) String fatherId, Model model) throws Exception {
 		try {
 			if (fatherId == null) {
-				fatherId = 0;
+				fatherId = "000";
 			}
 			model.addAttribute("mid", mid);
 			model.addAttribute("fatherId", fatherId);
@@ -83,20 +61,23 @@ public class DepartmentController {
 	 */
 	@Permissions(target = "loginUser", url = "/bk/login")
 	@RequestMapping("/bk/department/edit/{mid}")
-	public String edit(@PathVariable("mid") Integer mid, @RequestParam(value = "id", required = false) Integer id, @RequestParam(value = "fatherId", required = false) Integer fatherId, Model model) throws Exception {
+	public String edit(@PathVariable("mid") Integer mid, 
+			@RequestParam(value = "id", required = false) String id, 
+			@RequestParam(value = "fatherId", required = false) String fatherId, 
+			Model model) throws Exception {
 		try {
 			String fatherName = "顶层";
 			if (fatherId == null) {
-				fatherId = 0;
+				fatherId = "000";
 			}
 			Department department = new Department();
 			department.setFatherId(fatherId);
 			department.setOrder(0);
-			if (id != null && id != 0) {
+			if (id != null && id != "") {
 				department = departmentService.findById(id);
 			}
 			
-			if (fatherId != 0) {
+			if (fatherId != "" && !fatherId.equals("000")) {
 				fatherName = departmentService.findById(fatherId).getName();
 			}
 			
@@ -121,7 +102,9 @@ public class DepartmentController {
 	 */
 	@Permissions(target = "loginUser", url = "")
 	@RequestMapping(value = "/bk/department/save/{mid}", method = RequestMethod.POST)
-	public void save(@PathVariable("mid") Integer mid, @ModelAttribute("department") Department department, HttpServletResponse response) throws Exception {
+	public void save(@PathVariable("mid") Integer mid, 
+			@ModelAttribute("department") Department department, 
+			HttpServletResponse response) throws Exception {
 		int msg = 1;
 		try {
 			departmentService.save(department);
@@ -143,7 +126,7 @@ public class DepartmentController {
 	 */
 	@Permissions(target = "loginUser", url = "")
 	@RequestMapping(value = "/bk/department/del/{mid}")
-	public void del(@PathVariable("mid") Integer mid, @RequestParam("id") Integer id, HttpServletResponse response) throws Exception {
+	public void del(@PathVariable("mid") Integer mid, @RequestParam("id") String id, HttpServletResponse response) throws Exception {
 		int msg = 1;
 		try {
 			departmentService.remove(id);

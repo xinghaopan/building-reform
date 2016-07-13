@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.cc.buildingReform.form.Department;
 
 @Repository
-public class DepartmentDAO extends CcHibernateDao<Department, Integer> {
+public class DepartmentDAO extends CcHibernateDao<Department, String> {
 	/**
 	 * 查询所有信息  2016-06-25 by p
 	 * 
@@ -23,7 +23,7 @@ public class DepartmentDAO extends CcHibernateDao<Department, Integer> {
 		
 		criteria.addOrder(Order.asc("fatherId"));
 		criteria.addOrder(Order.desc("order"));
-		criteria.addOrder(Order.desc("id"));
+		criteria.addOrder(Order.asc("id"));
 		
 		return (List<Department>) criteria.list();
 	}
@@ -52,7 +52,7 @@ public class DepartmentDAO extends CcHibernateDao<Department, Integer> {
 		
 		criteria.addOrder(Order.asc("fatherId"));
 		criteria.addOrder(Order.desc("order"));
-		criteria.addOrder(Order.desc("id"));
+		criteria.addOrder(Order.asc("id"));
 		
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);
@@ -67,7 +67,7 @@ public class DepartmentDAO extends CcHibernateDao<Department, Integer> {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Department> findByFatherId(Integer fatherId) {
+	public List<Department> findByFatherId(String fatherId) {
 		Criteria criteria = getSession().createCriteria(Department.class);
 		
 		criteria.add(Restrictions.eq("fatherId", fatherId));

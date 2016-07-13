@@ -4,5 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ include file="/bk/top.jsp" %>
+<div id="content">
 
+</div>
 <%@ include file="/bk/bottom.jsp" %>

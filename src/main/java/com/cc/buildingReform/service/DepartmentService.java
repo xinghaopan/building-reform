@@ -9,13 +9,13 @@ public interface DepartmentService {
 
 	public void save(Department department);
 
-	public void remove(Integer id);
+	public void remove(String id);
 	
-	public Department findById(Integer id);
+	public Department findById(String id);
 
 	public List<Department> findAll();
 	
-	public Department findFather(Integer id);
+	public Department findFather(String id);
 
-	public List<Department> findByFatherId(Integer fatherId);
+	public List<Department> findByFatherId(String fatherId);
 }
