@@ -54,7 +54,7 @@ public class MenuController {
 	 * @return
 	 * @throws Exception
 	 */
-	@Permissions(target = "loginUser", url = "/bk/login")
+	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/menu/list/{mid}")
 	public String list(@PathVariable("mid") Integer mid, @RequestParam(value = "fatherId", required = false) Integer fatherId, Model model) throws Exception {
 		try {
@@ -81,7 +81,7 @@ public class MenuController {
 	 * @return
 	 * @throws Exception
 	 */
-	@Permissions(target = "loginUser", url = "/bk/login")
+	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/menu/edit/{mid}")
 	public String edit(@PathVariable("mid") Integer mid, @RequestParam(value = "id", required = false) Integer id, @RequestParam(value = "fatherId", required = false) Integer fatherId, Model model) throws Exception {
 		try {

@@ -36,7 +36,7 @@ public class RoleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@Permissions(target = "loginUser", url = "/bk/login")
+	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/role/list/{mid}")
 	public String list(@PathVariable("mid") Integer mid, 
 			Model model) throws Exception {
@@ -59,7 +59,7 @@ public class RoleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@Permissions(target = "loginUser", url = "/bk/login")
+	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/role/edit/{mid}")
 	public String edit(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "id", required = false) Integer id, 

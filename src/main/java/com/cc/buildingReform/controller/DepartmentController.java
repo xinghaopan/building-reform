@@ -32,7 +32,7 @@ public class DepartmentController {
 	 * @return
 	 * @throws Exception
 	 */
-	@Permissions(target = "loginUser", url = "/bk/login")
+	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/department/list/{mid}")
 	public String list(@PathVariable("mid") Integer mid, @RequestParam(value = "fatherId", required = false) String fatherId, Model model) throws Exception {
 		try {
@@ -59,7 +59,7 @@ public class DepartmentController {
 	 * @return
 	 * @throws Exception
 	 */
-	@Permissions(target = "loginUser", url = "/bk/login")
+	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/department/edit/{mid}")
 	public String edit(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "id", required = false) String id, 

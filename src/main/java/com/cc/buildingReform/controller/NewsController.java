@@ -51,7 +51,7 @@ public class NewsController {
 	 * @return
 	 * @throws Exception
 	 */
-	@Permissions(target = "loginUser", url = "/bk/login")
+	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/news/list{path}/{mid}")
 	public String list(@PathVariable("mid") Integer mid, @PathVariable("path") String path, 
 			@RequestParam(value = "search_title", required = false) String title,
@@ -109,7 +109,7 @@ public class NewsController {
 	 * @return
 	 * @throws Exception
 	 */
-	@Permissions(target = "loginUser", url = "/bk/login")
+	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/news/edit{path}/{mid}")
 	public String edit(@PathVariable("mid") Integer mid, @PathVariable("path") String path, 
 			@RequestParam(value = "id", required = false) Integer id, Model model) throws Exception {
