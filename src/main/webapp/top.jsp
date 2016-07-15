@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <title>吉林省农户厕所及污水改造管理系统</title>
 <link href="/css/css.css" rel="stylesheet" type="text/css" />
+<script src="/js/jquery.min.js" type="text/javascript"></script>
 </head>
 
 <body>
