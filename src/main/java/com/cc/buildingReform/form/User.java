@@ -45,6 +45,12 @@ public class User implements Serializable {
 	@Column(name = "USER_STATE")
 	private Integer state;
 
+	@Column(name = "USER_DEPARTMENT_ID")
+	private String departmentId;
+
+	@Column(name = "USER_DEPARTMENT_NAME")
+	private String departmentName;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -99,5 +105,21 @@ public class User implements Serializable {
 
 	public void setState(Integer state) {
 		this.state = state;
+	}
+
+	public String getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 }
