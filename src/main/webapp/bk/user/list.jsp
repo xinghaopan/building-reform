@@ -73,10 +73,19 @@
 				</div>
 			</div>
 		</div>
-	    
 	 
 		<div class="separator bottom"></div> 
 	    
+	    <div class="pagination pagination-centered margin-none">
+		
+			<ul>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;每页条数d：<input id="count" name="count" type="text" value="${count}" class="page_count" style="width:25px;"/></li>
+				${pages}
+			</ul>
+		</div>
+		
+		<div class="separator bottom"></div> 
+		
 		<div class="widget widget-tabs">		
 			<div class="widget-body">
 	
@@ -208,6 +217,11 @@ jQuery(document).ready(function($) {
 	            } 
         }; 
         $("#userForm").ajaxSubmit(options); 
+	});
+	
+	$('.btn_Search').click(function(){
+		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val();
+		window.open("/bk/user/list/${mid}" + para, "_self");
 	});
 });
 </script>

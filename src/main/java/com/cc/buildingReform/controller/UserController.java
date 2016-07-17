@@ -45,11 +45,26 @@ public class UserController {
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/user/list/{mid}")
 	public String list(@PathVariable("mid") Integer mid, 
+			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+			@RequestParam(value = "count", required = false) Integer count,
 			Model model) throws Exception {
-		
 		try {
+			if (currentPage == null) {
+				currentPage = 0;
+			}
+			
+			if (count == null || count == 0) {
+				count = 10;
+			}
+			
+			int maxCount = userService.getCount();
+			int maxPage = (maxCount - 1) / count + 1;
+			model.addAttribute("count", count);
+			model.addAttribute("maxPage", maxPage);
+			
 			model.addAttribute("mid", mid);
-			model.addAttribute("list", userService.findAll());
+			model.addAttribute("list", userService.findAll(currentPage * count, count));
+			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			model.addAttribute("password", serverProperty.getUserPassword());
 		}
 		catch(Exception e) {
