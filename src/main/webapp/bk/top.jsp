@@ -154,7 +154,7 @@ jQuery(document).ready(function($) {
 		
 		if (mid != 0) {
 			var menu = getMenu(mid);
-			$(".heading").html("<i></i>" + menu.backName);
+			//$(".heading").html("<i></i>" + menu.backName);
 			while(menu.fatherId != 0) {
 				if (nav == "") {
 					nav = "<a class=\"mainFrame-first-a\" href=\""
@@ -212,14 +212,10 @@ jQuery(document).ready(function($) {
 		<ul class="topnav pull-right">
 		
 			<!-- Language menu -->
-			<li class="hidden-phone" id="lang_nav">
+			<li class="hidden-phone" id="lang_nav" style="display:none;">
 				<a href="#" data-toggle="dropdown" class="glyphicons leaf"><i></i>帮助</a>
 		    	<ul class="dropdown-menu pull-left">
-		      		<li><a href="#" title="English" class="glyphicons film"><i></i> English</a></li>
-		      		<li><a href="#" class="glyphicons magic"><i></i> Romanian</a></li>
-		      		<li><a href="#" class="glyphicons envelope" title="Italian"><i></i> Italian</a></li>
-		      		<li><a href="#" class="glyphicons camera" title="French"><i></i> French</a></li>
-		      		<li><a href="#" class="glyphicons heart" title="Polish"><i></i> Polish</a></li>
+		      		
 		    	</ul>
 			</li>
 			<!-- // Language menu END -->
@@ -229,14 +225,11 @@ jQuery(document).ready(function($) {
 				<a data-toggle="dropdown" href="#" class="glyphicons logout user"><span class="hidden-phone text">用户</span><i></i></a>
 				<ul class="dropdown-menu pull-right">
 					<li><a href="#" class="glyphicons pushpin">修改密码<i></i></a></li>
-					<li><a href="#" class="glyphicons user_add">添加用户<i></i></a></li>
 					<li class="highlight profile">
 						<span>
 							<span class="heading">当前用户</span>
-							<span class="img"></span>
 							<span class="details">
-								Admin
-								contact@mosaicpro.biz
+								admin
 							</span>
 							<span class="clearfix"></span>
 						</span>
