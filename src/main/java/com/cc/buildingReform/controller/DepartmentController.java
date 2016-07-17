@@ -37,7 +37,7 @@ public class DepartmentController {
 	public String list(@PathVariable("mid") Integer mid, @RequestParam(value = "fatherId", required = false) String fatherId, Model model) throws Exception {
 		try {
 			if (fatherId == null) {
-				fatherId = "000";
+				fatherId = "00";
 			}
 			model.addAttribute("mid", mid);
 			model.addAttribute("fatherId", fatherId);
@@ -68,7 +68,7 @@ public class DepartmentController {
 		try {
 			String fatherName = "顶层";
 			if (fatherId == null) {
-				fatherId = "000";
+				fatherId = "00";
 			}
 			Department department = new Department();
 			department.setFatherId(fatherId);
@@ -77,7 +77,7 @@ public class DepartmentController {
 				department = departmentService.findById(id);
 			}
 			
-			if (fatherId != "" && !fatherId.equals("000")) {
+			if (fatherId != "" && !fatherId.equals("00")) {
 				fatherName = departmentService.findById(fatherId).getName();
 			}
 			

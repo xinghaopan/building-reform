@@ -39,7 +39,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	public Department findFather(String id) {
 		if (id != null) {
 			Department r = findById(id);
-			while (r != null && r.getFatherId() != "000") {
+			while (r != null && r.getFatherId() != "00") {
 				r = findById(r.getFatherId());
 			}
 			
