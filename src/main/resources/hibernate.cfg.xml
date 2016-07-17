@@ -13,5 +13,7 @@
 	    <mapping class="com.cc.buildingReform.form.Department" />
 	    <mapping class="com.cc.buildingReform.form.Quota" />
 	    <mapping class="com.cc.buildingReform.form.Info" />
+	    <mapping class="com.cc.buildingReform.form.Key" />
+	    <mapping class="com.cc.buildingReform.form.Dic" />
 	</session-factory>
 </hibernate-configuration>

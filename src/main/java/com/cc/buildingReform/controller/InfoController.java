@@ -25,12 +25,16 @@ import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
 import com.cc.buildingReform.form.Info;
 import com.cc.buildingReform.form.User;
+import com.cc.buildingReform.service.DicService;
 import com.cc.buildingReform.service.InfoService;
 
 @RestController
 public class InfoController {
 	@Autowired
 	private InfoService infoService;
+
+	@Autowired
+	private DicService dicService;
 
 	private static Logger log = LoggerFactory.getLogger(InfoController.class);
 	
@@ -106,6 +110,7 @@ public class InfoController {
 		try {
 			Info info = new Info();
 			info.setDate(new Date());
+			info.setState(Info.STATE_EDIT);
 			if (id != null) {
 				if (id != 0) {
 					info = infoService.findById(id);
@@ -113,6 +118,8 @@ public class InfoController {
 			}
 			model.addAttribute("mid", mid);
 			model.addAttribute("info", info);
+			
+			model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
 			log.error("/bk/info/edit" + path + "?id=" + id, e);

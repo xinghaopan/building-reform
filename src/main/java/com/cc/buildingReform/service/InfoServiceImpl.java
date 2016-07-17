@@ -33,7 +33,11 @@ public class InfoServiceImpl implements InfoService {
 			list.get(0).setRestNum(list.get(0).getRestNum() - 1);
 			
 			quotaDAO.saveOrUpdate(list.get(0));
+			
 		}
+		
+		// 保存上报信息，无论新增还是修改，都将状态置为 编辑状态
+		info.setState(Info.STATE_EDIT);
 		
 		infoDAO.saveOrUpdate(info);
 	}

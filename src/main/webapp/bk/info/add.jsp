@@ -44,7 +44,7 @@
 							<label class="control-label span4" for="personSex">性别：</label>
 							<div class="controls">
 								<select id="personSex" name="personSex" class="span8">
-									<option value="0" selected>请选择</option>
+									<option value="-1" selected>请选择</option>
 									<option value="1" <c:if test="${info.personSex == 1}">selected</c:if>>男</option>
 									<option value="2" <c:if test="${info.personSex == 2}">selected</c:if>>女</option>
 								</select>
@@ -127,9 +127,12 @@
 							<label class="control-label span4" for="houseOldType">旧住房结构类型：</label>
 							<div class="controls">
 								<select id="houseOldType" name="houseOldType" class="span8">
-									<option value="0" selected>请选择</option>
-									<option value="1" <c:if test="${info.houseOldType == 1}">selected</c:if>>住房结构类型一</option>
-									<option value="2" <c:if test="${info.houseOldType == 2}">selected</c:if>>住房结构类型二</option>
+									<option value="-1" selected>请选择</option>
+									<c:forEach items="${dicList}" var="sdic">
+										<c:if test="${sdic.keyValue == 'houseOldType'}">
+											<option value="${sdic.value}" <c:if test="${sdic.value == info.houseOldType}">selected</c:if> >${sdic.name}</option>
+										</c:if>
+									</c:forEach>
 								</select>
 								
 								<input id="houseOldTypeName" name="houseOldTypeName" value="${info.houseOldTypeName}" type="hidden" />
@@ -161,9 +164,12 @@
 							<label class="control-label span4" for="toiletOldType">改造前厕所类型：</label>
 							<div class="controls">
 								<select id="toiletOldType" name="toiletOldType" class="span8">
-									<option value="0" selected>请选择</option>
-									<option value="1" <c:if test="${info.toiletOldType == 1}">selected</c:if>>改造前厕所类型一</option>
-									<option value="2" <c:if test="${info.toiletOldType == 2}">selected</c:if>>改造前厕所类型二</option>
+									<option value="-1" selected>请选择</option>
+									<c:forEach items="${dicList}" var="sdic">
+										<c:if test="${sdic.keyValue == 'toiletOldType'}">
+											<option value="${sdic.value}" <c:if test="${sdic.value == info.toiletOldType}">selected</c:if> >${sdic.name}</option>
+										</c:if>
+									</c:forEach>
 								</select>
 								
 								<input id="toiletOldTypeName" name="toiletOldTypeName" value="${info.toiletOldTypeName}" type="hidden" />
@@ -176,9 +182,12 @@
 							<label class="control-label span4" for="rebuildMode">改造方式：</label>
 							<div class="controls">
 								<select id="rebuildMode" name="rebuildMode" class="span8">
-									<option value="0" selected>请选择</option>
-									<option value="1" <c:if test="${info.rebuildMode == 1}">selected</c:if>>改造方式一</option>
-									<option value="2" <c:if test="${info.rebuildMode == 2}">selected</c:if>>改造方式二</option>
+									<option value="-1" selected>请选择</option>
+									<c:forEach items="${dicList}" var="sdic">
+										<c:if test="${sdic.keyValue == 'rebuildMode'}">
+											<option value="${sdic.value}" <c:if test="${sdic.value == info.rebuildMode}">selected</c:if> >${sdic.name}</option>
+										</c:if>
+									</c:forEach>
 								</select>
 								
 								<input id="rebuildModeName" name="rebuildModeName" value="${info.rebuildModeName}" type="hidden" />
@@ -191,9 +200,12 @@
 							<label class="control-label span4" for="username">建设方式：</label>
 							<div class="controls">
 								<select id="buildMode" name="buildMode" class="span8">
-									<option value="0" selected>请选择</option>
-									<option value="1" <c:if test="${info.buildMode == 1}">selected</c:if>>建设方式一</option>
-									<option value="2" <c:if test="${info.buildMode == 2}">selected</c:if>>建设方式二</option>
+									<option value="-1" selected>请选择</option>
+									<c:forEach items="${dicList}" var="sdic">
+										<c:if test="${sdic.keyValue == 'buildMode'}">
+											<option value="${sdic.value}" <c:if test="${sdic.value == info.buildMode}">selected</c:if> >${sdic.name}</option>
+										</c:if>
+									</c:forEach>
 								</select>
 								
 								<input id="buildModeName" name="buildModeName" value="${info.buildModeName}" type="hidden" />
@@ -210,9 +222,12 @@
 							<label class="control-label span4" for="toiletNewType">改造后厕所类型：</label>
 							<div class="controls">
 								<select id="toiletNewType" name="toiletNewType" class="span8">
-									<option value="0" selected>请选择</option>
-									<option value="1" <c:if test="${info.toiletNewType == 1}">selected</c:if>>改造后厕所类型一</option>
-									<option value="2" <c:if test="${info.toiletNewType == 2}">selected</c:if>>改造后厕所类型二</option>
+									<option value="-1" selected>请选择</option>
+									<c:forEach items="${dicList}" var="sdic">
+										<c:if test="${sdic.keyValue == 'toiletNewType'}">
+											<option value="${sdic.value}" <c:if test="${sdic.value == info.toiletNewType}">selected</c:if> >${sdic.name}</option>
+										</c:if>
+									</c:forEach>
 								</select>
 								
 								<input id="toiletNewTypeName" name="toiletNewTypeName" value="${info.toiletNewTypeName}" type="hidden" />
@@ -251,10 +266,12 @@
 							<label class="control-label span4" for="planYear">列入计划年份：</label>
 							<div class="controls">
 								<select id="planYear" name="planYear" class="span8">
-									<option value="0" selected>请选择</option>
-									<option value="2016" <c:if test="${info.planYear == 2016}">selected</c:if>>2016</option>
-									<option value="2015" <c:if test="${info.planYear == 2015}">selected</c:if>>2015</option>
-									<option value="2014" <c:if test="${info.planYear == 2014}">selected</c:if>>2014</option>
+									<option value="-1" selected>请选择</option>
+									<c:forEach items="${dicList}" var="sdic">
+										<c:if test="${sdic.keyValue == 'planYear'}">
+											<option value="${sdic.value}" <c:if test="${sdic.value == info.planYear}">selected</c:if> >${sdic.name}</option>
+										</c:if>
+									</c:forEach>
 								</select>
 							</div>
 						</div>
@@ -265,9 +282,12 @@
 							<label class="control-label span4" for="rebuildRate">改造进度：</label>
 							<div class="controls">
 								<select id="rebuildRate" name="rebuildRate" class="span8">
-									<option value="0" selected>请选择</option>
-									<option value="1" <c:if test="${info.rebuildRate == 1}">selected</c:if>>改造进度一</option>
-									<option value="2" <c:if test="${info.rebuildRate == 2}">selected</c:if>>改造进度二</option>
+									<option value="-1" selected>请选择</option>
+									<c:forEach items="${dicList}" var="sdic">
+										<c:if test="${sdic.keyValue == 'rebuildRate'}">
+											<option value="${sdic.value}" <c:if test="${sdic.value == info.rebuildRate}">selected</c:if> >${sdic.name}</option>
+										</c:if>
+									</c:forEach>
 								</select>
 								
 								<input id="rebuildRateName" name="rebuildRateName" value="${info.rebuildRateName}" type="hidden" />
@@ -333,9 +353,12 @@
 							<label class="control-label span4" for="grantType">享受补助资金类型：</label>
 							<div class="controls">
 								<select id="grantType" name="grantType" class="span8">
-									<option value="0" selected>请选择</option>
-									<option value="1" <c:if test="${info.grantType == 1}">selected</c:if>>享受补助资金类型一</option>
-									<option value="2" <c:if test="${info.grantType == 2}">selected</c:if>>享受补助资金类型二</option>
+									<option value="-1" selected>请选择</option>
+									<c:forEach items="${dicList}" var="sdic">
+										<c:if test="${sdic.keyValue == 'grantType'}">
+											<option value="${sdic.value}" <c:if test="${sdic.value == info.grantType}">selected</c:if> >${sdic.name}</option>
+										</c:if>
+									</c:forEach>
 								</select>
 								
 								<input id="grantTypeName" name="grantTypeName" value="${info.grantTypeName}" type="hidden" />
@@ -494,7 +517,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		
-		if ($('#personSex').val() == 0) {
+		if ($('#personSex').val() == -1) {
 			alert("请选择性别！！！");
 			$('#personSex').focus();
 			return;
@@ -536,35 +559,35 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		
-		if ($('#houseOldType').val() == 0) {
+		if ($('#houseOldType').val() == -1) {
 			alert("请选择旧住房结构类型！！！");
 			$('#houseOldType').focus();
 			return;
 		}
 		$("#houseOldTypeName").val($("#houseOldType").find("option:selected").text());
 
-		if ($('#toiletOldType').val() == 0) {
+		if ($('#toiletOldType').val() == -1) {
 			alert("请选择改造前厕所类型！！！");
 			$('#toiletOldType').focus();
 			return;
 		}
 		$("#toiletOldTypeName").val($("#toiletOldType").find("option:selected").text());
 		
-		if ($('#rebuildMode').val() == 0) {
+		if ($('#rebuildMode').val() == -1) {
 			alert("请选择改造方式！！！");
 			$('#rebuildMode').focus();
 			return;
 		}
 		$("#rebuildModeName").val($("#rebuildMode").find("option:selected").text());
 
-		if ($('#buildMode').val() == 0) {
+		if ($('#buildMode').val() == -1) {
 			alert("请选择建设方式！！！");
 			$('#buildMode').focus();
 			return;
 		}
 		$("#buildModeName").val($("#buildMode").find("option:selected").text());
 
-		if ($('#toiletNewType').val() == 0) {
+		if ($('#toiletNewType').val() == -1) {
 			alert("请选择改造后厕所类型！！！");
 			$('#toiletNewType').focus();
 			return;
@@ -577,13 +600,13 @@ jQuery(document).ready(function($) {
 			return;
 		} 
 		
-		if ($('#planYear').val() == 0) {
+		if ($('#planYear').val() == -1) {
 			alert("请选择列入计划年份！！！");
 			$('#planYear').focus();
 			return;
 		}
 		
-		if ($('#rebuildRate').val() == 0) {
+		if ($('#rebuildRate').val() == -1) {
 			alert("请选择改造进度！！！");
 			$('#rebuildRate').focus();
 			return;
@@ -608,7 +631,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		
-		if ($('#grantType').val() == 0) {
+		if ($('#grantType').val() == -1) {
 			alert("请选择享受补助资金类型！！！");
 			$('#grantType').focus();
 			return;

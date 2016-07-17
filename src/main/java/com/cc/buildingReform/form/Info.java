@@ -15,7 +15,10 @@ import javax.persistence.Table;
 public class Info implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	public static final Integer STATE_EDIT = 0;
+	public static final Integer STATE_SUBMIT = 1;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "INFO_ID", unique = true, nullable = false)
@@ -134,6 +137,9 @@ public class Info implements Serializable {
 	
 	@Column(name = "INFO_DATE")
 	private Date date;
+
+	@Column(name = "INFO_STATE")
+	private Integer state;
 
 	public Integer getId() {
 		return id;
@@ -445,5 +451,13 @@ public class Info implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
 	}
 }
