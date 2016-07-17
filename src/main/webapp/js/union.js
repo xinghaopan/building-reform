@@ -144,6 +144,21 @@ function isUnsignedInteger(value) {
 }
 
 /**
+ * js校验值是否为正浮点 2016-07-17 by p
+ * 
+ * @param value
+ * @returns {Boolean}
+ */
+function isUnsignedDouble(value) {
+	if (value == "") {
+		return false;
+	} else {
+		var regex = /^[-\+]?\d+(\.\d+)?$/;
+		return regex.test(value);
+	}
+}
+
+/**
  * js校验值是否为字母和数字 2014-11-18 by p
  * 
  * @param value
