@@ -17,6 +17,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 	private DepartmentDAO departmentDAO;
 
 	public void save(Department department) {
+		int len = 0;
+		if (department.getFatherId().equals("00")) {
+			len = 2;
+		}
+		else {
+			len = department.getFatherId().length() + 2;
+		}
+		department.setLength(len);
 		departmentDAO.saveOrUpdate(department);
 	}
 

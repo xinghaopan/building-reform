@@ -32,6 +32,9 @@ public class Department implements Serializable {
 	@Column(name = "DEPARTMENT_ORDER")
 	private Integer order;
 
+	@Column(name = "DEPARTMENT_LENGTH")
+	private Integer length;
+
 	public String getId() {
 		return id;
 	}
@@ -78,5 +81,13 @@ public class Department implements Serializable {
 
 	public void setOrder(Integer order) {
 		this.order = order;
+	}
+
+	public Integer getLength() {
+		return length;
+	}
+
+	public void setLength(Integer length) {
+		this.length = length;
 	}
 }
