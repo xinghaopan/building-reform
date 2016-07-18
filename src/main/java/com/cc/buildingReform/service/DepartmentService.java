@@ -18,4 +18,6 @@ public interface DepartmentService {
 	public Department findFather(String id);
 
 	public List<Department> findByFatherId(String fatherId);
+	
+	public List<Department> findByRange(String beginCode, List<Integer> length);
 }

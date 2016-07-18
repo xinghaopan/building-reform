@@ -22,12 +22,20 @@ import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
 import com.cc.buildingReform.form.Quota;
 import com.cc.buildingReform.form.User;
+import com.cc.buildingReform.service.DepartmentService;
+import com.cc.buildingReform.service.DicService;
 import com.cc.buildingReform.service.QuotaService;
 
 @RestController
 public class QuotaController {
 	@Autowired
 	private QuotaService quotaService;
+
+	@Autowired
+	private DepartmentService departmentService;
+
+	@Autowired
+	private DicService dicService;
 
 	private static Logger log = LoggerFactory.getLogger(QuotaController.class);
 	
@@ -43,14 +51,16 @@ public class QuotaController {
 	public String list(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "year", required = false) Integer year, 
 			@RequestParam(value = "departmentId", required = false) String departmentId, 
-			Model model) throws Exception {
+			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
 			if (year == null) {
 				year = Quota.getCurrentYear();
 			}
 			
 			if (departmentId == null) {
-				departmentId = "01";
+				departmentId = user.getDepartmentId();
 			}
 			
 			// 存在的年度列表
@@ -68,6 +78,7 @@ public class QuotaController {
 			model.addAttribute("list", quotaService.findAll(year));
 			model.addAttribute("yearList", yearList);
 			model.addAttribute("year", year);
+			model.addAttribute("user", user);
 		}
 		catch(Exception e) {
 			log.error("/bk/quota/list", e);
@@ -175,6 +186,77 @@ public class QuotaController {
 		} catch (Exception e) {
 			msg = 0;
 			log.error("/bk/quota/del?id=" + id, e);
+		}
+		
+		Common.print(response, msg);
+	}
+	
+	/**
+	 * 指标发放 2016-07-18 by p
+	 * 
+	 * @param mid
+	 * @param response
+	 * @throws Exception
+	 */
+	@Permissions(target = "loginUser", url = "")
+	@RequestMapping(value = "/bk/quota/distribute/{mid}")
+	public String distribute(@PathVariable("mid") Integer mid, 
+			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		try {
+//			quotaService.remove(id);
+			User user = (User)request.getSession().getAttribute("loginUser");
+			String departmentId = user.getDepartmentId();
+			List<Integer> length = new ArrayList<>();
+			if (departmentId.length() == 2) {
+				length.add(4);
+				length.add(6);
+			}
+			else {
+				length.add(departmentId.length() + 2);
+			}
+			
+			model.addAttribute("departmentList", departmentService.findByRange(departmentId, length));
+			model.addAttribute("dicList", dicService.findAll());
+			model.addAttribute("mid", mid);
+			model.addAttribute("user", user);
+			
+		} catch (Exception e) {
+			log.error("/bk/quota/distribute", e);
+		}
+		
+		return "/bk/quota/distribute";
+	}
+	
+	@Permissions(target = "loginUser", url = "")
+	@RequestMapping(value = "/bk/quota/distributeSave/{mid}", method = RequestMethod.POST)
+	public void distributeSave(@PathVariable("mid") Integer mid, 
+			@ModelAttribute("quota") Quota quota, 
+			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		int msg = 1;
+		try {
+			User user = (User)request.getSession().getAttribute("loginUser");
+			
+			quota.setDate(new Date());
+			
+			quotaService.saveDistribute(quota, user);
+		} catch (Exception e) {
+			msg = 0;
+			log.error("/bk/quota/distributeSave", e);
+			
+			if (e.getMessage() != null) {
+				if (e.getMessage().equals("-1")) {
+					msg = -1;
+					log.warn("/bk/quota/distributeSave/", "本单位剩余指标不够此次发放！！！");
+				}
+				else {
+					msg = 0;
+					log.error("/bk/quota/distributeSave/", e);
+				}
+			}
+			else {
+				msg = 0;
+				log.error("/bk/quota/distributeSave/", e);
+			}
 		}
 		
 		Common.print(response, msg);

@@ -3,6 +3,7 @@ package com.cc.buildingReform.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -21,8 +22,7 @@ public class DepartmentDAO extends CcHibernateDao<Department, String> {
 	public List<Department> findAll() {
 		Criteria criteria = getSession().createCriteria(Department.class);
 		
-		criteria.addOrder(Order.asc("fatherId"));
-		criteria.addOrder(Order.desc("order"));
+		criteria.addOrder(Order.asc("length"));
 		criteria.addOrder(Order.asc("id"));
 		
 		return (List<Department>) criteria.list();
@@ -50,8 +50,7 @@ public class DepartmentDAO extends CcHibernateDao<Department, String> {
 	public List<Department> findAll(int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Department.class);
 		
-		criteria.addOrder(Order.asc("fatherId"));
-		criteria.addOrder(Order.desc("order"));
+		criteria.addOrder(Order.asc("length"));
 		criteria.addOrder(Order.asc("id"));
 		
 		criteria.setFirstResult(firstResult);
@@ -61,7 +60,7 @@ public class DepartmentDAO extends CcHibernateDao<Department, String> {
 	}
 	
 	/**
-	 * 查找指定父id的所有菜单 2016-06-25 by p
+	 * 查找指定父id的所有机构 2016-06-25 by p
 	 * 
 	 * @param fatherId
 	 * @return
@@ -72,11 +71,29 @@ public class DepartmentDAO extends CcHibernateDao<Department, String> {
 		
 		criteria.add(Restrictions.eq("fatherId", fatherId));
 		
-		criteria.addOrder(Order.asc("fatherId"));
-		criteria.addOrder(Order.desc("order"));
-		criteria.addOrder(Order.desc("id"));
+		criteria.addOrder(Order.asc("length"));
+		criteria.addOrder(Order.asc("id"));
 		
 		return (List<Department>) criteria.list();
 	}
 	
+	/**
+	 * 查询指定范围的机构 2016-07-18 by p
+	 * 
+	 * @param beginCode
+	 * @param length
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Department> findByRange(String beginCode, List<Integer> length) {
+		Criteria criteria = getSession().createCriteria(Department.class);
+		
+		criteria.add(Restrictions.ilike("id", beginCode, MatchMode.START));
+		criteria.add(Restrictions.in("length", length));
+		
+		criteria.addOrder(Order.asc("length"));
+		criteria.addOrder(Order.asc("id"));
+		
+		return (List<Department>) criteria.list();
+	}
 }

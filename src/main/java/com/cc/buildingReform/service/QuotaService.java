@@ -3,12 +3,15 @@ package com.cc.buildingReform.service;
 import java.util.List;
 
 import com.cc.buildingReform.form.Quota;
+import com.cc.buildingReform.form.User;
 
 
 public interface QuotaService {
 
 	public void save(Quota quota);
 
+	public void saveDistribute(Quota quota, User user);
+	
 	public void remove(Integer id);
 	
 	public Quota findById(Integer id);

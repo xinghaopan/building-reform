@@ -57,4 +57,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 			return null;
 		}
 	}
+	
+	public List<Department> findByRange(String beginCode, List<Integer> length) {
+		return departmentDAO.findByRange(beginCode, length);
+	}
 }

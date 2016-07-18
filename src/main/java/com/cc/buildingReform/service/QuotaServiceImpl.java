@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cc.buildingReform.dao.QuotaDAO;
 import com.cc.buildingReform.form.Quota;
+import com.cc.buildingReform.form.User;
 
 @Service
 @Transactional
@@ -43,6 +44,23 @@ public class QuotaServiceImpl implements QuotaService {
 		}
 	}
 
+	public void saveDistribute(Quota quota, User user) {
+		List<Quota> list = quotaDAO.findByDepartmentId(quota.getYear(), user.getDepartmentId());
+		if (list != null && !list.isEmpty()) {
+			// 校验本单位的剩余指标是否够此次发放
+			if (list.get(0).getRestNum() < quota.getNum()) {
+				throw new RuntimeException("-1");
+			}
+			
+			list.get(0).setRestNum(list.get(0).getRestNum() - quota.getNum());
+			quotaDAO.saveOrUpdate(list.get(0));
+			
+			quota.setRestNum(quota.getNum());
+			
+			quotaDAO.saveOrUpdate(quota);
+		}
+	}
+	
 	public void remove(Integer id) {
 		// TODO 删除前校验此项年度指标是否已经使用，如果使用不允许删除 
 		

@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="/bk/top.jsp" %>
 <!-- Content -->
 <div id="content">
@@ -44,7 +45,12 @@
            				</div>
 						
 			           	<div class=" pull-right">
-				           	<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
+			           		<c:if test="${fn:length(user.departmentId) == 2}">
+				           		<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
+				           	</c:if>
+				           	<c:if test="${(fn:length(user.departmentId) == 2) || (fn:length(user.departmentId) == 6) || (fn:length(user.departmentId) == 7)}">
+				           		<a href="/bk/quota/distribute/${mid}" class="btn btn-icon btn-info glyphicons circle_ok"><i></i>指标发放</a>
+				           	</c:if>
 			           	</div>
 					</div>
 	           </div>
@@ -73,8 +79,11 @@
 								<td class="center">${squota.restNum}</td>
 								<td class="center"><fmt:formatDate value="${squota.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></td>
 								<td class="center">
-									<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=${squota.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
-									<a href="javascript:void(0);" url="/bk/quota/del/${mid}?id=${squota.id}" bname="${squota.year}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
+									<c:if test="${user.departmentId == '01'}">
+										<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=${squota.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
+									
+										<a href="javascript:void(0);" url="/bk/quota/del/${mid}?id=${squota.id}" bname="${squota.year}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
+									</c:if>
 								</td>
 							</tr>
 							<!-- // Item END -->
