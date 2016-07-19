@@ -21,7 +21,7 @@ public class DicDAO extends CcHibernateDao<Dic, Integer> {
 		Criteria criteria = getSession().createCriteria(Dic.class);
 		
 		criteria.addOrder(Order.asc("keyName"));
-		criteria.addOrder(Order.asc("value"));
+		criteria.addOrder(Order.desc("value"));
 		
 		return (List<Dic>) criteria.list();
 	}
@@ -39,7 +39,7 @@ public class DicDAO extends CcHibernateDao<Dic, Integer> {
 		criteria.add(Restrictions.eq("keyId", keyId));
 		
 		criteria.addOrder(Order.asc("keyName"));
-		criteria.addOrder(Order.asc("value"));
+		criteria.addOrder(Order.desc("value"));
 		
 		return (List<Dic>) criteria.list();
 	}
