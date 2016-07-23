@@ -2,150 +2,184 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<form id="roleForm" method="post" name="roleForm" action="/bk/role/save/${mid}" enctype="multipart/form-data">
-<div class="mainFrame-center-navigation">
-	<p>${navigation}</p>
-</div>
-<div class="mainFrame-center-form">
-	<ul>
-		<li style="display:none"><p>角色ID：</p><span><input id="id" name="id" class="web_01" type="text" value="${role.id}"  /></span></li>
-		<li><p>角色名称：</p><span><input id="name" name="name" class="web_01" type="text" value="${role.name}"  /></span></li>
-		<li style="display:none"><p>角色功能：</p><span><input id="power" name="power" class="web_01" type="text" value="${role.power}"  /></span></li>
+<%@ include file="/bk/top.jsp" %>
+<!-- Content -->
+<div id="content">
+	<ul class="breadcrumb">
+		<li><img src="/images/photo_02.jpg"  alt=""/>&nbsp;您当前的位置：</li>
+	    <li class="center-navigation">
+	    </li>
 	</ul>
 	
-</div>
-</form>
+	<div class="row-fluid row-merge"></div>
 
-<div class="mainFrame-center-form-editor">
-    <div class="mainFrame-center-form-editor-title"></div> 
-    <div class="mainFrame-center-form-editor-content">
-        <div id="tree"></div>
-    </div>
-</div>
-<div class="mainFrame-center-form-editor">
-    <div class="mainFrame-center-form-editor-title"></div> 
-    <div class="mainFrame-center-form-editor-content">
-        <img src="/images/back_13.jpg" class="web_02" id="btn_Submit" name="btn_Submit" />
-        <img src="/images/back_44.jpg" class="web_02" id="btn_Back" name="btn_Back" />
-    </div>
+	<div class="innerLR">
+		
+		<div class="separator bottom"></div>
+	
+	 	<form id="roleForm" method="post" name="roleForm" action="/bk/role/save/${mid}">
+	 	<input id="id" name="id" value="${role.id}" type="hidden" />
+	 	<input id="power" name="power" value="${role.power}" type="hidden" />
+	 	<!-- Website Traffic Chart -->
+		<div class="widget" data-toggle="collapse-widget">
+			<div class="widget-head">
+				<p class="heading glyphicons folder_open"><i></i>角色信息</p>
+			</div>
+			
+			<div class="widget-body">
+	           <div class="row-fluid">
+	           		<div class="control-group span2"></div>
+	           		
+					<div class="control-group span8">
+						<label class="control-label span2" for="name">角色名称：</label>
+						<div class="controls"><input class="span6" id="name" name="name" value="${role.name}" type="text" /></div>
+					</div>
+				</div>
+				
+				<div class="row-fluid">
+					<div class="control-group span2"></div>
+					
+					<div class="control-group span8">
+						<label class="control-label span2" for="order">排序：</label>
+						<div class="controls"><input class="span6"  id="order" name="order" value="${role.order}" type="text" /></div>
+					</div>
+				</div>
+                   
+               	<div class="row-fluid">
+					<div class="control-group span2"></div>
+					
+					<div class="control-group span8">
+						<label class="control-label span2" for="name">功能：</label>
+						<div class="controls">
+							<ul id="tree" class="ztree span6" style="width:560px; overflow:auto;"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- // Website Traffic Chart END -->
+		
+		<!-- Button Widget -->
+		<div class="separator bottom"></div>
+		<!-- // Button Widget END -->
+		
+		<!-- Modal footer -->
+		<div class="modal-footer">
+			<a href="javascript:void(0);" id="btn_Submit" name="btn_Submit" class="btn btn-info" >提交</a>
+			<a href="javascript:void(0);" class="btn btn-default btn-close">关闭</a> 
+		</div>
+		<!-- // Modal footer END -->
+		
+		</form>
+	</div>	
+		
 </div>
 <script>
-	var aMenus = new Array();
-	
-	function pushMenus(id, fatherId, name, types) {
-		var current = new Object();
-	    current.id = id;
-	    current.fatherId = fatherId;
-	    current.name = name;
-	    current.types = types;
-	    aMenus.push(current);
-	}
-</script>
+    var zTree;
+    var demoIframe;
 
-<c:forEach items="${menuList}" var="smenu">
-	<script>pushMenus('${smenu.id}', '${smenu.fatherId}', '${smenu.backName}', '0');</script>
-</c:forEach>
-
-<script>var power = '${role.power}';</script>
-
-<script type="text/javascript">
-var userAgent = window.navigator.userAgent.toLowerCase();
-$.browser.msie8 = $.browser.msie && /msie 8\.0/i.test(userAgent);
-$.browser.msie7 = $.browser.msie && /msie 7\.0/i.test(userAgent);
-$.browser.msie6 = !$.browser.msie8 && !$.browser.msie7 && $.browser.msie && /msie 6\.0/i.test(userAgent);
-
-function initData(list, fId) {
-	var t = [];
-	var len = 0;
-	for (var i = 0; i < list.length; i ++) {
-		// 添加节点
-		if (list[i].fatherId == fId) {
-			var isPower = true;
-			if (list[i].types == "1") {
-				isPower = false;
-			}
-			
-			var isSel = 1;
-			
-			if (power.indexOf("," + list[i].id + ",") == -1) {
-				isSel = 0;
-			}
-			
-			var root = {
-			    "id" : list[i].id,
-			    "text" : list[i].name,
-			    "value" : list[i].id,
-			    "showcheck" : true,
-			    complete : true,
-			    "isexpand" : true,
-			    "checkstate" : isSel,
-			    "hasChildren" : isPower
-			  };
-			
-			root["ChildNodes"] = initData(list, list[i].id);
-			
-			t[len] = root;
-			len ++;
-		}
-	}
-	
-	return t;
-}
-
-function load() {        
-    var o = { showcheck: true
-    //onnodeclick:function(item){alert(item.text);},        
+    function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#editBtn_"+treeNode.tId).length>0) return;
+        var addStr = "<span class='button edit action-edit' href='#modal-simple' data-toggle='modal' url='/bk/department/edit/${mid}' fatherId='" + treeNode.pId + "' tid='" + treeNode.id + "' id='editBtn_" + treeNode.tId + "'></span>";
+        addStr += "<span class='button remove' id='removeBtn_" + treeNode.tId + "' title='add node' onfocus='this.blur();'></span>";
+        sObj.after(addStr);
     };
-    o.data = initData(aMenus, 0);                  
-    $("#tree").treeview(o);            
-    $("#showchecked").click(function(e){
-        var s=$("#tree").getCheckedNodes();
-        if(s !=null)
-        alert(s.join(","));
-        else
-        alert("NULL");
+
+    function removeHoverDom(treeId, treeNode) {
+        $("#removeBtn_"+treeNode.tId).unbind().remove();
+        $("#editBtn_"+treeNode.tId).unbind().remove();
+    };
+
+    var setting = {
+        check: {
+            enable: true
+        },
+        view: {
+            addHoverDom: addHoverDom,
+            removeHoverDom: removeHoverDom,
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+        },
+        data: {
+            simpleData: {
+                enable:true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: ""
+            }
+        },
+        callback: {
+            beforeClick: function(treeId, treeNode) {
+                var zTree = $.fn.zTree.getZTreeObj("tree");
+                if (treeNode.isParent) {
+                    zTree.expandNode(treeNode);
+                    return false;
+                } else {
+                    demoIframe.attr("src",treeNode.file + ".html");
+                    return true;
+                }
+            }
+        }
+    };
+
+    var zNodes = ${menuList};
+
+    $(document).ready(function(){
+        var t = $("#tree");
+        t = $.fn.zTree.init(t, setting, zNodes);
+        demoIframe = $("#testIframe");
+        demoIframe.bind("load", loadReady);
+        var zTree = $.fn.zTree.getZTreeObj("tree");
+        zTree.selectNode(zTree.getNodeByParam("id", 101));
+
     });
-     $("#showcurrent").click(function(e){
-        var s=$("#tree").getCurrentNode();
-        if(s !=null)
-            alert(s.text);
-        else
-            alert("NULL");
-     });
-}   
 
-if( $.browser.msie6)
-{
-    load();
-}
-else{
-    $(document).ready(load);
-}
-
-$(document).ready(function () {
-	// ajaxSubmit
-	$("#btn_Submit").click(function () {
-		if (isNull($('#name').val())) {
-			alert("角色名称不能为空！！！");
-			$('#name').focus();
-			return;
-		}
+    function loadReady() {
+        var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+                htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+                maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+                h = demoIframe.height() >= maxH ? minH:maxH ;
+        if (h < 530) h = 530;
+        demoIframe.height(h);
+    }
+</script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("#btn_Submit").live("click", function() { 
 		
-		var nodes = $("#tree").getCheckedNodes();
+		var treeObj = $.fn.zTree.getZTreeObj("tree");
+		var nodes = treeObj.getCheckedNodes(true);
+		
 		if (nodes == null) {
 			$("#power").val("");
 		}
 		else {
-			var s = nodes.join(",");
-			s = "," + s + ",";
+			var s = ","
+			for (var i = 0; i < nodes.length; i ++) {
+				s += nodes[i].id + ",";
+			}
 			$("#power").val(s);
+		}
+		
+		
+		if (isNull($('#name').val())) {
+			alert("角色名称！！！");
+			$('#name').focus();
+			return;
+		}
+		
+		if (!isUnsignedInteger($('#order').val())) {
+			alert("排序只能是数字！！！");
+			$('#order').focus();
+			return;
 		}
 		
 		var options = { 
 	            success : function(msg) {
 	            	if (msg == "-999") {
 		        		alert("999");
-		        		//outLogin();
 		        	}
 	            	else if (msg == 1) {
 	            		alert("角色信息保存成功！！！");
@@ -159,8 +193,9 @@ $(document).ready(function () {
         $("#roleForm").ajaxSubmit(options); 
 	});
 	
-	$('#btn_Back').click(function(){
-		history.back();
+	$(".btn-close").live("click", function() { 
+		window.open("/bk/role/list/${mid}", "_self");
 	});
 });
-</script> 
+</script>
+<%@ include file="/bk/bottom.jsp" %>

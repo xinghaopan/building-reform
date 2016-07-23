@@ -1,5 +1,8 @@
 package com.cc.buildingReform.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -15,9 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
+import com.cc.buildingReform.form.Department;
+import com.cc.buildingReform.form.Menu;
 import com.cc.buildingReform.form.Role;
+import com.cc.buildingReform.form.Tree;
 import com.cc.buildingReform.service.MenuService;
 import com.cc.buildingReform.service.RoleService;
+
+import net.sf.json.JSONArray;
 
 @RestController
 public class RoleController {
@@ -71,7 +79,20 @@ public class RoleController {
 			}
 			model.addAttribute("mid", mid);
 			model.addAttribute("role", role);
-			model.addAttribute("menuList", menuService.findAll());
+			List<Menu> lists = menuService.findAll();
+			List<Tree> treeList = new ArrayList<>();
+			for (int i = 0; i < lists.size(); i ++) {
+				Tree tree = new Tree();
+				tree.setId(lists.get(i).getId().toString());
+				tree.setpId(lists.get(i).getFatherId().toString());
+				tree.setName("<div class='inline' >" + lists.get(i).getBackName() + "</div>");
+				tree.setOpen(true);
+				if (role.getPower() != null && role.getPower().contains("," + lists.get(i).getId() + ",")) {
+					tree.setChecked(true);
+				}
+				treeList.add(tree);
+			}
+			model.addAttribute("menuList", JSONArray.fromObject(treeList));
 		}
 		catch(Exception e) {
 			log.error("/bk/role/edit?id=" + id, e);

@@ -20,6 +20,7 @@ public class RoleDAO extends CcHibernateDao<Role, Integer> {
 	public List<Role> findAll() {
 		Criteria criteria = getSession().createCriteria(Role.class);
 		
+		criteria.addOrder(Order.desc("order"));
 		criteria.addOrder(Order.desc("id"));
 		
 		return (List<Role>) criteria.list();
@@ -47,6 +48,7 @@ public class RoleDAO extends CcHibernateDao<Role, Integer> {
 	public List<Role> findAll(int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Role.class);
 		
+		criteria.addOrder(Order.desc("order"));
 		criteria.addOrder(Order.desc("id"));
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);

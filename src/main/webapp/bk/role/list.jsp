@@ -35,7 +35,7 @@
 						</div>
 						
 			           	<div class=" pull-right padding3">
-				           	<a href="#modal-simple" data-toggle="modal" url="/bk/role/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
+				           	<a href="/bk/role/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
 			           	</div>
 					</div>
 	           </div>
@@ -58,7 +58,7 @@
 								<td class="center">${srole.name}</td>
 								<td class="center">${srole.order}</td>
 								<td class="center">
-									<a href="#modal-simple" data-toggle="modal" url="/bk/role/edit/${mid}?id=${srole.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
+									<a href="/bk/role/edit/${mid}?id=${srole.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
 									<a href="javascript:void(0);" url="/bk/role/del/${mid}?id=${srole.id}" bname="${srole.name}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
 								</td>
 							</tr>
@@ -109,59 +109,6 @@ jQuery(document).ready(function($) {
 				}
 			});
 		}
-	});
-	
-	$('.action-edit').click(function(){
-		var url = $(this).attr("url");
-		
-		$.ajax({
-			type : "get",
-			url : url,
-			data : "radom=" + Math.random(),
-			dataType : "text",
-			success : function(text) {
-				$("#modal-simple").html(text);
-			},
-			error : function(XMLHttpRequest, error, errorThrown) {
-				//alert("请求超时！！！");
-			}
-		});
-	});
-	
-	$("#btn_Submit").live("click", function() { 
-		if (isNull($('#frontName').val())) {
-			alert("前台名称不能为空！！！");
-			$('#frontName').focus();
-			return;
-		}
-		
-		if (isNull($('#backName').val())) {
-			alert("后台名称不能为空！！！");
-			$('#backName').focus();
-			return;
-		}
-		
-		if (!isUnsignedInteger($('#order').val())) {
-			alert("排序只能为数字！！！");
-			$('#order').focus();
-			return;
-		}
-		
-		var options = { 
-	            success : function(msg) {
-	            	if (msg == "-999") {
-		        		alert("999");
-		        	}
-	            	else if (msg == 1) {
-	            		alert("功能信息保存成功！！！");
-	            		window.location.reload();
-	            	}
-	            	else {
-	            		alert("功能信息保存失败！！！");
-	            	}
-	            } 
-        }; 
-        $("#menuForm").ajaxSubmit(options); 
 	});
 });
 </script>
