@@ -3,6 +3,7 @@ package com.cc.buildingReform.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -86,6 +87,20 @@ public class QuotaDAO extends CcHibernateDao<Quota, Integer> {
 	
 	
 	@SuppressWarnings("unchecked")
+	public List<Quota> findByDepartmentId(Integer year, List<String> departmentId) {
+		Criteria criteria = getSession().createCriteria(Quota.class);
+		
+		criteria.add(Restrictions.eq("year", year));
+		criteria.add(Restrictions.in("departmentId", departmentId));
+		
+		criteria.addOrder(Order.asc("departmentId"));
+		criteria.addOrder(Order.desc("id"));
+		
+		return (List<Quota>) criteria.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	public List<Integer> findExistYear() {
 		Criteria criteria = getSession().createCriteria(Quota.class);
 		
@@ -95,5 +110,23 @@ public class QuotaDAO extends CcHibernateDao<Quota, Integer> {
 		criteria.setProjection(projectionList);
 		criteria.addOrder(Order.desc("year"));
 		return (List<Integer>) criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Quota> findByFatherDepartmentId(Integer year, String fatherDepartmentId) {
+		Criteria criteria = getSession().createCriteria(Quota.class);
+		
+		criteria.add(Restrictions.eq("year", year));
+		
+		Disjunction disjunction = Restrictions.disjunction();  
+		disjunction.add(Restrictions.eq("departmentId", fatherDepartmentId));
+		disjunction.add(Restrictions.eq("distributeDepartmentId", fatherDepartmentId));
+		
+		criteria.add(disjunction);
+		
+		criteria.addOrder(Order.asc("departmentId"));
+		criteria.addOrder(Order.desc("id"));
+		
+		return (List<Quota>) criteria.list();
 	}
 }

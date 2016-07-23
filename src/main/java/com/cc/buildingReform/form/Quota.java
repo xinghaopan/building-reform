@@ -37,10 +37,13 @@ public class Quota implements Serializable {
 
 	@Column(name = "QUOTA_NUM")
 	private Integer num;
-
+	
 	@Column(name = "QUOTA_REST_NUM")
 	private Integer restNum;
 
+	@Column(name = "QUOTA_DISTRIBUTE_DEPARTMENT_ID")
+	private String distributeDepartmentId;
+	
 	@Column(name = "QUOTA_DATE")
 	private Date date;
 
@@ -90,6 +93,14 @@ public class Quota implements Serializable {
 
 	public void setRestNum(Integer restNum) {
 		this.restNum = restNum;
+	}
+
+	public String getDistributeDepartmentId() {
+		return distributeDepartmentId;
+	}
+
+	public void setDistributeDepartmentId(String distributeDepartmentId) {
+		this.distributeDepartmentId = distributeDepartmentId;
 	}
 
 	public Date getDate() {

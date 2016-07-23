@@ -36,8 +36,10 @@
 						<div class="span7">
 							<div class="input-append">
 								<select id="year" name="year">
-									<c:forEach items="${yearList}" var="syear">
-										<option value="${syear}" <c:if test="${syear == year}">selected</c:if> >${syear}</option>
+									<c:forEach items="${dicList}" var="sdic">
+										<c:if test="${sdic.keyValue == 'planYear'}">
+											<option value="${sdic.value}" <c:if test="${sdic.value == year}">selected</c:if> >${sdic.name}</option>
+										</c:if>
 									</c:forEach>
 								</select>
 								<button class="btn btn_Search" type="button" currentPage="0">搜索</button>
@@ -48,7 +50,7 @@
 			           		<c:if test="${fn:length(user.departmentId) == 2}">
 				           		<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
 				           	</c:if>
-				           	<c:if test="${(fn:length(user.departmentId) == 2) || (fn:length(user.departmentId) == 6) || (fn:length(user.departmentId) == 7)}">
+				           	<c:if test="${userDepartment.isWork == 1 && fn:length(user.departmentId) != 10}">
 				           		<a href="/bk/quota/distribute/${mid}" class="btn btn-icon btn-info glyphicons circle_ok"><i></i>指标发放</a>
 				           	</c:if>
 			           	</div>
@@ -79,10 +81,10 @@
 								<td class="center">${squota.restNum}</td>
 								<td class="center"><fmt:formatDate value="${squota.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></td>
 								<td class="center">
-									<c:if test="${user.departmentId == '01'}">
+									<c:if test="${squota.distributeDepartmentId == user.departmentId}">
 										<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=${squota.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
 									
-										<a href="javascript:void(0);" url="/bk/quota/del/${mid}?id=${squota.id}" bname="${squota.year}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
+										<a href="javascript:void(0);" url="/bk/quota/del/${mid}?id=${squota.id}" bname="${squota.departmentName}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
 									</c:if>
 								</td>
 							</tr>
@@ -121,7 +123,10 @@ jQuery(document).ready(function($) {
 					if (msg == "-999") {
 		        		outLogin();
 		        	}
-	            	else if (msg == 1) {
+					else if (msg == -1) {
+	            		alert("指标已分配无法删除");
+					}
+					else if (msg == 1) {
 	            		window.location.reload();
 					}
 					else {
@@ -169,6 +174,12 @@ jQuery(document).ready(function($) {
 		        	}
 	            	else if (msg == -2) {
 	            		alert("此机构的年度指标已经存在！！！");
+		        	}
+	            	else if (msg == -3) {
+	            		alert("本机构的年度指标不存在，无法发放！！！");
+		        	}
+	            	else if (msg == -4) {
+	            		alert("修改后本机构指标不够发放下级机构！！！");
 		        	}
 	            	else if (msg == 1) {
 	            		alert("年度指标信息保存成功！！！");

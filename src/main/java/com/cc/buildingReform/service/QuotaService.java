@@ -25,4 +25,6 @@ public interface QuotaService {
 	public List<Quota> findByDepartmentId(Integer year, String departmentId);
 
 	public List<Integer> findExistYear();
+	
+	public List<Quota> findByFatherDepartmentId(Integer year, String fatherDepartmentId);
 }

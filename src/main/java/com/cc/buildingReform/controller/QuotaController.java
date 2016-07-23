@@ -63,20 +63,11 @@ public class QuotaController {
 				departmentId = user.getDepartmentId();
 			}
 			
-			// 存在的年度列表
-			List<Integer> yearList = quotaService.findExistYear();
-			if (yearList == null) {
-				yearList = new ArrayList<>();
-			}
-			// 当前年度不在年度列表中，添加进去
-			if (!yearList.contains(year)) {
-				yearList.add(0, year);
-			}
-			
 			model.addAttribute("mid", mid);
 			model.addAttribute("departmentId", departmentId);
-			model.addAttribute("list", quotaService.findAll(year));
-			model.addAttribute("yearList", yearList);
+			model.addAttribute("userDepartment", departmentService.findById(user.getDepartmentId()));
+			model.addAttribute("list", quotaService.findByFatherDepartmentId(year, user.getDepartmentId()));
+			model.addAttribute("dicList", dicService.findAll());
 			model.addAttribute("year", year);
 			model.addAttribute("user", user);
 		}
@@ -109,7 +100,7 @@ public class QuotaController {
 			quota.setDepartmentName(user.getDepartmentName());
 			quota.setNum(0);
 			quota.setRestNum(0);
-			
+			quota.setDistributeDepartmentId(user.getDepartmentId());
 			if (id != null && id != 0) {
 				quota = quotaService.findById(id);
 			}
@@ -153,7 +144,15 @@ public class QuotaController {
 				}
 				else if (e.getMessage().equals("-2")) {
 					msg = -2;
-					log.warn("/bk/quota/save/", "此机构的年度指标已经存在！！！");
+					log.warn("/bk/quota/save/", "本机构的年度指标已经存在！！！");
+				}
+				else if (e.getMessage().equals("-3")) {
+					msg = -3;
+					log.warn("/bk/quota/save/", "本机构的年度指标不存在，无法发放！！！");
+				}
+				else if (e.getMessage().equals("-4")) {
+					msg = -4;
+					log.warn("/bk/quota/save/", "修改后本机构指标不够发放下级机构！！！");
 				}
 				else {
 					msg = 0;
@@ -185,9 +184,23 @@ public class QuotaController {
 			quotaService.remove(id);
 		} catch (Exception e) {
 			msg = 0;
-			log.error("/bk/quota/del?id=" + id, e);
+			log.error("/bk/quota/del", e);
+			
+			if (e.getMessage() != null) {
+				if (e.getMessage().equals("-1")) {
+					msg = -1;
+					log.warn("/bk/quota/del/", "指标已分配无法删除！！！");
+				}
+				else {
+					msg = 0;
+					log.error("/bk/quota/del/", e);
+				}
+			}
+			else {
+				msg = 0;
+				log.error("/bk/quota/del/", e);
+			}
 		}
-		
 		Common.print(response, msg);
 	}
 	
@@ -203,19 +216,9 @@ public class QuotaController {
 	public String distribute(@PathVariable("mid") Integer mid, 
 			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		try {
-//			quotaService.remove(id);
 			User user = (User)request.getSession().getAttribute("loginUser");
-			String departmentId = user.getDepartmentId();
-			List<Integer> length = new ArrayList<>();
-			if (departmentId.length() == 2) {
-				length.add(4);
-				length.add(6);
-			}
-			else {
-				length.add(departmentId.length() + 2);
-			}
 			
-			model.addAttribute("departmentList", departmentService.findByRange(departmentId, length));
+			model.addAttribute("departmentList", departmentService.findWaitDistribute(user));
 			model.addAttribute("dicList", dicService.findAll());
 			model.addAttribute("mid", mid);
 			model.addAttribute("user", user);
