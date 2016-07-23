@@ -381,7 +381,7 @@ jQuery(document).ready(function($) {
 		<span class="profile">
 			<img class="img-circle img" src="/images/photo_01.png" width="60" height="60"  alt=""/>
 			<p>
-				<strong>您好，管理员！</strong>欢迎登陆！
+				<strong><%=user.getTrueName() %></strong>
 			</p>
 		</span>
 		<!-- // Sidebar Profile END -->
