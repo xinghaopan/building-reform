@@ -119,7 +119,7 @@ public class MainController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/bk/main")
-	@Permissions(target = "loginUser", url = "/bk/login")
+	@Permissions(target = "loginUser", url = "/index")
 	public String list()	throws Exception {
 		try {
 			   
