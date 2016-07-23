@@ -85,12 +85,128 @@
 </script>
 <body class="">
 	
+<div class="modal hide fade" id="modal-simple1">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>修改密码</h3>
+	</div>
+
+	<div class="modal-body">
+		<form id="personForm" method="post" name="personForm" action="/bk/user/savePassword/0">
+			<div class="row-fluid">
+				<div class="control-group span3"></div>
+				
+				<div class="control-group span6">
+					<label class="control-label span3">原密码：</label>
+					<div class="controls"><input class="span9" id="opassword" name="opassword" type="password" /></div>
+				</div>
+			</div>
+			
+			<div class="row-fluid">
+				<div class="control-group span3"></div>
+				
+				<div class="control-group span6">
+					<label class="control-label span3" for="id">新密码：</label>
+					<div class="controls"><input class="span9" id="npassword" name="npassword" type="password" /></div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="control-group span3"></div>
+				
+				<div class="control-group span6">
+					<label class="control-label span3" for="name">确认密码：</label>
+					<div class="controls"><input class="span9" id="cpassword" name="cpassword" type="password" /></div>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	<div class="modal-footer">
+		<a href="javascript:void(0);" id="btn_SubmitPassword" name="btn_SubmitPassword" class="btn btn-info" >提交</a>
+		<a href="javascript:void(0);" class="btn btn-default" data-dismiss="modal">关闭</a> 
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+	// ajaxSubmit
+	var id = '<%=user.getId() %>';
+	if (id == null || id == '') {
+		id = 0;
+	}
+	
+	$("#btn_SubmitPassword").click(function () {
+		if (isNull($('#opassword').val())) {
+			alert("原密码不能为空！！！");
+			$('#opassword').focus();
+			return;
+		}
+		
+		if (isNull($('#npassword').val())) {
+			alert("新密码不能为空！！！");
+			$('#npassword').focus();
+			return;
+		}
+		
+		if ($('#npassword').val() != $('#cpassword').val()) {
+			alert("新密码与确认密码不相同！！！");
+			$('#cpassword').focus();
+			return;
+		}
+		
+		var options = { 
+	            success : function(msg) {
+	            	if (msg == "-999") {
+		        		alert("999");
+		        	}
+	            	else if (msg == -1) {
+	            		alert("原密码错误！！！");
+		        	}
+	            	else if (msg == 1) {
+            			alert("用户密码修改成功！！！");
+	            	}
+	            	else {
+	            		alert("用户密码修改失败！！！");
+	            	}
+	            } 
+        }; 
+        $("#personForm").ajaxSubmit(options); 
+	});
+	
+	$('#btn_Back').click(function(){
+		history.back();
+	});
+});
+</script> 
 <!-- Main Container Fluid -->
 <div class="container-fluid fluid menu-left">
 
 <script type="text/javascript">
 var nav = "";
 jQuery(document).ready(function($) {
+	$('.topFrame-logout').click(function(){
+		var url = "/bk/user/logout";
+		
+		$.ajax({
+			type : "get",
+			url : url,
+			data : "radom=" + Math.random(),
+			dataType : "text",
+			success : function(msg) {
+				if (msg == 1) {
+					alert('退出登录状态成功！！！');
+					window.open("/index", "_self");
+				}
+				else {
+					alert('退出登录状态失败！！！');
+				}
+			},
+			error : function(XMLHttpRequest, error, errorThrown) {
+				//alert(error);
+				//alert(errorThrown);
+			}
+		});
+	});
+	
 	var tIndex = 0;
 	var mid = '${mid}';
 	
@@ -227,19 +343,19 @@ jQuery(document).ready(function($) {
 			<li class="account">
 				<a data-toggle="dropdown" href="#" class="glyphicons logout user"><span class="hidden-phone text">用户</span><i></i></a>
 				<ul class="dropdown-menu pull-right">
-					<li><a href="#" class="glyphicons pushpin">修改密码<i></i></a></li>
+					<li><a href="#modal-simple1" data-toggle="modal" class="glyphicons pushpin">修改密码<i></i></a></li>
 					<li class="highlight profile">
 						<span>
 							<span class="heading">当前用户</span>
 							<span class="details">
-								admin
+								<%=user.getTrueName() %>
 							</span>
 							<span class="clearfix"></span>
 						</span>
 					</li>
 					<li>
 						<span>
-							<a class="btn btn-default btn-mini pull-right" href="#">退出</a>
+							<a class="btn btn-default btn-mini pull-right topFrame-logout" href="#">退出</a>
 						</span>
 					</li>
 				</ul>
