@@ -1,5 +1,6 @@
 package com.cc.buildingReform.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cc.buildingReform.dao.DepartmentDAO;
 import com.cc.buildingReform.form.Department;
+import com.cc.buildingReform.form.User;
 
 @Service
 @Transactional
@@ -60,5 +62,21 @@ public class DepartmentServiceImpl implements DepartmentService {
 	
 	public List<Department> findByRange(String beginCode, List<Integer> length) {
 		return departmentDAO.findByRange(beginCode, length);
+	}
+	
+	public List<Department> findWaitDistribute(User user) {
+		String departmentId = user.getDepartmentId();
+		List<Integer> length = new ArrayList<>();
+		// 省厅用户，需要选择出市和县区两级机构
+		if (departmentId.length() == 2) {
+			length.add(4);
+			length.add(6);
+			return departmentDAO.findByRange(departmentId, length);
+		}
+		else {
+			// 否则直接查子机构
+			List<Department> l = departmentDAO.findByFatherId(user.getDepartmentId());
+			return l;
+		}
 	}
 }

@@ -18,21 +18,10 @@
 	</div>
 	<!-- // Main Container Fluid END -->
 	
-
-	
-
-	
-	
-
-	<!-- JQuery -->
-	<script src="/js/jquery.min.js"></script>	
 	<!-- Bootstrap -->
 	<script src="/js/bootstrap.min.js"></script>
     <script src="/js/bootstrap-select.js"></script>
 
-    
-   
-	
 	<!-- JQueryUI 
 	<script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
 	-->

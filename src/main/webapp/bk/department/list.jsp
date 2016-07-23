@@ -41,35 +41,7 @@
 	           </div>
 	         
 				<div class="row-fluid">
-					<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs">
-					<thead>
-						<tr>
-							<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
-							<th class="center">机构名称</th>
-							<th class="center">机构编码</th>
-							<th class="center">是否执行审核</th>
-							<th class="center">排序</th>
-							<th class="center" style="width: 120px;">操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${list}" var="sdepartment">
-							<!-- Item -->
-							<tr class="selectable">
-								<td class="center uniformjs"><input type="checkbox" /></td>
-								<td class="center"><a class="mainFrame-first-a" href="/bk/department/list/${mid}?fatherId=${sdepartment.id}">${sdepartment.name}</a></td>
-								<td class="center">${sdepartment.id}</td>
-								<td class="center"><c:if test="${sdepartment.isWork == 1}">是</c:if></td>
-								<td class="center">${sdepartment.order}</td>
-								<td class="center">
-									<a href="#modal-simple" data-toggle="modal" url="/bk/department/edit/${mid}?fatherId=${sdepartment.fatherId}&id=${sdepartment.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
-									<a href="javascript:void(0);" url="/bk/department/del/${mid}?id=${sdepartment.id}" bname="${sdepartment.name}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
-								</td>
-							</tr>
-							<!-- // Item END -->
-						</c:forEach>
-					</tbody>
-					</table>
+					<ul id="tree" class="ztree" style="width:560px; overflow:auto;"></ul>
 				</div>
 			</div>
 		</div>
@@ -87,6 +59,78 @@
 	</div>	
 		
 </div>
+<script>
+    var zTree;
+    var demoIframe;
+
+    function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#editBtn_"+treeNode.tId).length>0) return;
+        var addStr = "<span class='button edit action-edit' href='#modal-simple' data-toggle='modal' url='/bk/department/edit/${mid}' fatherId='" + treeNode.pId + "' tid='" + treeNode.id + "' id='editBtn_" + treeNode.tId + "'></span>";
+        addStr += "<span class='button remove' id='removeBtn_" + treeNode.tId + "' title='add node' onfocus='this.blur();'></span>";
+        sObj.after(addStr);
+    };
+
+    function removeHoverDom(treeId, treeNode) {
+        $("#removeBtn_"+treeNode.tId).unbind().remove();
+        $("#editBtn_"+treeNode.tId).unbind().remove();
+    };
+
+    var setting = {
+        check: {
+            enable: true
+        },
+        view: {
+            addHoverDom: addHoverDom,
+            removeHoverDom: removeHoverDom,
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+        },
+        data: {
+            simpleData: {
+                enable:true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: ""
+            }
+        },
+        callback: {
+            beforeClick: function(treeId, treeNode) {
+                var zTree = $.fn.zTree.getZTreeObj("tree");
+                if (treeNode.isParent) {
+                    zTree.expandNode(treeNode);
+                    return false;
+                } else {
+                    demoIframe.attr("src",treeNode.file + ".html");
+                    return true;
+                }
+            }
+        }
+    };
+
+    var zNodes = ${list};
+
+    $(document).ready(function(){
+        var t = $("#tree");
+        t = $.fn.zTree.init(t, setting, zNodes);
+        demoIframe = $("#testIframe");
+        demoIframe.bind("load", loadReady);
+        var zTree = $.fn.zTree.getZTreeObj("tree");
+        zTree.selectNode(zTree.getNodeByParam("id", 101));
+
+    });
+
+    function loadReady() {
+        var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+                htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+                maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+                h = demoIframe.height() >= maxH ? minH:maxH ;
+        if (h < 530) h = 530;
+        demoIframe.height(h);
+    }
+</script>
+
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	$('.action-del').click(function(){
@@ -115,13 +159,13 @@ jQuery(document).ready(function($) {
 		}
 	});
 	
-	$('.action-edit').click(function(){
-		var url = $(this).attr("url");
+	$('.action-edit').live("click", function() { 
+		var url = $(this).attr("url") + "?fatherId=" + $(this).attr("fatherId") + "&id=" + $(this).attr("tid");
 		
 		$.ajax({
 			type : "get",
 			url : url,
-			data : "radom=" + Math.random(),
+			data : "radom=" + Math.random() ,
 			dataType : "text",
 			success : function(text) {
 				$("#modal-simple").html(text);

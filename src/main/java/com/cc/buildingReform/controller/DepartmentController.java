@@ -1,5 +1,8 @@
 package com.cc.buildingReform.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -16,7 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
 import com.cc.buildingReform.form.Department;
+import com.cc.buildingReform.form.Tree;
 import com.cc.buildingReform.service.DepartmentService;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @RestController
 public class DepartmentController {
@@ -37,11 +44,20 @@ public class DepartmentController {
 	public String list(@PathVariable("mid") Integer mid, @RequestParam(value = "fatherId", required = false) String fatherId, Model model) throws Exception {
 		try {
 			if (fatherId == null) {
-				fatherId = "00";
+				fatherId = "01";
 			}
 			model.addAttribute("mid", mid);
 			model.addAttribute("fatherId", fatherId);
-			model.addAttribute("list", departmentService.findByFatherId(fatherId));
+			List<Department> lists = departmentService.findAll();
+			List<Tree> treeList = new ArrayList<>();
+			for (int i = 0; i < lists.size(); i ++) {
+				Tree tree = new Tree();
+				tree.setId(lists.get(i).getId());
+				tree.setpId(lists.get(i).getFatherId());
+				tree.setName("<div class='inline' >" + lists.get(i).getName() + "</div>" + "<div class='inline' >" + lists.get(i).getId() + "</div>");
+				treeList.add(tree);
+			}
+			model.addAttribute("list", JSONArray.fromObject(treeList));
 		}
 		catch(Exception e) {
 			log.error("/bk/department/list", e);
