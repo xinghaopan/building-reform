@@ -1454,12 +1454,15 @@ body > .container-fluid.documentation {
   font-size: 12px;
 
 }
-.widget .widget-body .control-label .controls {
-  text-align: left;
+.widget .widget-body .control-label {
+  text-align: right;
   line-height:30px;
   padding: 0;
   font-size: 12px;
 
+}
+.widget .widget-body .btn-info {
+	margin-bottom:8px;
 }
 .widget .widget-body .control-label .controls label {
   text-align: left;
@@ -1468,8 +1471,8 @@ body > .container-fluid.documentation {
   font-size: 12px;
 
 }
-.widget .widget-body .btn-info {
-  padding: 8px;
+.widget .widget-body {
+  padding: 10px;
 }
 .widget .widget-body form {
   margin: 0;
