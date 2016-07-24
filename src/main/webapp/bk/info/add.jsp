@@ -15,7 +15,7 @@
 	<div class="row-fluid row-merge"></div>
 
 	<div class="innerLR">
-
+		
 		<div class="separator bottom"></div>
 	
 	 	<form id="infoForm" method="post" name="infoForm" action="/bk/info/save/${mid}">
@@ -412,89 +412,73 @@
     
 		<div class="separator bottom"></div>
 		
-		<div class="widget" data-toggle="collapse-widget" style="display:none;">
+		<div class="widget" data-toggle="collapse-widget" >
 			<div class="widget-head">
 				<p class="heading glyphicons bank"><i></i>改造照片</p>
 			</div>
 			<div class="widget-body">
-	
-	           <div class="row-fluid">
-				   
-	               <div>
+				<div class="row-fluid">
+					<div>
+						<div class="control-group span4">
+							<label class="control-label span4" for="firstname">户主照片：</label>
+							<div class="input-append span8">
+								<input id="personImage" name="personImage" type="text" value="${info.personImage}" />
+								<input id="personImg" name="personImg" value="" type="file" style="display:none;">
+	  							<button class="btn personImg" type="button">浏览</button>
+						  	</div>
+						</div>
+							
+						<div class="control-group span4">
+							<label class="control-label span4" for="firstname">改造前屋内照片：</label>
+							<div class="input-append span8">
+	  							<input id="houseInOldImage" name="houseInOldImage" type="text" value="${info.houseInOldImage}" />
+								<input id="houseInOldImg" name="houseInOldImg" value="" type="file" style="display:none;">
+	  							<button class="btn houseInOldImg" type="button">浏览</button>
+						  	</div>
+						</div>
 						
-							<!-- Group -->
-							<div class="control-group span4">
-								<label class="control-label span4" for="firstname">户主照片：</label>
-								<div class="input-append span8">
-						    	  <input id="appendedInputButton" value="" type="text">
-	  <button class="btn" type="button">浏览</button>
+						<div class="control-group span4">
+							<label class="control-label span4" for="firstname">改造前屋外照片：</label>
+							<div class="input-append span8">
+								<input id="houseOutOldImage" name="houseOutOldImage" type="text" value="${info.houseOutOldImage}" />
+								<input id="houseOutOldImg" name="houseOutOldImg" value="" type="file" style="display:none;">
+	  							<button class="btn houseOutOldImg" type="button">浏览</button>
+						  	</div>
+						</div>
+					</div>
+	                        
+					<div>
+						<div class="control-group span4">
+							<label class="control-label span4" for="firstname">改造后屋内照片：</label>
+							<div class="input-append span8">
+								<input id="houseInNewImage" name="houseInNewImage" type="text" value="${info.houseInNewImage}" />
+								<input id="houseInNewImg" name="houseInNewImg" value="" type="file" style="display:none;">
+	  							<button class="btn houseInNewImg" type="button">浏览</button>
 						  	</div>
 						</div>
 							
-							<!-- // Group END -->
-							
-							<!-- Group -->
-							<div class="control-group span4">
-								<label class="control-label span4" for="lastname">改造前屋内照片：</label>
-								<div class="input-append span8">
-						    	  <input id="appendedInputButton" value="" type="text">
-	  <button class="btn" type="button">浏览</button>
+						<div class="control-group span4">
+							<label class="control-label span4" for="firstname">改造后屋外照片：</label>
+							<div class="input-append span8">
+								<input id="houseOutNewImage" name="houseOutNewImage" type="text" value="${info.houseOutNewImage}" />
+								<input id="houseOutNewImg" name="houseOutNewImg" value="" type="file" style="display:none;">
+	  							<button class="btn houseOutNewImg" type="button">浏览</button>
 						  	</div>
 						</div>
-	                    
-	                    	<!-- Group -->
-							<div class="control-group span4">
-								<label class="control-label span4" for="lastname">改造前屋外照片：</label>
-								<div class="input-append span8">
-						    	  <input id="appendedInputButton" value="" type="text">
-	  <button class="btn" type="button">浏览</button>
-						  	</div>
-						</div>
-							</div>
-							<!-- // Group END -->
-	                        
-	                        
-	                        
-	                        
-	                        <div>
 						
-							<!-- Group -->
-							<div class="control-group span4">
-								<label class="control-label span4" for="firstname">改造后屋内照片：</label>
-								<div class="input-append span8">
-	
-	  <input id="appendedInputButton" value="" type="text">
-	  <button class="btn" type="button">浏览</button>
-	
+						<div class="control-group span4">
+							<label class="control-label span4" for="firstname">验收照片：</label>
+							<div class="input-append span8">
+								<input id="acceptanceImage" name="acceptanceImage" type="text" value="${info.acceptanceImage}" />
+								<input id="acceptanceImg" name="acceptanceImg" value="" type="file" style="display:none;">
+	  							<button class="btn acceptanceImg" type="button">浏览</button>
 						  	</div>
 						</div>
-							
-							<!-- // Group END -->
-							
-							<!-- Group -->
-							<div class="control-group span4">
-								<label class="control-label span4" for="lastname">改造后屋外照片：</label>
-								<div class="input-append span8">
-						    	  <input id="appendedInputButton" value="" type="text">
-	  <button class="btn" type="button">浏览</button>
-						  	</div>
-						</div>
-	                    
-	                    <!-- Group -->
-							<div class="control-group span4">
-								<label class="control-label span4" for="lastname">验收照片：</label>
-								<div class="input-append span8">
-						    	  <input id="appendedInputButton" value="" type="text">
-	  <button class="btn" type="button">浏览</button>
-						  	</div>
-						</div>
-	                    
-							</div>
-							<!-- // Group END -->
-						</div>
+					</div>
 				</div>
-	           
 			</div>
+	           
+		</div>
         
 		
 		<!-- Modal footer -->
@@ -511,7 +495,7 @@
 jQuery(document).ready(function($) {
 	$("#btn_Submit").live("click", function() { 
 		
-		if (isNull($('#personName').val())) {
+		/* if (isNull($('#personName').val())) {
 			alert("户主姓名不能为空！！！");
 			$('#personName').focus();
 			return;
@@ -526,6 +510,10 @@ jQuery(document).ready(function($) {
 		if (isNull($('#personId').val())) {
 			alert("身份证号不能为空！！！");
 			$('#personId').focus();
+			if ($('#personId').val().length != 15 && $('#personId').val().length != 18) {
+				alert("身份证号只能为15位或18位！！！");
+				$('#personId').focus();
+			}
 			return;
 		}
 		
@@ -660,14 +648,15 @@ jQuery(document).ready(function($) {
 			alert("农户自筹资金只能是数字！！！");
 			$('#personSelfFund').focus();
 			return;
-		}
+		}  */
+		
 		var options = { 
 	            success : function(msg) {
 	            	if (msg == "-999") {
 		        		alert("999");
 		        	}
 	            	else if (msg == -1) {
-	            		alert("修改后的年度指标不符合规则！！！");
+	            		alert("没有剩余的指标进行上报！！！");
 		        	}
 	            	else if (msg == 1) {
 	            		alert("农户信息保存成功！！！");
@@ -681,9 +670,52 @@ jQuery(document).ready(function($) {
         $("#infoForm").ajaxSubmit(options); 
 	});
 	
-	$('.btn_Search').click(function(){
-		var para = "?year=" + $('#year').val();
-		window.open("/bk/info/list/${mid}" + para, "_self");
+	$('.personImg').click(function() {
+		$("#personImg").click();
+	});
+	
+	$("#personImg").on("change", function() {
+		$("#personImage").val($(this).val());
+	});
+	
+	$('.houseInOldImg').click(function() {
+		$("#houseInOldImg").click();
+	});
+	
+	$("#houseInOldImg").on("change", function() {
+		$("#houseInOldImage").val($(this).val());
+	});
+	
+	$('.houseInNewImg').click(function() {
+		$("#houseInNewImg").click();
+	});
+	
+	$("#houseInNewImg").on("change", function() {
+		$("#houseInNewImage").val($(this).val());
+	});
+	
+	$('.houseOutOldImg').click(function() {
+		$("#houseOutOldImg").click();
+	});
+	
+	$("#houseOutOldImg").on("change", function() {
+		$("#houseOutOldImage").val($(this).val());
+	});
+	
+	$('.houseOutNewImg').click(function() {
+		$("#houseOutNewImg").click();
+	});
+	
+	$("#houseOutNewImg").on("change", function() {
+		$("#houseOutNewImage").val($(this).val());
+	});
+	
+	$('.acceptanceImg').click(function() {
+		$("#acceptanceImg").click();
+	});
+	
+	$("#acceptanceImg").on("change", function() {
+		$("#acceptanceImage").val($(this).val());
 	});
 });
 </script>

@@ -17,7 +17,14 @@ public class Info implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final Integer STATE_EDIT = 0;
-	public static final Integer STATE_SUBMIT = 1;
+	// 状态为待审核机构的编码长度
+	public static final Integer STATE_SUBMIT_TO_TOWN = 80;	
+	public static final Integer STATE_SUBMIT_TO_COUNTY = 60;
+	public static final Integer STATE_SUBMIT_TO_CITY = 40;
+	public static final Integer STATE_SUBMIT_TO_PROVINCE = 20;
+	
+	public static final Integer STATE_OVER = 10;
+	public static final Integer STATE_AUDIT_RETURN = -1;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -122,6 +129,27 @@ public class Info implements Serializable {
 	
 	@Column(name = "INFO_PERSON_SELF_FUND")
 	private Double personSelfFund;
+
+	@Column(name = "INFO_PERSON_IMAGE")
+	private String personImage;
+
+	@Column(name = "INFO_HOUSE_IN_OLD_IMAGE")
+	private String houseInOldImage;
+
+	@Column(name = "INFO_HOUSE_IN_NEW_IMAGE")
+	private String houseInNewImage;
+
+	@Column(name = "INFO_HOUSE_OUT_OLD_IMAGE")
+	private String houseOutOldImage;
+
+	@Column(name = "INIFO_HOUSE_OUT_NEW_IMAGE")
+	private String houseOutNewImage;
+
+	@Column(name = "INFO_ACCEPTANCE_IMAGE")
+	private String acceptanceImage;
+
+	@Column(name = "INFO_AUDIT_DEPARTMENT_ID")
+	private String auditDepartmentId;
 
 	@Column(name = "INFO_DEPARTMENT_ID")
 	private String departmentId;
@@ -413,6 +441,62 @@ public class Info implements Serializable {
 		this.personSelfFund = personSelfFund;
 	}
 
+	public String getPersonImage() {
+		return personImage;
+	}
+
+	public void setPersonImage(String personImage) {
+		this.personImage = personImage;
+	}
+
+	public String getHouseInOldImage() {
+		return houseInOldImage;
+	}
+
+	public void setHouseInOldImage(String houseInOldImage) {
+		this.houseInOldImage = houseInOldImage;
+	}
+
+	public String getHouseInNewImage() {
+		return houseInNewImage;
+	}
+
+	public void setHouseInNewImage(String houseInNewImage) {
+		this.houseInNewImage = houseInNewImage;
+	}
+
+	public String getHouseOutOldImage() {
+		return houseOutOldImage;
+	}
+
+	public void setHouseOutOldImage(String houseOutOldImage) {
+		this.houseOutOldImage = houseOutOldImage;
+	}
+
+	public String getHouseOutNewImage() {
+		return houseOutNewImage;
+	}
+
+	public void setHouseOutNewImage(String houseOutNewImage) {
+		this.houseOutNewImage = houseOutNewImage;
+	}
+
+	public String getAcceptanceImage() {
+		return acceptanceImage;
+	}
+
+	public void setAcceptanceImage(String acceptanceImage) {
+		this.acceptanceImage = acceptanceImage;
+	}
+
+	public String getAuditDepartmentId() {
+		return auditDepartmentId;
+	}
+
+	public void setAuditDepartmentId(String auditDepartmentId) {
+		this.auditDepartmentId = auditDepartmentId;
+	}
+
 	public String getDepartmentId() {
 		return departmentId;
 	}
@@ -459,5 +543,25 @@ public class Info implements Serializable {
 
 	public void setState(Integer state) {
 		this.state = state;
+	}
+
+	public static Integer getStateEdit() {
+		return STATE_EDIT;
+	}
+
+	public static Integer getStateSubmitToTown() {
+		return STATE_SUBMIT_TO_TOWN;
+	}
+
+	public static Integer getStateSubmitToCounty() {
+		return STATE_SUBMIT_TO_COUNTY;
+	}
+
+	public static Integer getStateSubmitToProvince() {
+		return STATE_SUBMIT_TO_PROVINCE;
+	}
+
+	public static Integer getStateOver() {
+		return STATE_OVER;
 	}
 }
