@@ -4,6 +4,43 @@ var currentObject = null;
 var currentUrl = null;
 var currentPara = null;
 
+  function validate_img(file, fileName) {
+	  var filepath = file.name;
+	  var extStart = filepath.lastIndexOf(".");
+	  var ext = filepath.substring(extStart,filepath.length).toUpperCase();
+	  
+	  if(ext != ".PNG" && ext != ".JPG" && ext != ".JPEG") {
+		  alert(fileName + "的图片限于png,jpeg,jpg格式！！！");
+		  return false;
+	  } 
+	  
+	  var file_size = 0;
+	  if ( $.browser.msie) {
+		  var img=new Image();
+		  img.src=filepath;
+		  while(true) {
+			  if(img.fileSize > 0){
+				  if(img.fileSize > 2*1024){
+					  alert(fileName + "的上传图片大小不能超过200K！！！");
+					  return false;
+				  } 
+				  
+				  break;
+			  }
+		  }
+	  } else {
+		  file_size = file.size;
+		  var size = file_size / 1024;
+		  if(size > 200){
+			  alert(fileName + "的上传图片大小不能超过200K！！！");
+			  return false;
+		  } 
+	  }
+	  
+	  return true;
+  }
+
+
 function changeCenterIndex(url) {
 	$.ajax({
 		type : "get",

@@ -495,7 +495,7 @@
 jQuery(document).ready(function($) {
 	$("#btn_Submit").live("click", function() { 
 		
-		/* if (isNull($('#personName').val())) {
+		if (isNull($('#personName').val())) {
 			alert("户主姓名不能为空！！！");
 			$('#personName').focus();
 			return;
@@ -648,8 +648,32 @@ jQuery(document).ready(function($) {
 			alert("农户自筹资金只能是数字！！！");
 			$('#personSelfFund').focus();
 			return;
-		}  */
+		} 
 		
+		if ($("#personImg").val() != "" && !validate_img(document.forms["infoForm"]["personImg"].files[0], "户主照片")) {
+			return;
+		}
+		
+		if ($("#houseInOldImg").val() != "" && !validate_img(document.forms["infoForm"]["houseInOldImg"].files[0], "改造前屋内照片")) {
+			return;
+		}
+		
+		if ($("#houseOutOldImg").val() != "" && !validate_img(document.forms["infoForm"]["houseOutOldImg"].files[0], "改造前屋外照片")) {
+			return;
+		}
+		
+		if ($("#houseInNewImg").val() != "" && !validate_img(document.forms["infoForm"]["houseInNewImg"].files[0], "改造后屋内照片")) {
+			return;
+		}
+		
+		if ($("#houseOutNewImg").val() != "" && !validate_img(document.forms["infoForm"]["houseOutNewImg"].files[0], "改造后屋外照片")) {
+			return;
+		}
+		
+		if ($("#acceptanceImg").val() != "" && !validate_img(document.forms["infoForm"]["acceptanceImg"].files[0], "验收照片")) {
+			return;
+		}
+	
 		var options = { 
 	            success : function(msg) {
 	            	if (msg == "-999") {

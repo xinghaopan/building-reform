@@ -265,7 +265,7 @@ public class Common {
                 return filename.substring(dot + 1);   
             }   
         }   
-        return filename;   
+        return filename.toLowerCase();   
     } 
 	
 	public static boolean doc2XmlFile(Document document, String filename) {
