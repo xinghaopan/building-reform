@@ -7,7 +7,7 @@
 <!--[if gt IE 8]> <html class="ie gt-ie8"> <![endif]-->
 <!--[if !IE]><!--><html><!-- <![endif]-->
 <head>
-	<title>吉林省农户厕所及污水改造管理系统</title>
+	<title>吉林省农户厕所和污水改造管理系统</title>
 	
 	<!-- Meta -->
 	<meta charset="UTF-8" />
@@ -315,7 +315,7 @@ jQuery(document).ready(function($) {
 	<div class="navbar main hidden-print">
 	
 		<!-- Brand -->
-		<a href="javascript:void(0);" class="appbrand pull-left"><span>吉林省农户厕所及污水改造管理系统</span></a>
+		<a href="javascript:void(0);" class="appbrand pull-left"><span>吉林省农户厕所和污水改造管理系统</span></a>
 		
 		<!-- Menu Toggle Button -->
 		<button type="button" class="btn btn-navbar">

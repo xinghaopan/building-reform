@@ -7,11 +7,10 @@
 <%@ include file="/bk/top.jsp" %>
 <!-- Content -->
 <div id="content">
-	<ul class="breadcrumb">
-		<li><img src="/images/photo_02.jpg"  alt=""/>&nbsp;您当前的位置：</li>
-	    <li class="center-navigation">
-	    </li>
-	</ul>
+	<div class="breadcrumb">
+		<img src="/images/photo_02.jpg"  alt=""/>&nbsp;您当前的位置：
+		<b class="center-navigation" style="font-weight:normal"></b>
+	</div>
 	
 	<div class="row-fluid row-merge"></div>
 
