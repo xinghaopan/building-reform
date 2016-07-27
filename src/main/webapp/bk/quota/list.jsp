@@ -65,6 +65,7 @@
 							<th class="center">年度</th>
 							<th class="center">指标数量</th>
 							<th class="center">剩余数量</th>
+							<th class="center">完成百分百</th>
 							<th class="center">发放日期</th>
 							<th class="center" style="width: 120px;">操作</th>
 						</tr>
@@ -78,6 +79,9 @@
 								<td class="center">${squota.year}</td>
 								<td class="center">${squota.num}</td>
 								<td class="center">${squota.restNum}</td>
+								<td class="center">
+									<fmt:formatNumber value="${(squota.num - squota.restNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
+								</td>
 								<td class="center"><fmt:formatDate value="${squota.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></td>
 								<td class="center">
 									<c:if test="${squota.distributeDepartmentId == user.departmentId}">
