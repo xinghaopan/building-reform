@@ -4,7 +4,6 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,9 +27,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
+import com.cc.buildingReform.form.Department;
 import com.cc.buildingReform.form.Info;
 import com.cc.buildingReform.form.Quota;
 import com.cc.buildingReform.form.User;
+import com.cc.buildingReform.service.DepartmentService;
 import com.cc.buildingReform.service.DicService;
 import com.cc.buildingReform.service.InfoService;
 
@@ -41,6 +42,9 @@ public class InfoController {
 
 	@Autowired
 	private DicService dicService;
+
+	@Autowired
+	private DepartmentService departmentService;
 
 	private static Logger log = LoggerFactory.getLogger(InfoController.class);
 	
@@ -229,9 +233,16 @@ public class InfoController {
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/edit{path}/{mid}")
 	public String edit(@PathVariable("mid") Integer mid, @PathVariable("path") String path, 
-			@RequestParam(value = "id", required = false) Integer id, Model model) throws Exception {
+			@RequestParam(value = "id", required = false) Integer id, Model model,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
 			Info info = new Info();
+			info.setSumFund(0d);
+			info.setGrantProvinceFund(0d);
+			info.setGrantCountiesFund(0d);
+			info.setPersonSelfFund(0d);
 			info.setDate(new Date());
 			info.setState(Info.STATE_EDIT);
 			if (id != null) {
@@ -239,9 +250,15 @@ public class InfoController {
 					info = infoService.findById(id);
 				}
 			}
+			
+			Department department = departmentService.findById(user.getDepartmentId());
+			Department fatherDepartment = departmentService.findById(department.getFatherId());
+			
 			model.addAttribute("mid", mid);
 			model.addAttribute("info", info);
 			
+			model.addAttribute("department", department);
+			model.addAttribute("fatherDepartment", fatherDepartment);
 			model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
@@ -284,25 +301,32 @@ public class InfoController {
 					info.setPersonImage(fileName);
 				}
 				
-				file = multiRequest.getFile("houseInOldImg");
+				file = multiRequest.getFile("acceptanceImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
 					file.transferTo(new File(path + fileName)); 
-					info.setHouseInOldImage(fileName);
+					info.setAcceptanceImage(fileName);
 				}
 				
-				file = multiRequest.getFile("houseInNewImg");
+				file = multiRequest.getFile("fundSendImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
 					file.transferTo(new File(path + fileName)); 
-					info.setHouseInNewImage(fileName);
+					info.setFundSendImage(fileName);
 				}
 				
-				file = multiRequest.getFile("houseOutOldImg");
+				file = multiRequest.getFile("houseOldImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
 					file.transferTo(new File(path + fileName)); 
-					info.setHouseOutOldImage(fileName);
+					info.setHouseOldImage(fileName);
+				}
+				
+				file = multiRequest.getFile("houseBuildingImg");
+				if (file != null) {
+					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
+					file.transferTo(new File(path + fileName)); 
+					info.setHouseBuildingImage(fileName);
 				}
 				
 				file = multiRequest.getFile("houseOutNewImg");
@@ -312,11 +336,11 @@ public class InfoController {
 					info.setHouseOutNewImage(fileName);
 				}
 				
-				file = multiRequest.getFile("acceptanceImg");
+				file = multiRequest.getFile("houseInNewImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
 					file.transferTo(new File(path + fileName)); 
-					info.setAcceptanceImage(fileName);
+					info.setHouseInNewImage(fileName);
 				}
 			}  
 			

@@ -31,17 +31,29 @@ public class Info implements Serializable {
 	@Column(name = "INFO_ID", unique = true, nullable = false)
 	private Integer id;
 
+	/**
+	 * 农户情况
+	 */
+	@Column(name = "INFO_PERSON_GROUP")
+	private String personGroup;
+
 	@Column(name = "INFO_PERSON_NAME")
 	private String personName;
 
 	@Column(name = "INFO_PERSON_SEX")
 	private Integer personSex;
 
+	@Column(name = "INFO_PERSON_NATION")
+	private String personNation;
+
 	@Column(name = "INFO_PERSON_ID")
 	private String personId;
 
-	@Column(name = "INFO_PERSON_NATION")
-	private String personNation;
+	@Column(name = "INFO_PERSON_IMAGE")
+	private String personImage;
+
+	@Column(name = "INFO_PERSON_ADDR")
+	private String personAddr;
 
 	@Column(name = "INFO_PERSON_NUM")
 	private Integer personNum;
@@ -49,38 +61,29 @@ public class Info implements Serializable {
 	@Column(name = "INFO_PERSON_TEL")
 	private String personTel;
 
+	/**
+	 * 房屋情况
+	 */
 	@Column(name = "INFO_HOUSE_AGE")
 	private String houseAge;
+
+	@Column(name = "INFO_HOUSE_OLD_TYPE")
+	private String houseOldType;
 
 	@Column(name = "INFO_HOUSE_OLD_SIZE1")
 	private Double houseOldSize1;
 
 	@Column(name = "INFO_HOUSE_OLD_SIZE2")
 	private Double houseOldSize2;
+	
+	/**
+	 * 改造情况
+	 */
+	@Column(name = "INFO_TOILET_TYPE")
+	private Integer toiletType;
 
-	@Column(name = "INFO_HOUSE_NEW_SIZE1")
-	private Double houseNewSize1;
-
-	@Column(name = "INFO_HOUSE_NEW_SIZE2")
-	private Double houseNewSize2;
-
-	@Column(name = "INFO_HOUSE_OLD_TYPE")
-	private Integer houseOldType;
-
-	@Column(name = "INFO_HOUSE_OLD_TYPE_NAME")
-	private String houseOldTypeName;
-
-	@Column(name = "INFO_TOILET_OLD_TYPE")
-	private Integer toiletOldType;
-
-	@Column(name = "INFO_TOILET_OLD_TYPE_NAME")
-	private String toiletOldTypeName;
-
-	@Column(name = "INFO_TOILET_NEW_TYPE")
-	private Integer toiletNewType;
-
-	@Column(name = "INFO_TOILET_NEW_TYPE_NAME")
-	private String toiletNewTypeName;
+	@Column(name = "INFO_TOILET_TYPE_NAME")
+	private String toiletTypeName;
 
 	@Column(name = "INFO_BUILD_MODE")
 	private Integer buildMode;
@@ -94,14 +97,20 @@ public class Info implements Serializable {
 	@Column(name = "INFO_REBUILD_MODE_NAME")
 	private String rebuildModeName;
 
+	@Column(name = "INFO_BUILD_COMPANY")
+	private String buildCompany;
+	
+	@Column(name = "INFO_HOUSE_NEW_SIZE1")
+	private Double houseNewSize1;
+
+	@Column(name = "INFO_HOUSE_NEW_SIZE2")
+	private Double houseNewSize2;
+	
+	/**
+	 * 进度情况
+	 */
 	@Column(name = "INFO_PLAN_YEAR")
 	private Integer planYear;
-
-	@Column(name = "INFO_REBUILD_RATE")
-	private Integer rebuildRate;
-
-	@Column(name = "INFO_REBUILD_RATE_NAME")
-	private String rebuildRateName;
 
 	@Column(name = "INFO_REBUILD_BEGIN_DATE")
 	private Date rebuildBeginDate;
@@ -109,11 +118,26 @@ public class Info implements Serializable {
 	@Column(name = "INFO_REBUILD_END_DATE")
 	private Date rebuildEndDate;
 	
+	@Column(name = "INFO_ACCEPTANCE_DATE")
+	private Date acceptanceDate;
+	
+	@Column(name = "INFO_ACCEPTANCE_IMAGE")
+	private String acceptanceImage;
+	
+	@Column(name = "INFO_FUND_SEND_DATE")
+	private Date fundSendDate;
+	
+	@Column(name = "INFO_FUND_SEND_IMAGE")
+	private String fundSendImage;
+	
 	@Column(name = "INFO_IS_ACCEPTANCE")
 	private Integer isAcceptance;
 
+	/**
+	 * 资金情况
+	 */
 	@Column(name = "INFO_GRANT_TYPE")
-	private Integer grantType;
+	private String grantType;
 
 	@Column(name = "INFO_GRANT_TYPE_NAME")
 	private String grantTypeName;
@@ -130,26 +154,41 @@ public class Info implements Serializable {
 	@Column(name = "INFO_PERSON_SELF_FUND")
 	private Double personSelfFund;
 
-	@Column(name = "INFO_PERSON_IMAGE")
-	private String personImage;
+	/**
+	 * 改造照片
+	 */
+	@Column(name = "INFO_HOUSE_OLD_IMAGE")
+	private String houseOldImage;
 
-	@Column(name = "INFO_HOUSE_IN_OLD_IMAGE")
-	private String houseInOldImage;
+	@Column(name = "INFO_HOUSE_BUILDING_IMAGE")
+	private String houseBuildingImage;
+
+	@Column(name = "INFO_HOUSE_OUT_NEW_IMAGE")
+	private String houseOutNewImage;
 
 	@Column(name = "INFO_HOUSE_IN_NEW_IMAGE")
 	private String houseInNewImage;
 
-	@Column(name = "INFO_HOUSE_OUT_OLD_IMAGE")
-	private String houseOutOldImage;
-
-	@Column(name = "INIFO_HOUSE_OUT_NEW_IMAGE")
-	private String houseOutNewImage;
-
-	@Column(name = "INFO_ACCEPTANCE_IMAGE")
-	private String acceptanceImage;
-
+	/**
+	 * 填报人
+	 */
+	@Column(name = "INFO_FILL_USER_NAME")
+	private String fillUserName;
+	
+	@Column(name = "INFO_FILL_USER_TEL")
+	private String fillUserTel;
+	
+	@Column(name = "INFO_FILL_USER_UNIT")
+	private String fillUserUnit;
+	
+	/**
+	 * 
+	 */
 	@Column(name = "INFO_AUDIT_DEPARTMENT_ID")
 	private String auditDepartmentId;
+
+	@Column(name = "INFO_FATHER_DEPARTMENT_NAME")
+	private String fatherDepartmentName;
 
 	@Column(name = "INFO_DEPARTMENT_ID")
 	private String departmentId;
@@ -169,12 +208,40 @@ public class Info implements Serializable {
 	@Column(name = "INFO_STATE")
 	private Integer state;
 
+	public static Integer getStateEdit() {
+		return STATE_EDIT;
+	}
+
+	public static Integer getStateSubmitToTown() {
+		return STATE_SUBMIT_TO_TOWN;
+	}
+
+	public static Integer getStateSubmitToCounty() {
+		return STATE_SUBMIT_TO_COUNTY;
+	}
+
+	public static Integer getStateSubmitToProvince() {
+		return STATE_SUBMIT_TO_PROVINCE;
+	}
+
+	public static Integer getStateOver() {
+		return STATE_OVER;
+	}
+
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getPersonGroup() {
+		return personGroup;
+	}
+
+	public void setPersonGroup(String personGroup) {
+		this.personGroup = personGroup;
 	}
 
 	public String getPersonName() {
@@ -193,6 +260,14 @@ public class Info implements Serializable {
 		this.personSex = personSex;
 	}
 
+	public String getPersonNation() {
+		return personNation;
+	}
+
+	public void setPersonNation(String personNation) {
+		this.personNation = personNation;
+	}
+
 	public String getPersonId() {
 		return personId;
 	}
@@ -201,12 +276,20 @@ public class Info implements Serializable {
 		this.personId = personId;
 	}
 
-	public String getPersonNation() {
-		return personNation;
+	public String getPersonImage() {
+		return personImage;
 	}
 
-	public void setPersonNation(String personNation) {
-		this.personNation = personNation;
+	public void setPersonImage(String personImage) {
+		this.personImage = personImage;
+	}
+
+	public String getPersonAddr() {
+		return personAddr;
+	}
+
+	public void setPersonAddr(String personAddr) {
+		this.personAddr = personAddr;
 	}
 
 	public Integer getPersonNum() {
@@ -233,6 +316,14 @@ public class Info implements Serializable {
 		this.houseAge = houseAge;
 	}
 
+	public String getHouseOldType() {
+		return houseOldType;
+	}
+
+	public void setHouseOldType(String houseOldType) {
+		this.houseOldType = houseOldType;
+	}
+
 	public Double getHouseOldSize1() {
 		return houseOldSize1;
 	}
@@ -249,68 +340,20 @@ public class Info implements Serializable {
 		this.houseOldSize2 = houseOldSize2;
 	}
 
-	public Double getHouseNewSize1() {
-		return houseNewSize1;
+	public Integer getToiletType() {
+		return toiletType;
 	}
 
-	public void setHouseNewSize1(Double houseNewSize1) {
-		this.houseNewSize1 = houseNewSize1;
+	public void setToiletType(Integer toiletType) {
+		this.toiletType = toiletType;
 	}
 
-	public Double getHouseNewSize2() {
-		return houseNewSize2;
+	public String getToiletTypeName() {
+		return toiletTypeName;
 	}
 
-	public void setHouseNewSize2(Double houseNewSize2) {
-		this.houseNewSize2 = houseNewSize2;
-	}
-
-	public Integer getHouseOldType() {
-		return houseOldType;
-	}
-
-	public void setHouseOldType(Integer houseOldType) {
-		this.houseOldType = houseOldType;
-	}
-
-	public String getHouseOldTypeName() {
-		return houseOldTypeName;
-	}
-
-	public void setHouseOldTypeName(String houseOldTypeName) {
-		this.houseOldTypeName = houseOldTypeName;
-	}
-
-	public Integer getToiletOldType() {
-		return toiletOldType;
-	}
-
-	public void setToiletOldType(Integer toiletOldType) {
-		this.toiletOldType = toiletOldType;
-	}
-
-	public String getToiletOldTypeName() {
-		return toiletOldTypeName;
-	}
-
-	public void setToiletOldTypeName(String toiletOldTypeName) {
-		this.toiletOldTypeName = toiletOldTypeName;
-	}
-
-	public Integer getToiletNewType() {
-		return toiletNewType;
-	}
-
-	public void setToiletNewType(Integer toiletNewType) {
-		this.toiletNewType = toiletNewType;
-	}
-
-	public String getToiletNewTypeName() {
-		return toiletNewTypeName;
-	}
-
-	public void setToiletNewTypeName(String toiletNewTypeName) {
-		this.toiletNewTypeName = toiletNewTypeName;
+	public void setToiletTypeName(String toiletTypeName) {
+		this.toiletTypeName = toiletTypeName;
 	}
 
 	public Integer getBuildMode() {
@@ -345,28 +388,36 @@ public class Info implements Serializable {
 		this.rebuildModeName = rebuildModeName;
 	}
 
+	public String getBuildCompany() {
+		return buildCompany;
+	}
+
+	public void setBuildCompany(String buildCompany) {
+		this.buildCompany = buildCompany;
+	}
+
+	public Double getHouseNewSize1() {
+		return houseNewSize1;
+	}
+
+	public void setHouseNewSize1(Double houseNewSize1) {
+		this.houseNewSize1 = houseNewSize1;
+	}
+
+	public Double getHouseNewSize2() {
+		return houseNewSize2;
+	}
+
+	public void setHouseNewSize2(Double houseNewSize2) {
+		this.houseNewSize2 = houseNewSize2;
+	}
+
 	public Integer getPlanYear() {
 		return planYear;
 	}
 
 	public void setPlanYear(Integer planYear) {
 		this.planYear = planYear;
-	}
-
-	public Integer getRebuildRate() {
-		return rebuildRate;
-	}
-
-	public void setRebuildRate(Integer rebuildRate) {
-		this.rebuildRate = rebuildRate;
-	}
-
-	public String getRebuildRateName() {
-		return rebuildRateName;
-	}
-
-	public void setRebuildRateName(String rebuildRateName) {
-		this.rebuildRateName = rebuildRateName;
 	}
 
 	public Date getRebuildBeginDate() {
@@ -385,6 +436,38 @@ public class Info implements Serializable {
 		this.rebuildEndDate = rebuildEndDate;
 	}
 
+	public Date getAcceptanceDate() {
+		return acceptanceDate;
+	}
+
+	public void setAcceptanceDate(Date acceptanceDate) {
+		this.acceptanceDate = acceptanceDate;
+	}
+
+	public String getAcceptanceImage() {
+		return acceptanceImage;
+	}
+
+	public void setAcceptanceImage(String acceptanceImage) {
+		this.acceptanceImage = acceptanceImage;
+	}
+
+	public Date getFundSendDate() {
+		return fundSendDate;
+	}
+
+	public void setFundSendDate(Date fundSendDate) {
+		this.fundSendDate = fundSendDate;
+	}
+
+	public String getFundSendImage() {
+		return fundSendImage;
+	}
+
+	public void setFundSendImage(String fundSendImage) {
+		this.fundSendImage = fundSendImage;
+	}
+
 	public Integer getIsAcceptance() {
 		return isAcceptance;
 	}
@@ -393,11 +476,11 @@ public class Info implements Serializable {
 		this.isAcceptance = isAcceptance;
 	}
 
-	public Integer getGrantType() {
+	public String getGrantType() {
 		return grantType;
 	}
 
-	public void setGrantType(Integer grantType) {
+	public void setGrantType(String grantType) {
 		this.grantType = grantType;
 	}
 
@@ -441,36 +524,20 @@ public class Info implements Serializable {
 		this.personSelfFund = personSelfFund;
 	}
 
-	public String getPersonImage() {
-		return personImage;
+	public String getHouseOldImage() {
+		return houseOldImage;
 	}
 
-	public void setPersonImage(String personImage) {
-		this.personImage = personImage;
+	public void setHouseOldImage(String houseOldImage) {
+		this.houseOldImage = houseOldImage;
 	}
 
-	public String getHouseInOldImage() {
-		return houseInOldImage;
+	public String getHouseBuildingImage() {
+		return houseBuildingImage;
 	}
 
-	public void setHouseInOldImage(String houseInOldImage) {
-		this.houseInOldImage = houseInOldImage;
-	}
-
-	public String getHouseInNewImage() {
-		return houseInNewImage;
-	}
-
-	public void setHouseInNewImage(String houseInNewImage) {
-		this.houseInNewImage = houseInNewImage;
-	}
-
-	public String getHouseOutOldImage() {
-		return houseOutOldImage;
-	}
-
-	public void setHouseOutOldImage(String houseOutOldImage) {
-		this.houseOutOldImage = houseOutOldImage;
+	public void setHouseBuildingImage(String houseBuildingImage) {
+		this.houseBuildingImage = houseBuildingImage;
 	}
 
 	public String getHouseOutNewImage() {
@@ -481,12 +548,36 @@ public class Info implements Serializable {
 		this.houseOutNewImage = houseOutNewImage;
 	}
 
-	public String getAcceptanceImage() {
-		return acceptanceImage;
+	public String getHouseInNewImage() {
+		return houseInNewImage;
 	}
 
-	public void setAcceptanceImage(String acceptanceImage) {
-		this.acceptanceImage = acceptanceImage;
+	public void setHouseInNewImage(String houseInNewImage) {
+		this.houseInNewImage = houseInNewImage;
+	}
+
+	public String getFillUserName() {
+		return fillUserName;
+	}
+
+	public void setFillUserName(String fillUserName) {
+		this.fillUserName = fillUserName;
+	}
+
+	public String getFillUserTel() {
+		return fillUserTel;
+	}
+
+	public void setFillUserTel(String fillUserTel) {
+		this.fillUserTel = fillUserTel;
+	}
+
+	public String getFillUserUnit() {
+		return fillUserUnit;
+	}
+
+	public void setFillUserUnit(String fillUserUnit) {
+		this.fillUserUnit = fillUserUnit;
 	}
 
 	public String getAuditDepartmentId() {
@@ -495,6 +586,14 @@ public class Info implements Serializable {
 
 	public void setAuditDepartmentId(String auditDepartmentId) {
 		this.auditDepartmentId = auditDepartmentId;
+	}
+
+	public String getFatherDepartmentName() {
+		return fatherDepartmentName;
+	}
+
+	public void setFatherDepartmentName(String fatherDepartmentName) {
+		this.fatherDepartmentName = fatherDepartmentName;
 	}
 
 	public String getDepartmentId() {
@@ -545,23 +644,11 @@ public class Info implements Serializable {
 		this.state = state;
 	}
 
-	public static Integer getStateEdit() {
-		return STATE_EDIT;
+	public static Integer getStateSubmitToCity() {
+		return STATE_SUBMIT_TO_CITY;
 	}
 
-	public static Integer getStateSubmitToTown() {
-		return STATE_SUBMIT_TO_TOWN;
-	}
-
-	public static Integer getStateSubmitToCounty() {
-		return STATE_SUBMIT_TO_COUNTY;
-	}
-
-	public static Integer getStateSubmitToProvince() {
-		return STATE_SUBMIT_TO_PROVINCE;
-	}
-
-	public static Integer getStateOver() {
-		return STATE_OVER;
+	public static Integer getStateAuditReturn() {
+		return STATE_AUDIT_RETURN;
 	}
 }
