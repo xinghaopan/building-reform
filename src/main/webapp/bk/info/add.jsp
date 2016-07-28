@@ -29,29 +29,31 @@
 			<div class="widget-body">
 				<div class="row-fluid">
 					<div>
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="fatherDepartmentName">乡（镇、街道）：</label>
 							<div class="controls"><input class="span8" id="fatherDepartmentName" name="fatherDepartmentName" value="${fatherDepartment.name}" type="text" /></div>
 						</div>
 						
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="departmentName">村：</label>
 							<div class="controls"><input class="span8" id="departmentName" name="departmentName" value="${department.name}" type="text" /></div>
 						</div>
-						
-						<div class="control-group span4">
+					</div>
+					
+					<div>	
+						<div class="control-group span5">
 							<label class="control-label span4" for="personGroup">村民小组：</label>
 							<div class="controls"><input class="span8"  id="personGroup" name="personGroup" value="${info.personGroup}" type="text" /></div>
 						</div>
-					</div>
 					
-					<div>
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="personName">姓名：</label>
 							<div class="controls"><input class="span8" id="personName" name="personName" value="${info.personName}" type="text" /></div>
 						</div>
-						
-						<div class="control-group span4">
+					</div>
+					
+					<div>	
+						<div class="control-group span5">
 							<label class="control-label span4" for="personSex">性别：</label>
 							<div class="controls">
 								<select id="personSex" name="personSex" class="span8">
@@ -62,42 +64,58 @@
 							</div>
 						</div>
 						
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="personNation">民族：</label>
 							<div class="controls"><input class="span8" id="personNation" name="personNation" value="${info.personNation}" type="text" /></div>
 						</div>
 					</div>
                     
                     <div>
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="personId">身份证号：</label>
 							<div class="controls"><input class="span8"  id="personId" name="personId" value="${info.personId}" type="text" /></div>
 						</div>
 						
-						<div class="control-group span4">
-							<label class="control-label span4" for="firstname">持证照片：</label>
-							<div class="input-append span8">
-								<input id="personImage" name="personImage" type="text" value="${info.personImage}" />
+						<div class="control-group span5">
+							<label class="control-label span6" for="firstname">农户本人拿身份证照片：</label>
+							<div class="input-append span6">
+								<input id="personImage" name="personImage" type="hidden" value="${info.personImage}" />
 								<input id="personImg" name="personImg" value="" type="file" style="display:none;">
 	  							<button class="btn personImg" type="button">浏览</button>
 						  	</div>
 						</div>
-						
-						<div class="control-group span4">
-							<label class="control-label span4" for="personAddr">改厕房屋住址：</label>
-							<div class="controls"><input class="span8"  id="personAddr" name="personAddr" value="${info.personAddr}" type="text" /></div>
-						</div>
 					</div>
 					
-					<div>
-						<div class="control-group span4">
-							<label class="control-label span4" for="personNum">家庭人数：</label>
-							<div class="controls"><input class="span8" id="personNum" name="personNum" value="${info.personNum}" type="text" /></div>
+					<div>	
+						<div class="control-group span5">
+							<div class="row-fluid">
+								<label class="control-label span4" for="personAddr">改厕房屋地址：</label>
+								<div class="controls"><input class="span8"  id="personAddr" name="personAddr" value="${info.personAddr}" type="text" /></div>
+							</div>
+							
+							<div class="row-fluid separator">
+								<label class="control-label span4" for="personNum">家庭人数：</label>
+								<div class="controls"><input class="span8" id="personNum" name="personNum" value="${info.personNum}" type="text" /></div>
+							</div>
+							
+							<div class="row-fluid">
+								<label class="control-label span4" for="personTel">联系电话：</label>
+								<div class="controls"><input class="span8"  id="personTel" name="personTel" value="${info.personTel}" type="text" /></div>
+							</div>
 						</div>
-
-						<div class="control-group span4">
-							<label class="control-label span4" for="personTel">联系电话：</label>
-							<div class="controls"><input class="span8"  id="personTel" name="personTel" value="${info.personTel}" type="text" /></div>
+						
+						<div class="control-group span5">
+							<label class="control-label span4" for="lastname"></label>
+		                    <div class="input-append span8">
+		                    	<c:choose>
+		                    		<c:when test="${info.personImage != null && info.personImage != ''}">
+		                    			<img id="personIg" name="personIg" src="${info.personImage}" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<img id="personIg" name="personIg" src="/images/nopic.png" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:otherwise>
+		                    	</c:choose>
+							</div>  
 						</div>
 					</div>
 				</div>
@@ -114,17 +132,17 @@
 			<div class="widget-body">
 				<div class="row-fluid">
 					<div>
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="houseAge">房屋年份：</label>
 							<div class="controls"><input class="span8" id="houseAge" name="houseAge" value="${info.houseAge}" type="text" /></div>
 						</div>
 
-                        <div class="control-group span4">
+                        <div class="control-group span5">
 							<label class="control-label span4" for="houseOldType">住房结构类型：</label>
 							<div class="controls"><input class="span8" id="houseOldType" name="houseOldType" value="${info.houseOldType}" type="text" /></div>
 						</div>
 						
-						<div class="control-group span4" style="display:none;">
+						<div class="control-group span5" style="display:none;">
 							<label class="control-label span4" for="houseOldSize1">旧住房建筑面积：</label>
 							<div class="controls"><input class="span8" id="houseOldSize1" name="houseOldSize1" value="${info.houseOldSize1}" type="text" /></div>
 						</div>
@@ -143,7 +161,7 @@
 			<div class="widget-body">
 				<div class="row-fluid">
 					<div>
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="toiletType">改厕类型：</label>
 							<div class="controls">
 								<select id="toiletType" name="toiletType" class="span8">
@@ -159,7 +177,7 @@
 							</div>
 						</div>
 
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="rebuildMode">改造模式：</label>
 							<div class="controls">
 								<select id="rebuildMode" name="rebuildMode" class="span8">
@@ -174,8 +192,10 @@
 								<input id="rebuildModeName" name="rebuildModeName" value="${info.rebuildModeName}" type="hidden" />
 							</div>
 						</div>
-
-						<div class="control-group span4">
+					</div>
+                    
+                    <div>
+						<div class="control-group span5">
 							<label class="control-label span4" for="username">房屋改造方式：</label>
 							<div class="controls">
 								<select id="buildMode" name="buildMode" class="span8">
@@ -190,15 +210,15 @@
 								<input id="buildModeName" name="buildModeName" value="${info.buildModeName}" type="hidden" />
 							</div>
 						</div>
-					</div>
-                    
-                    <div>
-						<div class="control-group span4">
+					
+						<div class="control-group span5">
 							<label class="control-label span4" for="buildCompany">改造企业名称：</label>
 							<div class="controls"><input class="span8" id="buildCompany" name="buildCompany" value="${info.buildCompany}" type="text" /></div>
 						</div>
-
-						<div class="control-group span4">
+					</div>
+                    
+                    <div>
+						<div class="control-group span5">
 							<label class="control-label span4" for="houseNewSize1">厕所改造后面积：</label>
 							<div class="controls"><input class="span8" id="houseNewSize1" name="houseNewSize1" value="${info.houseNewSize1}" type="text" /></div>
 						</div>
@@ -217,10 +237,10 @@
 			<div class="widget-body">
 				<div class="row-fluid">
 					<div>
-						<div class="control-group span4">
-							<label class="control-label span4" for="planYear">计划改厕年份：</label>
+						<div class="control-group span10">
+							<label class="control-label span2" for="planYear">计划改厕年份：</label>
 							<div class="controls">
-								<select id="planYear" name="planYear" class="span8">
+								<select id="planYear" name="planYear" class="span4">
 									<option value="-1" selected>请选择</option>
 									<c:forEach items="${dicList}" var="sdic">
 										<c:if test="${sdic.keyValue == 'planYear'}">
@@ -230,63 +250,105 @@
 								</select>
 							</div>
 						</div>
-						
-						<div class="control-group span4">
+					</div>
+                    
+                    <div>
+						<div class="control-group span5">
 							<label class="control-label span4" for="rebuildBeginDate">开工日期：</label>
-							<div class="controls">
-								<input class="span8" id="rebuildBeginDate" name="rebuildBeginDate" value="<fmt:formatDate value='${info.rebuildBeginDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" type="text" />
+							<div class="controls span8">
+								<div class="input-append">
+									<input type="text" id="rebuildBeginDate" name="rebuildBeginDate" value="<fmt:formatDate value='${info.rebuildBeginDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" /><span class="add-on glyphicons calendar"><i></i></span>
+								</div>
 							</div>
 						</div>
                         
-                        <div class="control-group span4">
+                        <div class="control-group span5">
 							<label class="control-label span4" for="rebuildEndDate">竣工日期：</label>
-							<div class="controls">
-								<input class="span8" id="rebuildEndDate" name="rebuildEndDate" value="<fmt:formatDate value='${info.rebuildEndDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" type="text" />
+							<div class="controls span8">
+								<div class="input-append">
+									<input type="text" id="rebuildEndDate" name="rebuildEndDate" value="<fmt:formatDate value='${info.rebuildBeginDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" /><span class="add-on glyphicons calendar"><i></i></span>
+								</div>
 							</div>
 						</div>
 					</div>
                     
                     <div>
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="acceptanceDate">验收时间：</label>
-							<div class="controls">
-								<input class="span8" id="acceptanceDate" name="acceptanceDate" value="<fmt:formatDate value='${info.acceptanceDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" type="text" />
+							<div class="controls span8">
+								<div class="input-append">
+									<input type="text" id="acceptanceDate" name="acceptanceDate" value="<fmt:formatDate value='${info.acceptanceDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" /><span class="add-on glyphicons calendar"><i></i></span>
+								</div>
 							</div>
 						</div>
 						
-						<div class="control-group span4">
-							<label class="control-label span4" for="firstname">验收单：</label>
-							<div class="input-append span8">
-								<input id="acceptanceImage" name="acceptanceImage" type="text" value="${info.acceptanceImage}" />
-								<input id="acceptanceImg" name="acceptanceImg" value="" type="file" style="display:none;">
-	  							<button class="btn acceptanceImg" type="button">浏览</button>
-						  	</div>
-						</div>
-					</div>
-                    
-                    <div>	
-						<div class="control-group span4">
-							<label class="control-label span4" for="fundSendDate">资金发放时间：</label>
+						<div class="control-group span5">
+							<label class="control-label span4" for="fundSendDate">省资金发放时间：</label>
 							<div class="controls">
 								<input class="span8" id="fundSendDate" name="fundSendDate" value="<fmt:formatDate value='${info.fundSendDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" type="text" />
 							</div>
 						</div>
-
-						<div class="control-group span4">
-							<label class="control-label span4" for="fundSendImage">补助资金签收单照片：</label>
-							<div class="input-append span8">
-								<input id="fundSendImage" name="fundSendImage" type="text" value="${info.fundSendImage}" />
+					</div>
+                    
+                    <div>	
+						<div class="control-group span5">
+							<label class="control-label span6" for="firstname">验收单照片：</label>
+							<div class="input-append span6">
+								<input id="acceptanceImage" name="acceptanceImage" type="hidden" value="${info.acceptanceImage}" />
+								<input id="acceptanceImg" name="acceptanceImg" value="" type="file" style="display:none;">
+	  							<button class="btn acceptanceImg" type="button">浏览</button>
+						  	</div>
+						</div>
+						
+						<div class="control-group span5">
+							<label class="control-label span6" for="fundSendImage">补助资金签收单照片：</label>
+							<div class="input-append span6">
+								<input id="fundSendImage" name="fundSendImage" type="hidden" value="${info.fundSendImage}" />
 								<input id="fundSendImg" name="fundSendImg" value="" type="file" style="display:none;">
 	  							<button class="btn fundSendImg" type="button">浏览</button>
 						  	</div>
 						</div>
-						<div class="control-group span4" style="display:none;">
+					</div>
+                    
+                    <div>
+                    	<div class="control-group span5">
+		                    <label class="control-label span4" for="lastname"></label>
+		                    <div class="input-append span8">
+								<c:choose>
+		                    		<c:when test="${info.acceptanceImage != null && info.acceptanceImage != ''}">
+		                    			<img id="acceptanceIg" name="acceptanceIg" src="${info.acceptanceImage}" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<img id="acceptanceIg" name="acceptanceIg" src="/images/nopic.png" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:otherwise>
+		                    	</c:choose> 
+							</div>  
+	                    </div>
+                    	
+                    	<div class="control-group span5">
+		                    <label class="control-label span4" for="lastname"></label>
+		                    <div class="input-append span8">
+								<c:choose>
+		                    		<c:when test="${info.fundSendImage != null && info.fundSendImage != ''}">
+		                    			<img id="fundSendIg" name="fundSendIg" src="${info.fundSendImage}" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<img id="fundSendIg" name="fundSendIg" src="/images/nopic.png" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:otherwise>
+		                    	</c:choose> 
+							</div>  
+	                    </div>
+					</div>
+                    
+                    <div>
+						<div class="control-group span5" style="display:none;">
 							<label class="control-label span4" for="isAcceptance">是否验收：</label>
 							<div class="controls">
 								<input class="span8" id="isAcceptance" name="isAcceptance" value="${info.isAcceptance}" type="text" />
 							</div>
 						</div>
 					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -302,8 +364,8 @@
 	
 				<div class="row-fluid">
 					<div>
-						<div class="control-group span8">
-							<label class="control-label span2" for="grant">享受补助资金类型：</label>
+						<div class="control-group span5">
+							<label class="control-label span4" for="grant">享受补助资金类型：</label>
 							<div class="controls">
 								<c:set var="splitChar" value="," />
 								<c:forEach items="${dicList}" var="sdic">
@@ -317,33 +379,35 @@
 							</div>
 						</div>
 
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="sumFund">总投资：</label>
 							<div class="controls">
-								<input class="span8" id="sumFund" name="sumFund" value="${info.sumFund}" type="text" />
+								<input class="span7" id="sumFund" name="sumFund" value="${info.sumFund}" type="text" />&nbsp;元
 							</div>
 						</div>
 					</div>
                     
                     <div>
-                    	<div class="control-group span4">
+                    	<div class="control-group span5">
 							<label class="control-label span4" for="grantProvinceFund">省级补助资金：</label>
 							<div class="controls">
-								<input class="span8" id="grantProvinceFund" name="grantProvinceFund" value="${info.grantProvinceFund}" type="text" />
+								<input class="span7" id="grantProvinceFund" name="grantProvinceFund" value="${info.grantProvinceFund}" type="text" />&nbsp;元
 							</div>
 						</div>
 						
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="grantCountiesFund">县市区补助资金：</label>
 							<div class="controls">
-								<input class="span8" id="grantCountiesFund" name="grantCountiesFund" value="${info.grantCountiesFund}" type="text" />
+								<input class="span7" id="grantCountiesFund" name="grantCountiesFund" value="${info.grantCountiesFund}" type="text" />&nbsp;元
 							</div>
 						</div>
-
-						<div class="control-group span4">
+					</div>
+                    
+                    <div>
+						<div class="control-group span5">
 							<label class="control-label span4" for="personSelfFund">农户自筹资金：</label>
 							<div class="controls">
-								<input class="span8" id="personSelfFund" name="personSelfFund" value="${info.personSelfFund}" type="text" />
+								<input class="span7" id="personSelfFund" name="personSelfFund" value="${info.personSelfFund}" type="text" />&nbsp;元
 							</div>
 						</div>
 					</div>
@@ -360,43 +424,107 @@
 			<div class="widget-body">
 				<div class="row-fluid">
 					<div>
-						<div class="control-group span4">
-							<label class="control-label span4" for="houseOldImage">位置照片（改厕前）：</label>
-							<div class="input-append span8">
-	  							<input id="houseOldImage" name="houseOldImage" type="text" value="${info.houseOldImage}" />
+						<div class="control-group span5">
+							<label class="control-label span6" for="houseOldImage">位置照片（改厕前）：</label>
+							<div class="input-append span6">
+	  							<input id="houseOldImage" name="houseOldImage" type="hidden" value="${info.houseOldImage}" />
 								<input id="houseOldImg" name="houseOldImg" value="" type="file" style="display:none;">
 	  							<button class="btn houseOldImg" type="button">浏览</button>
 						  	</div>
 						</div>
 						
-						<div class="control-group span4">
-							<label class="control-label span4" for="houseBuildingImage">施工中照片：</label>
-							<div class="input-append span8">
-								<input id="houseBuildingImage" name="houseBuildingImage" type="text" value="${info.houseBuildingImage}" />
+						<div class="control-group span5">
+							<label class="control-label span6" for="houseBuildingImage">施工中照片：</label>
+							<div class="input-append span6">
+								<input id="houseBuildingImage" name="houseBuildingImage" type="hidden" value="${info.houseBuildingImage}" />
 								<input id="houseBuildingImg" name="houseBuildingImg" value="" type="file" style="display:none;">
 	  							<button class="btn houseBuildingImg" type="button">浏览</button>
 						  	</div>
 						</div>
 					</div>
-	                        
+	                
+	                <div>
+                    	<div class="control-group span5">
+		                    <label class="control-label span4" for="lastname"></label>
+		                    <div class="input-append span8">
+								<c:choose>
+		                    		<c:when test="${info.houseOldImage != null && info.houseOldImage != ''}">
+		                    			<img id="houseOldIg" name="houseOldIg" src="${info.houseOldImage}" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<img id="houseOldIg" name="houseOldIg" src="/images/nopic.png" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:otherwise>
+		                    	</c:choose>  
+							</div>  
+	                    </div>
+                    	
+                    	<div class="control-group span5">
+		                    <label class="control-label span4" for="lastname"></label>
+		                    <div class="input-append span8">
+								<c:choose>
+		                    		<c:when test="${info.houseBuildingImage != null && info.houseBuildingImage != ''}">
+		                    			<img id="houseBuildingIg" name="houseBuildingIg" src="${info.houseBuildingImage}" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<img id="houseBuildingIg" name="houseBuildingIg" src="/images/nopic.png" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:otherwise>
+		                    	</c:choose>  
+							</div>  
+	                    </div>
+					</div>
+					
 					<div>
-						<div class="control-group span4">
-							<label class="control-label span4" for="houseOutNewImage">厕所室外照片（改厕后）：</label>
-							<div class="input-append span8">
-								<input id="houseOutNewImage" name="houseOutNewImage" type="text" value="${info.houseOutNewImage}" />
+						<div class="control-group span5">
+							<label class="control-label span6" for="houseOutNewImage">厕所室外照片（改厕后）：</label>
+							<div class="input-append span6">
+								<input id="houseOutNewImage" name="houseOutNewImage" type="hidden" value="${info.houseOutNewImage}" />
 								<input id="houseOutNewImg" name="houseOutNewImg" value="" type="file" style="display:none;">
 	  							<button class="btn houseOutNewImg" type="button">浏览</button>
 						  	</div>
 						</div>
 						
-						<div class="control-group span4">
-							<label class="control-label span4" for="houseInNewImage">厕所室内照片（改厕后）：</label>
-							<div class="input-append span8">
-								<input id="houseInNewImage" name="houseInNewImage" type="text" value="${info.houseInNewImage}" />
+						<div class="control-group span5">
+							<label class="control-label span6" for="houseInNewImage">厕所室内照片（改厕后）：</label>
+							<div class="input-append span6">
+								<input id="houseInNewImage" name="houseInNewImage" type="hidden" value="${info.houseInNewImage}" />
 								<input id="houseInNewImg" name="houseInNewImg" value="" type="file" style="display:none;">
 	  							<button class="btn houseInNewImg" type="button">浏览</button>
 						  	</div>
 						</div>
+					</div>
+					
+					<div>
+                    	<div class="control-group span5">
+		                    <label class="control-label span4" for="lastname"></label>
+		                    <div class="input-append span8">
+								<c:choose>
+		                    		<c:when test="${info.houseOutNewImage != null && info.houseOutNewImage != ''}">
+		                    			<img id="houseOutNewIg" name="houseOutNewIg" src="${info.houseOutNewImage}" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<img id="houseOutNewIg" name="houseOutNewIg" src="/images/nopic.png" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:otherwise>
+		                    	</c:choose>  
+							</div>  
+	                    </div>
+                    	
+                    	<div class="control-group span5">
+		                    <label class="control-label span4" for="lastname"></label>
+		                    <div class="input-append span8">
+								<c:choose>
+		                    		<c:when test="${info.houseInNewImage != null && info.houseInNewImage != ''}">
+		                    			<img id="houseInNewIg" name="houseInNewIg" src="${info.houseInNewImage}" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<img id="houseInNewIg" name="houseInNewIg" src="/images/nopic.png" class="img-polaroid img-sfz"  alt=""/>
+		                    		</c:otherwise>
+		                    	</c:choose>  
+							</div>  
+	                    </div>
+					</div>
+					
+					<div>
+						<label class="control-label span8" for="lastname"><font size="10" color="red">*农户手持姓名、联系电话</font></label>
 					</div>
 				</div>
 			</div>
@@ -414,21 +542,23 @@
 	
 				<div class="row-fluid">
 					<div>
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="fillUserName">姓名：</label>
 							<div class="controls">
 								<input class="span8" id="fillUserName" name="fillUserName" value="${info.fillUserName}" type="text" />
 							</div>
 						</div>
 
-						<div class="control-group span4">
+						<div class="control-group span5">
 							<label class="control-label span4" for="fillUserTel">电话：</label>
 							<div class="controls">
 								<input class="span8" id="fillUserTel" name="fillUserTel" value="${info.fillUserTel}" type="text" />
 							</div>
 						</div>
-						
-						<div class="control-group span4">
+					</div>
+					
+					<div>
+						<div class="control-group span5">
 							<label class="control-label span4" for="fillUserUnit">单位：</label>
 							<div class="controls">
 								<input class="span8" id="fillUserUnit" name="fillUserUnit" value="${info.fillUserUnit}" type="text" />
@@ -442,7 +572,7 @@
 		
 		<!-- Modal footer -->
 		<div class="modal-footer">
-			<a href="javascript:void(0);" id="btn_Submit" name="btn_Submit" class="btn btn-info" >提交</a>
+			<a href="javascript:void(0);" id="btn_Submit" name="btn_Submit" class="btn btn-info" >保存</a>
 		</div>
 		<!-- // Modal footer END -->
 		
@@ -494,7 +624,7 @@ jQuery(document).ready(function($) {
 		}
 		
 		if (isNull($('#personAddr').val())) {
-			alert("改厕房屋住址不能为空！！！");
+			alert("改厕房屋地址不能为空！！！");
 			$('#personAddr').focus();
 			return;
 		}
@@ -591,7 +721,7 @@ jQuery(document).ready(function($) {
 		}
 		
 		if (!isDate($('#fundSendDate').val())) {
-			alert("资金发放时间只能是日期类型！！！");
+			alert("省资金发放时间只能是日期类型！！！");
 			$('#fundSendDate').focus();
 			return;
 		}
@@ -705,13 +835,18 @@ jQuery(document).ready(function($) {
         $("#infoForm").ajaxSubmit(options); 
 	});
 	
-	
 	$('.personImg').click(function() {
 		$("#personImg").click();
 	});
 	
-	$("#personImg").on("change", function() {
+	$("#personImg").on("change", function(event) {
 		$("#personImage").val($(this).val());
+		var objUrl = getObjectURL(this.files[0]) ;  
+		if (objUrl) {
+			$("#personIg").attr("src", objUrl) ;      
+		} else {
+			$("#personIg").attr("src", "/images/nopic.png") ; 
+		}
 	});
 	
 	$('.acceptanceImg').click(function() {
@@ -720,6 +855,12 @@ jQuery(document).ready(function($) {
 	
 	$("#acceptanceImg").on("change", function() {
 		$("#acceptanceImage").val($(this).val());
+		var objUrl = getObjectURL(this.files[0]) ;  
+		if (objUrl) {
+			$("#acceptanceIg").attr("src", objUrl) ;      
+		} else {
+			$("#acceptanceIg").attr("src", "/images/nopic.png") ; 
+		}
 	});
 	
 	$('.fundSendImg').click(function() {
@@ -728,6 +869,12 @@ jQuery(document).ready(function($) {
 	
 	$("#fundSendImg").on("change", function() {
 		$("#fundSendImage").val($(this).val());
+		var objUrl = getObjectURL(this.files[0]) ;  
+		if (objUrl) {
+			$("#fundSendIg").attr("src", objUrl) ;      
+		} else {
+			$("#fundSendIg").attr("src", "/images/nopic.png") ; 
+		}
 	});
 	
 	$('.houseOldImg').click(function() {
@@ -736,6 +883,12 @@ jQuery(document).ready(function($) {
 	
 	$("#houseOldImg").on("change", function() {
 		$("#houseOldImage").val($(this).val());
+		var objUrl = getObjectURL(this.files[0]) ;  
+		if (objUrl) {
+			$("#houseOldIg").attr("src", objUrl) ;      
+		} else {
+			$("#houseOldIg").attr("src", "/images/nopic.png") ; 
+		}
 	});
 	
 	$('.houseBuildingImg').click(function() {
@@ -744,6 +897,12 @@ jQuery(document).ready(function($) {
 	
 	$("#houseBuildingImg").on("change", function() {
 		$("#houseBuildingImage").val($(this).val());
+		var objUrl = getObjectURL(this.files[0]) ;  
+		if (objUrl) {
+			$("#houseBuildingIg").attr("src", objUrl) ;      
+		} else {
+			$("#houseBuildingIg").attr("src", "/images/nopic.png") ; 
+		}
 	});
 	
 	$('.houseOutNewImg').click(function() {
@@ -752,6 +911,12 @@ jQuery(document).ready(function($) {
 	
 	$("#houseOutNewImg").on("change", function() {
 		$("#houseOutNewImage").val($(this).val());
+		var objUrl = getObjectURL(this.files[0]) ;  
+		if (objUrl) {
+			$("#houseOutNewIg").attr("src", objUrl) ;      
+		} else {
+			$("#houseOutNewIg").attr("src", "/images/nopic.png") ; 
+		}
 	});
 	
 	$('.houseInNewImg').click(function() {
@@ -760,9 +925,27 @@ jQuery(document).ready(function($) {
 	
 	$("#houseInNewImg").on("change", function() {
 		$("#houseInNewImage").val($(this).val());
+		var objUrl = getObjectURL(this.files[0]) ;  
+		if (objUrl) {
+			$("#houseInNewIg").attr("src", objUrl) ;      
+		}else {
+			$("#houseInNewIg").attr("src", "/images/nopic.png") ; 
+		}
 	});
 	
-	
+	function getObjectURL(file) {
+		var url = null ;
+		
+		if (window.createObjectURL != undefined) { // basic
+			url = window.createObjectURL(file) ;
+		} else if (window.URL != undefined) { // mozilla(firefox)
+		    url = window.URL.createObjectURL(file) ;
+		} else if (window.webkitURL != undefined) { // webkit or chrome
+		    url = window.webkitURL.createObjectURL(file) ;
+		}
+		
+		return url ;
+	}
 });
 </script>
 <%@ include file="/bk/bottom.jsp" %>

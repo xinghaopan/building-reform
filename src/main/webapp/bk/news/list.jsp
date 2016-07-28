@@ -15,12 +15,7 @@
 
 	<div class="innerLR">
 
-	    <!-- Modal -->
-		<div class="modal hide fade" id="modal-simple"></div>
-		<!-- // Modal END -->	
-	
 		<div class="separator bottom"></div>
-	
 	 
 	 	<div class="widget" data-toggle="collapse-widget">
 			<div class="widget-head">
@@ -67,7 +62,7 @@
 								<td class="center">${snews.order}</td>
 								<td class="center"><fmt:formatDate value="${snews.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></td>
 								<td class="center">
-									<a href="#modal-simple" data-toggle="modal" url="/bk/news/edit/${mid}?id=${snews.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
+									<a href="/bk/news/edit/${mid}?id=${snews.id}" class="btn-action glyphicons pencil btn-success"><i></i></a>
 									<a href="javascript:void(0);" url="/bk/news/del/${mid}?id=${snews.id}" bname="${snews.title}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
 								</td>
 							</tr>
@@ -129,62 +124,6 @@ jQuery(document).ready(function($) {
 		}
 	});
 	
-	$('.action-edit').click(function(){
-		var url = $(this).attr("url");
-		
-		$.ajax({
-			type : "get",
-			url : url,
-			data : "radom=" + Math.random(),
-			dataType : "text",
-			success : function(text) {
-				$("#modal-simple").html(text);
-			},
-			error : function(XMLHttpRequest, error, errorThrown) {
-				//alert("请求超时！！！");
-			}
-		});
-	});
-	
-	$("#btn_Submit").live("click", function() { 
-		if (isNull($('#title').val())) {
-			alert("文章标题不能为空！！！");
-			$('#title').focus();
-			return;
-		}
-		
-		if (!isUnsignedInteger($('#order').val())) {
-			alert("排序只能为数字！！！");
-			$('#order').focus();
-			return;
-		}
-		
-		if (isNull($('#date').val())) {
-			alert("文章发布日期不能为空！！！");
-			$('#date').focus();
-			return;
-		}
-		
-		$('#subTitle').val(editor.getContent());
-		
-		
-		var options = { 
-	            success : function(msg) {
-	            	if (msg == "-999") {
-		        		alert("999");
-		        		//outLogin();
-		        	}
-	            	else if (msg == 1) {
-	            		alert("文章信息保存成功！！！");
-	            		window.location.reload();
-	            	}
-	            	else {
-	            		alert("文章信息保存失败！！！");
-	            	}
-	            } 
-        }; 
-        $("#newsForm").ajaxSubmit(options);  
-	});
 	
 	$('.btn_Search').click(function(){
 		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val();

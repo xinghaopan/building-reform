@@ -46,6 +46,9 @@
            				</div>
 						
 			           	<div class=" pull-right">
+			           		<c:if test="${quota != null}">
+			           			本年度指标数：${quota.num} &nbsp;&nbsp;&nbsp;&nbsp;剩余指标：${quota.restNum} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			           		</c:if>
 			           	</div>
 					</div>
 	           </div>
@@ -89,8 +92,6 @@
 									</c:choose>
 								</td>
 								<td class="center">
-									<a href="/bk/info/edit/${mid}?id=${sinfo.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
-									<a href="javascript:void(0);" url="/bk/info/del/${mid}?id=${sinfo.id}" bname="${sinfo.personName}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
 								</td>
 							</tr>
 							<!-- // Item END -->

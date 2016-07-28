@@ -41,9 +41,9 @@
 	<!-- DateTimePicker Plugin -->
 	<link href="/css/datetimepicker.css" rel="stylesheet" />
 	
-	<!-- JQueryUI 
+	<!-- JQueryUI -->
 	<link href="/css/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" />
-	-->
+	
 	<!-- MiniColors ColorPicker Plugin
 	<link href="/css/jquery.miniColors.css" rel="stylesheet" />
 	 -->
@@ -70,10 +70,10 @@
 	<script src="/ueditor_/ueditor.config.js" type="text/javascript"></script>
     <script src="/ueditor_/ueditor.all.js" type="text/javascript"></script>
     <link href="/ueditor_/themes/iframe.css" rel="stylesheet" type="text/css" />
-    <script src="/My97DatePicker/WdatePicker.js"></script>
     
     <link rel="stylesheet" href="/css/zTreeStyle/metro.css">
     <script src="/js/jquery.ztree.all.js"></script>
+    
 </head>
 <%
 	User user = (User)request.getSession().getAttribute("loginUser"); 

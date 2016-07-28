@@ -3,17 +3,28 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ include file="/bk/top.jsp" %>
 
+<!-- Content -->
+<div id="content">
+	<div class="breadcrumb">
+		<img src="/images/photo_02.jpg"  alt=""/>&nbsp;您当前的位置：
+		<b class="center-navigation" style="font-weight:normal"></b>
+	</div>
+	
+	<div class="row-fluid row-merge"></div>
+
+	<div class="innerLR">
+		
+		<div class="separator bottom"></div>
+		
 <form id="newsForm" method="post" name="newsForm" action="/bk/news/save/${mid}" enctype="multipart/form-data">
-<!-- Modal heading -->
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h3>新闻信息</h3>
-</div>
-<!-- // Modal heading END -->
-
-<!-- Modal body -->
-<div class="modal-body">
+<div class="widget" data-toggle="collapse-widget">
+			<div class="widget-head">
+				<p class="heading glyphicons folder_open"><i></i>新闻信息</p>
+			</div>
+			
+			<div class="widget-body">
 
 	<div class="row-fluid" style="display:none;">
 		<div>
@@ -36,16 +47,16 @@
 	<div class="row-fluid">
 		<div>
 		<!-- Group -->
-		<div class="control-group span6">
-			<label class="control-label span3" for="title">文章标题：</label>
-			<div class="controls"><input class="span9" id="title" name="title" type="text" value="${news.title}" /></div>
+		<div class="control-group span5">
+			<label class="control-label span4" for="title">文章标题：</label>
+			<div class="controls"><input class="span8" id="title" name="title" type="text" value="${news.title}" /></div>
 		</div>
 		<!-- // Group END -->
 		
 		<!-- Group -->
-		<div class="control-group span6">
-			<label class="control-label span3" for="author">作者：</label>
-			<div class="controls"><input class="span9" id="author" name="author" type="text" value="${news.author}" /></div>
+		<div class="control-group span5">
+			<label class="control-label span4" for="author">作者：</label>
+			<div class="controls"><input class="span8" id="author" name="author" type="text" value="${news.author}" /></div>
 		</div>
 		<!-- // Group END -->
 		</div>
@@ -165,10 +176,10 @@
 	<div class="row-fluid">
 		<div>
 		<!-- Group -->
-		<div class="control-group span4">
-			<label class="control-label span3" for="smallImage">置顶：</label>
+		<div class="control-group span5">
+			<label class="control-label span4" for="smallImage">置顶：</label>
 			<div class="controls">
-				<select id="istop" name="istop" class="span9">
+				<select id="istop" name="istop" class="span8">
 					<option value="1" selected >置顶</option>
 					<option value="0" <c:if test="${news.istop == null || news.istop == 0}">selected</c:if> >不置顶</option>
 				</select>
@@ -177,16 +188,20 @@
 		<!-- // Group END -->
 		
 		<!-- Group -->
-		<div class="control-group span4">
-			<label class="control-label span3" for="order">排序：</label>
-			<div class="controls"><input class="span9" id="order" name="order" type="text" value="${news.order}" /></div>
+		<div class="control-group span5">
+			<label class="control-label span4" for="order">排序：</label>
+			<div class="controls"><input class="span8" id="order" name="order" type="text" value="${news.order}" /></div>
 		</div>
 		<!-- // Group END -->
-		
+		</div>
+	</div>
+	
+	<div class="row-fluid">
+		<div>
 		<!-- Group -->
-		<div class="control-group span4">
-			<label class="control-label span3" for="date">日期：</label>
-			<div class="controls"><input class="span9" id="date" name="date" type="text" value="<fmt:formatDate value='${news.date}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />"  onClick="WdatePicker()" /></div>
+		<div class="control-group span5">
+			<label class="control-label span4" for="date">日期：</label>
+			<div class="controls"><input class="span8" id="date" name="date" type="text" value="<fmt:formatDate value='${news.date}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />"  onClick="WdatePicker()" /></div>
 		</div>
 		<!-- // Group END -->
 		</div>
@@ -195,23 +210,31 @@
 	<div class="row-fluid" >
 		<div>
 		<!-- Group -->
-		<div class="control-group span12">
-			<label class="control-label span1" for="content">内容：</label>
-			<div class="controls"><textarea class="span11" id="inputContent" name="inputContent">${news.content}</textarea></div>
+		<div class="control-group span10">
+			<label class="control-label span2" for="content">内容：</label>
+			<div class="controls"><textarea class="span10" id="inputContent" name="inputContent" style="height:300px;">${news.content}</textarea></div>
 		</div>
 		<!-- // Group END -->
 		</div>
 	</div>
+	</div>
+		</div>
+		
+		<div class="separator bottom"></div>
+		
+		<!-- Modal footer -->
+		<div class="modal-footer">
+			<a href="javascript:void(0);" id="btn_Submit" name="btn_Submit" class="btn btn-news" >提交</a>
+			
+			<a href="javascript:void(0);" id="btn_Back" name="btn_Back" class="btn btn-default" data-dismiss="modal">返回</a> 
+		</div>
+		<!-- // Modal footer END -->
+		
+		</form>
+	</div>	
+		
 </div>
-<!-- // Modal body END -->
 
-<!-- Modal footer -->
-<div class="modal-footer">
-	<a href="javascript:void(0);" class="btn btn-default" data-dismiss="modal">关闭</a> 
-	<a href="javascript:void(0);" id="btn_Submit" name="btn_Submit" class="btn btn-info" >提交</a>
-</div>
-<!-- // Modal footer END -->
-</form>
 
 <script type="text/javascript">
 	if (editor != null) {
@@ -219,4 +242,51 @@
     }
     editor = new baidu.editor.ui.Editor();
     editor.render('inputContent');
+
+jQuery(document).ready(function($) {
+	$("#btn_Back").live("click", function() {
+		window.open("/bk/news/list/${mid}", "_self");
+	});
+	
+	$("#btn_Submit").live("click", function() { 
+		if (isNull($('#title').val())) {
+			alert("文章标题不能为空！！！");
+			$('#title').focus();
+			return;
+		}
+		
+		if (!isUnsignedInteger($('#order').val())) {
+			alert("排序只能为数字！！！");
+			$('#order').focus();
+			return;
+		}
+		
+		if (isNull($('#date').val())) {
+			alert("文章发布日期不能为空！！！");
+			$('#date').focus();
+			return;
+		}
+		
+		$('#subTitle').val(editor.getContent());
+		
+		
+		var options = { 
+	            success : function(msg) {
+	            	if (msg == "-999") {
+		        		alert("999");
+		        		//outLogin();
+		        	}
+	            	else if (msg == 1) {
+	            		alert("文章信息保存成功！！！");
+	            		window.open("/bk/news/list/${mid}", "_self");
+	            	}
+	            	else {
+	            		alert("文章信息保存失败！！！");
+	            	}
+	            } 
+        }; 
+        $("#newsForm").ajaxSubmit(options);  
+	});
+});
 </script> 
+<%@ include file="/bk/bottom.jsp" %>

@@ -69,7 +69,7 @@
 				</tr>
 				
 				<tr class="selectable">
-					<td class="center" width="130">改厕房屋住址：</td>
+					<td class="center" width="130">改厕房屋地址：</td>
 					<td class="left">${info.personAddr}</td>
 					<td class="left"></td>
 				</tr>
@@ -162,7 +162,7 @@
 				</tr>
 				
 				<tr class="selectable">
-					<td class="center" width="130">资金发放时间：</td>
+					<td class="center" width="130">省资金发放时间：</td>
 					<td class="left"><fmt:formatDate value='${info.fundSendDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' /></td>
 					<td class="left">
 						<c:if test="${info.fundSendImage != null && info.fundSendImage != ''}">

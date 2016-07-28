@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,7 @@ import com.cc.buildingReform.form.User;
 import com.cc.buildingReform.service.DepartmentService;
 import com.cc.buildingReform.service.DicService;
 import com.cc.buildingReform.service.InfoService;
+import com.cc.buildingReform.service.QuotaService;
 
 @RestController
 public class InfoController {
@@ -42,6 +44,9 @@ public class InfoController {
 
 	@Autowired
 	private DicService dicService;
+
+	@Autowired
+	private QuotaService quotaService;
 
 	@Autowired
 	private DepartmentService departmentService;
@@ -79,6 +84,9 @@ public class InfoController {
 			
 			int maxCount = infoService.getCount(year, user);
 			int maxPage = (maxCount - 1) / count + 1;
+			
+			List<Quota> quotaList = quotaService.findByDepartmentId(year, user.getDepartmentId());
+			
 			model.addAttribute("count", count);
 			model.addAttribute("maxPage", maxPage);
 			model.addAttribute("mid", mid);
@@ -87,7 +95,9 @@ public class InfoController {
 			
 			model.addAttribute("list", infoService.findAll(year, user, currentPage * count, count));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
-			
+			if(quotaList != null && !quotaList.isEmpty()) {
+				model.addAttribute("quota", quotaList.get(0));
+			}
 			model.addAttribute("year", year);
 			model.addAttribute("dicList", dicService.findAll());
 		}

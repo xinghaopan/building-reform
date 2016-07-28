@@ -18,15 +18,19 @@
 	</div>
 	<!-- // Main Container Fluid END -->
 	
+	<!-- JQuery -->
 	<!-- Bootstrap -->
 	<script src="/js/bootstrap.min.js"></script>
     <script src="/js/bootstrap-select.js"></script>
 
-	<!-- JQueryUI 
+    
+   
+	
+	<!-- JQueryUI -->
 	<script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
-	-->
-	<!-- JQueryUI Touch Punch -->
-	<!-- small hack that enables the use of touch events on sites using the jQuery UI user interface library 
+	
+	<!-- JQueryUI Touch Punch 
+	<!-- small hack that enables the use of touch events on sites using the jQuery UI user interface library -->
 	<script src="/js/jquery.ui.touch-punch.min.js"></script>
      -->
 	<!-- Modernizr -->
@@ -40,18 +44,18 @@
 	<!-- Common Demo Script -->
 	<script src="/js/common.js"></script>
 	
-	<!-- Holder Plugin 
+	<!-- Holder Plugin -->
 	<script src="/js/holder.js"></script>
-	-->
-	<!-- Uniform Forms Plugin 
+	
+	<!-- Uniform Forms Plugin -->
 	<script src="/js/jquery.uniform.min.js"></script>
-	-->
+	
 	<!-- PrettyPhoto -->
 	<script src="/js/jquery.prettyPhoto.js"></script>
 	
 	<!-- Global 
 	<script>
-	var basePath = 'js/';
+	var basePath = '/js/';
 	</script>
      -->
 	<!-- Bootstrap Extended 
@@ -64,9 +68,9 @@
 	<script src="/js/wysihtml5-0.3.0_rc2.min.js"></script>
 	<script src="/js/bootstrap-wysihtml5-0.0.2.js"></script>
 	-->
-	<!-- Google Code Prettify 
+	<!-- Google Code Prettify
 	<script src="/js/prettify.js"></script>
-	-->
+	 -->
 	<!-- Gritter Notifications Plugin 
 	<script src="/js/jquery.gritter.min.js"></script>
 	-->
@@ -79,9 +83,9 @@
 	<!-- DateTimePicker Plugin -->
 	<script src="/js/bootstrap-datetimepicker.min.js"></script>
 
-	<!-- Cookie Plugin 
+	<!-- Cookie Plugin -->
 	<script src="/js/jquery.cookie.js"></script>
-	-->
+	
 	<!-- Colors 
 	<script>
 	var primaryColor = '#e25f39',
@@ -115,13 +119,6 @@
 	<!--[if gt IE 8]><!--><script src="/js/resizable.js"></script><!--<![endif]-->
 	
 	<!-- Modals Page Demo Script -->
-	<script src="/js/modals.js"></script>
-	
-
-
-	
-
-
-
+	<!-- <script src="/js/modals.js"></script> -->
 </body>
 </html>
