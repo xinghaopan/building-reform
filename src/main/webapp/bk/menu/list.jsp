@@ -49,6 +49,7 @@
 							<th class="center">前台地址</th>
 							<th class="center">后台名称</th>
 							<th class="center">后台地址</th>
+							<th class="center">图标</th>
 							<th class="center">排序</th>
 							<th class="center" style="width: 120px;">操作</th>
 						</tr>
@@ -62,6 +63,7 @@
 								<td class="center">${smenu.frontLink}</td>
 								<td class="center">${smenu.backName}</td>
 								<td class="center">${smenu.backLink}</td>
+								<td class="center">${smenu.smallImage}</td>
 								<td class="center">${smenu.order}</td>
 								<td class="center">
 									<a href="#modal-simple" data-toggle="modal" url="/bk/menu/edit/${mid}?fatherId=${smenu.fatherId}&id=${smenu.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
