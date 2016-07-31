@@ -9,7 +9,7 @@
 		  <div class="separator bottom"></div>
 			
 			<!--  Copyright Line -->
-			<div class="copy">&copy; 2016 - 2018 - Copyright©  2014  XXXXXXXXXXXXXXXXXX有限公司 版权所有</div>
+			<div class="copy">版权所有：吉林省建设厅</div>
 			<!--  End Copyright Line -->
 	
 		</div>

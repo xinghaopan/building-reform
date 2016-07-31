@@ -1,6 +1,7 @@
 package com.cc.buildingReform.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
+import com.cc.buildingReform.form.Department;
 import com.cc.buildingReform.form.Quota;
 import com.cc.buildingReform.form.User;
 import com.cc.buildingReform.service.DepartmentService;
@@ -48,7 +50,7 @@ public class QuotaController {
 	@RequestMapping("/bk/quota/list/{mid}")
 	public String list(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "year", required = false) Integer year, 
-			@RequestParam(value = "departmentId", required = false) String departmentId, 
+			@RequestParam(value = "fatherId", required = false) String fatherId, 
 			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		try {
 			User user = (User) request.getSession().getAttribute("loginUser");
@@ -57,14 +59,25 @@ public class QuotaController {
 				year = Quota.getCurrentYear();
 			}
 			
-			if (departmentId == null) {
-				departmentId = user.getDepartmentId();
+			if (fatherId == null || fatherId == "") {
+				fatherId = user.getDepartmentId();
+				model.addAttribute("list", quotaService.findByDepartmentId(year, fatherId));
+			} else {
+				model.addAttribute("list", quotaService.findByFatherDepartmentId(year, fatherId));
 			}
 			
+			Department userDepartment = departmentService.findById(user.getDepartmentId());
+			if (userDepartment != null && userDepartment.getIsWork() == 1) {
+				if (fatherId.equals(user.getDepartmentId())) {
+					List<Department> l = departmentService.findByFatherId(fatherId);
+					if (l != null && !l.isEmpty() && l.get(0).getId().length() != 10) {
+						model.addAttribute("isDistribute", 1);
+					}
+				}
+			}
+			
+			
 			model.addAttribute("mid", mid);
-			model.addAttribute("departmentId", departmentId);
-			model.addAttribute("userDepartment", departmentService.findById(user.getDepartmentId()));
-			model.addAttribute("list", quotaService.findByFatherDepartmentId(year, user.getDepartmentId()));
 			model.addAttribute("dicList", dicService.findAll());
 			model.addAttribute("year", year);
 			model.addAttribute("user", user);

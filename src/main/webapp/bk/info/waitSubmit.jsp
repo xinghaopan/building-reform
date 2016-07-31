@@ -75,7 +75,7 @@
 								<td class="center">${sinfo.personTel}</td>
 								<td class="center">${sinfo.departmentName}</td>
 								<td class="center">
-									<a href="javascript:void(0);" url="/bk/info/submit/${mid}?id=${sinfo.id}" bname="${sinfo.personName}" class="btn-action glyphicons pencil btn-success action-submit"><i></i></a>
+									<a href="javascript:void(0);" url="/bk/info/submit/${mid}?id=${sinfo.id}" bname="${sinfo.personName}" class="btn-action glyphicons upload btn-success action-submit"><i></i></a>
 									<a href="/bk/info/edit/${mid}?id=${sinfo.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
 									<a href="javascript:void(0);" url="/bk/info/del/${mid}?id=${sinfo.id}" bname="${sinfo.personName}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
 								</td>

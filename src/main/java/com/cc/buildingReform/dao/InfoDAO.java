@@ -107,12 +107,44 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		
 	}
 	
+	public int getCountByDepartmentId(Integer year, List<Integer> state, String departmentIdList) {
+		Criteria criteria = this.getSession().createCriteria(Info.class);
+		
+		criteria.add(Restrictions.eq("planYear", year));
+		if (state != null && !state.isEmpty()) {
+			criteria.add(Restrictions.in("state", state));
+		}
+		criteria.add(Restrictions.eq("departmentId", departmentIdList));
+		
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Info> findByDepartmentId(Integer year, List<Integer> state, String departmentIdList, int firstResult, int maxResult) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+		
+		criteria.add(Restrictions.eq("planYear", year));
+		if (state != null && !state.isEmpty()) {
+			criteria.add(Restrictions.in("state", state));
+		}
+		criteria.add(Restrictions.eq("departmentId", departmentIdList));
+
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+		
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+		
+		return (List<Info>) criteria.list();
+		
+	}
+	
 	public int getCountByAuditDepartmentId(Integer year, String departmentId) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
 		
 		criteria.add(Restrictions.eq("planYear", year));
 		criteria.add(Restrictions.eq("auditDepartmentId", departmentId));
-		
+		criteria.add(Restrictions.eq("state", departmentId.length() * 10));
 		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 	
@@ -122,7 +154,7 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		
 		criteria.add(Restrictions.eq("planYear", year));
 		criteria.add(Restrictions.eq("auditDepartmentId", departmentId));
-
+		criteria.add(Restrictions.eq("state", departmentId.length() * 10));
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
 		

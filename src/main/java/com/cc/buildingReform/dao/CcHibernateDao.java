@@ -178,6 +178,11 @@ public abstract class CcHibernateDao<M extends java.io.Serializable, PK extends 
 	}
 
 	@SuppressWarnings("unchecked")
+	public List<Object[]> listSql(final String hql) {
+		return getSession().createSQLQuery(hql).list();
+	}
+
+	@SuppressWarnings("unchecked")
 	public List<M> list(final String hql, final int position, final int pageSize,
 			final Object... paramlist) {
 		Query query = getSession().createQuery(hql);

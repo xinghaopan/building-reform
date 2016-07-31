@@ -32,6 +32,7 @@ import com.cc.buildingReform.form.Department;
 import com.cc.buildingReform.form.Info;
 import com.cc.buildingReform.form.Quota;
 import com.cc.buildingReform.form.User;
+import com.cc.buildingReform.service.AuditService;
 import com.cc.buildingReform.service.DepartmentService;
 import com.cc.buildingReform.service.DicService;
 import com.cc.buildingReform.service.InfoService;
@@ -50,6 +51,9 @@ public class InfoController {
 
 	@Autowired
 	private DepartmentService departmentService;
+
+	@Autowired
+	private AuditService auditService;
 
 	private static Logger log = LoggerFactory.getLogger(InfoController.class);
 	
@@ -108,6 +112,90 @@ public class InfoController {
 		return "/bk/info/list" + path;
 	}
 
+	@Permissions(target = "loginUser", url = "/index")
+	@RequestMapping("/bk/info/auditInfo/{mid}")
+	public String auditInfo(@PathVariable("mid") Integer mid, 
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+			@RequestParam(value = "count", required = false) Integer count,
+			HttpServletRequest request, Model model) throws Exception {
+		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
+			if (year == null) {
+				year = Quota.getCurrentYear();
+			}
+			
+			if (currentPage == null) {
+				currentPage = 0;
+			}
+			
+			if (count == null || count == 0) {
+				count = 10;
+			}
+			
+			int maxCount = infoService.getCountByAuditInfo(year, user);
+			int maxPage = (maxCount - 1) / count + 1;
+			
+			model.addAttribute("count", count);
+			model.addAttribute("maxPage", maxPage);
+			model.addAttribute("mid", mid);
+			model.addAttribute("user", user);
+			
+			model.addAttribute("list", infoService.findByAuditInfo(year, user, currentPage * count, count));
+			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
+			model.addAttribute("year", year);
+			model.addAttribute("dicList", dicService.findAll());
+		}
+		catch(Exception e) {
+			log.error("/bk/info/auditInfo/" + mid, e);
+		}
+		
+		return "/bk/info/auditInfo";
+	}
+	
+	@Permissions(target = "loginUser", url = "/index")
+	@RequestMapping("/bk/info/backInfo/{mid}")
+	public String backInfo(@PathVariable("mid") Integer mid, 
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+			@RequestParam(value = "count", required = false) Integer count,
+			HttpServletRequest request, Model model) throws Exception {
+		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
+			if (year == null) {
+				year = Quota.getCurrentYear();
+			}
+			
+			if (currentPage == null) {
+				currentPage = 0;
+			}
+			
+			if (count == null || count == 0) {
+				count = 10;
+			}
+			
+			int maxCount = infoService.getCountByBackInfo(year, user);
+			int maxPage = (maxCount - 1) / count + 1;
+			
+			model.addAttribute("count", count);
+			model.addAttribute("maxPage", maxPage);
+			model.addAttribute("mid", mid);
+			model.addAttribute("user", user);
+			
+			model.addAttribute("list", infoService.findByBackInfo(year, user, currentPage * count, count));
+			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
+			model.addAttribute("year", year);
+			model.addAttribute("dicList", dicService.findAll());
+		}
+		catch(Exception e) {
+			log.error("/bk/info/backInfo/" + mid, e);
+		}
+		
+		return "/bk/info/backInfo";
+	}
+	
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/waitSubmit/{mid}")
 	public String waitSubmit(@PathVariable("mid") Integer mid, 
@@ -190,13 +278,14 @@ public class InfoController {
 	
 	@Permissions(target = "loginUser", url = "")
 	@RequestMapping(value = "/bk/info/submit/{mid}")
-	public void submit(@PathVariable("mid") Integer mid, @RequestParam("id") Integer id, Model model, 
+	public void submit(@PathVariable("mid") Integer mid, @RequestParam("id") Integer id, 
+			@RequestParam(value = "content",required = false) String content, Model model, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int msg = 1;
 		try {
 			User user = (User) request.getSession().getAttribute("loginUser");
 			
-			infoService.submit(user, id);
+			infoService.submit(user, id, content);
 		} catch (Exception e) {
 			msg = 0;
 			log.error("/bk/info/del?id=" + id, e);
@@ -213,6 +302,47 @@ public class InfoController {
 				else if (e.getMessage().equals("-3")) {
 					msg = -1;
 					log.warn("/bk/info/del?id=" + id, "上级机构不存在！！！");
+				}
+				else if (e.getMessage().equals("-4")) {
+					msg = -1;
+					log.warn("/bk/info/del?id=" + id, "没有权限进行审核操作！！！");
+				}
+				else {
+					msg = 0;
+					log.error("/bk/info/del?id=" + id, e);
+				}
+			}
+			else {
+				msg = 0;
+				log.error("/bk/info/del?id=" + id, e);
+			}
+		}
+		
+		Common.print(response, msg);
+	}
+	
+	@Permissions(target = "loginUser", url = "")
+	@RequestMapping(value = "/bk/info/back/{mid}")
+	public void back(@PathVariable("mid") Integer mid, @RequestParam("id") Integer id, 
+			@RequestParam(value = "content",required = false) String content, Model model, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int msg = 1;
+		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
+			infoService.back(user, id, content);
+		} catch (Exception e) {
+			msg = 0;
+			log.error("/bk/info/del?id=" + id, e);
+			
+			if (e.getMessage() != null) {
+				if (e.getMessage().equals("-1")) {
+					msg = -1;
+					log.warn("/bk/info/del?id=" + id, "退回信息错误！！！");
+				}
+				else if (e.getMessage().equals("-2")) {
+					msg = -1;
+					log.warn("/bk/info/del?id=" + id, "退回信息状态错误！！！");
 				}
 				else if (e.getMessage().equals("-4")) {
 					msg = -1;
@@ -262,13 +392,17 @@ public class InfoController {
 			}
 			
 			Department department = departmentService.findById(user.getDepartmentId());
-			Department fatherDepartment = departmentService.findById(department.getFatherId());
+			List<Department> sonDepartmentList = departmentService.findByFatherId(department.getId());
 			
 			model.addAttribute("mid", mid);
 			model.addAttribute("info", info);
 			
+			if (info.getId() != null && info.getId() != 0) {
+				model.addAttribute("auditList", auditService.findByInfoId(info.getId()));
+			}
+			model.addAttribute("user", user);
 			model.addAttribute("department", department);
-			model.addAttribute("fatherDepartment", fatherDepartment);
+			model.addAttribute("sonDepartmentList", sonDepartmentList);
 			model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {

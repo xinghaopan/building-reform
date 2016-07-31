@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<div id="footer">信息管理：		地址：		电话：		技术支持：xxxxxxxx</div>
+<div id="footer">版权所有：吉林省建设厅</div>
 
 </body>
 </html>

@@ -35,6 +35,21 @@ public class Quota implements Serializable {
 	@Column(name = "QUOTA_DEPARTMENT_NAME")
 	private String departmentName;
 
+	@Column(name = "QUOTA_DEPARTMENT_IS_STATISTICS")
+	private Integer departmentIsStatistics;
+	
+	@Column(name = "QUOTA_BEGIN_NUM")
+	private Integer beginNum;
+
+	@Column(name = "QUOTA_END_NUM")
+	private Integer endNum;
+	
+	@Column(name = "QUOTA_ACCEPTANCE_NUM")
+	private Integer acceptanceNum;
+	
+	@Column(name = "QUOTA_FUND_SEND_NUM")
+	private Integer fundSendNum;
+	
 	@Column(name = "QUOTA_NUM")
 	private Integer num;
 	
@@ -77,6 +92,46 @@ public class Quota implements Serializable {
 
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
+	}
+
+	public Integer getDepartmentIsStatistics() {
+		return departmentIsStatistics;
+	}
+
+	public void setDepartmentIsStatistics(Integer departmentIsStatistics) {
+		this.departmentIsStatistics = departmentIsStatistics;
+	}
+
+	public Integer getBeginNum() {
+		return beginNum;
+	}
+
+	public void setBeginNum(Integer beginNum) {
+		this.beginNum = beginNum;
+	}
+
+	public Integer getEndNum() {
+		return endNum;
+	}
+
+	public void setEndNum(Integer endNum) {
+		this.endNum = endNum;
+	}
+
+	public Integer getAcceptanceNum() {
+		return acceptanceNum;
+	}
+
+	public void setAcceptanceNum(Integer acceptanceNum) {
+		this.acceptanceNum = acceptanceNum;
+	}
+
+	public Integer getFundSendNum() {
+		return fundSendNum;
+	}
+
+	public void setFundSendNum(Integer fundSendNum) {
+		this.fundSendNum = fundSendNum;
 	}
 
 	public Integer getNum() {

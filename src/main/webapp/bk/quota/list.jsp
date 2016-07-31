@@ -49,7 +49,7 @@
 			           		<c:if test="${fn:length(user.departmentId) == 2}">
 				           		<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
 				           	</c:if>
-				           	<c:if test="${userDepartment.isWork == 1 && fn:length(user.departmentId) != 10}">
+				           	<c:if test="${isDistribute == 1}">
 				           		<a href="/bk/quota/distribute/${mid}" class="btn btn-icon btn-info glyphicons circle_ok"><i></i>指标发放</a>
 				           	</c:if>
 			           	</div>
@@ -64,8 +64,10 @@
 							<th class="center">机构</th>
 							<th class="center">年度</th>
 							<th class="center">指标数量</th>
-							<th class="center">剩余数量</th>
-							<th class="center">完成百分百</th>
+							<th class="center">开工数量</th>
+							<th class="center">竣工数量</th>
+							<th class="center">验收数量</th>
+							<th class="center">完成度</th>
 							<th class="center">发放日期</th>
 							<th class="center" style="width: 120px;">操作</th>
 						</tr>
@@ -75,12 +77,23 @@
 							<!-- Item -->
 							<tr class="selectable">
 								<td class="center uniformjs"><input type="checkbox" /></td>
-								<td class="center">${squota.departmentName}</td>
+								<td class="center">
+									<c:choose>
+										<c:when test="${fn:length(squota.departmentId) == 10}">${squota.departmentName}</c:when>
+										<c:otherwise>
+											<a href="/bk/quota/list/${mid}?year=${year}&fatherId=${squota.departmentId}" target="_self">${squota.departmentName}</a>
+										</c:otherwise>
+									</c:choose>
+								</td>
 								<td class="center">${squota.year}</td>
 								<td class="center">${squota.num}</td>
-								<td class="center">${squota.restNum}</td>
+								<td class="center">${squota.beginNum}</td>
+								<td class="center">${squota.endNum}</td>
+								<td class="center">${squota.acceptanceNum}</td>
 								<td class="center">
-									<fmt:formatNumber value="${(squota.num - squota.restNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
+									<c:if test="${squota.num != null && squota.num != 0}">
+										<fmt:formatNumber value="${(squota.num - squota.restNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
+									</c:if>
 								</td>
 								<td class="center"><fmt:formatDate value="${squota.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></td>
 								<td class="center">

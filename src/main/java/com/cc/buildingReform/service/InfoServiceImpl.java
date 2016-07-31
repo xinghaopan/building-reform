@@ -1,6 +1,7 @@
 package com.cc.buildingReform.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cc.buildingReform.dao.AuditDAO;
 import com.cc.buildingReform.dao.DepartmentDAO;
 import com.cc.buildingReform.dao.InfoDAO;
 import com.cc.buildingReform.dao.QuotaDAO;
+import com.cc.buildingReform.form.Audit;
 import com.cc.buildingReform.form.Department;
 import com.cc.buildingReform.form.Info;
 import com.cc.buildingReform.form.Quota;
@@ -28,6 +31,9 @@ public class InfoServiceImpl implements InfoService {
 	
 	@Autowired
 	private DepartmentDAO departmentDAO;
+	
+	@Autowired
+	private AuditDAO auditDAO;
 	
 	public void save(Info info) {
 		if (info == null || info.getId() == null || info.getId() == 0) {
@@ -74,7 +80,7 @@ public class InfoServiceImpl implements InfoService {
 		infoDAO.delete(id);
 	}
 	
-	public void submit(User user, Integer id) {
+	public void submit(User user, Integer id, String content) {
 		Info info = infoDAO.get(id);
 		// 不能为空
 		if (info == null) {
@@ -125,11 +131,62 @@ public class InfoServiceImpl implements InfoService {
 					}
 				}
 			}
+			
+			// 保存审核信息
+			Audit audit = new Audit();
+			audit.setInfoId(info.getId());
+			audit.setState(1);
+			audit.setContent(content);
+			audit.setDepartmentId(info.getDepartmentId());
+			audit.setDepartmentName(info.getDepartmentName());
+			audit.setAuditDepartmentId(user.getDepartmentId());
+			audit.setAuditDepartmentName(user.getDepartmentName());
+			audit.setAuditUserId(user.getId());
+			audit.setAuditUserName(user.getTrueName());
+			audit.setDate(new Date());
+			
+			auditDAO.save(audit);
 		}
 		
 		infoDAO.saveOrUpdate(info);
 	}
 
+	public void back(User user, Integer id, String content) {
+		Info info = infoDAO.get(id);
+		// 不能为空
+		if (info == null) {
+			throw new RuntimeException("-1");	// 提交的信息错误
+		}
+		
+		// 状态只能是 >= 编辑状态 并且 不能是结束状态
+		if (!info.getState().equals(Info.STATE_SUBMIT_TO_TOWN) && !info.getState().equals(Info.STATE_SUBMIT_TO_COUNTY) && !info.getState().equals(Info.STATE_SUBMIT_TO_CITY) && !info.getState().equals(Info.STATE_SUBMIT_TO_PROVINCE)) {
+			throw new RuntimeException("-2");	// 信息状态错误
+		}
+		
+		if (!info.getState().equals(user.getDepartmentId().length() * 10)) {
+			throw new RuntimeException("-4");	// 审核人错误, 没有权限
+		}
+		
+		info.setState(Info.STATE_AUDIT_RETURN);
+		
+		infoDAO.saveOrUpdate(info);
+		
+		// 保存审核信息
+		Audit audit = new Audit();
+		audit.setInfoId(info.getId());
+		audit.setState(-1);
+		audit.setContent(content);
+		audit.setDepartmentId(info.getDepartmentId());
+		audit.setDepartmentName(info.getDepartmentName());
+		audit.setAuditDepartmentId(user.getDepartmentId());
+		audit.setAuditDepartmentName(user.getDepartmentName());
+		audit.setAuditUserId(user.getId());
+		audit.setAuditUserName(user.getTrueName());
+		audit.setDate(new Date());
+		
+		auditDAO.save(audit);
+	}
+	
 	private Department getFatherDepartment(String departmentId) {
 		int len = departmentId.length();
 		// 当前机构id长度必须大于2
@@ -175,7 +232,8 @@ public class InfoServiceImpl implements InfoService {
 	
 	public List<Info> findAll(Integer year, User user, int firstResult, int maxResult) {
 		List<Integer> length = new ArrayList<>();
-		length.add(10);
+		length.add(8);
+		length.add(6);
 		
 		return infoDAO.findByDepartmentId(year, null, 
 				departmentDAO.findByRange(user.getDepartmentId(), length).stream().map(Department::getId).collect(Collectors.toList()), 
@@ -202,5 +260,39 @@ public class InfoServiceImpl implements InfoService {
 	
 	public List<Info> findByWaitAudit(Integer year, User user, int firstResult, int maxResult) {
 		return infoDAO.findByAuditDepartmentId(year, user.getDepartmentId(), firstResult, maxResult);
+	}
+	
+	public int getCountByAuditInfo(Integer year, User user) {
+		List<Integer> stateList = new ArrayList<>();
+		stateList.add(Info.STATE_SUBMIT_TO_CITY);
+		stateList.add(Info.STATE_SUBMIT_TO_COUNTY);
+		stateList.add(Info.STATE_SUBMIT_TO_PROVINCE);
+		stateList.add(Info.STATE_SUBMIT_TO_TOWN);
+		
+		return infoDAO.getCountByDepartmentId(year, stateList, user.getDepartmentId());
+	}
+	
+	public List<Info> findByAuditInfo(Integer year, User user, int firstResult, int maxResult) {
+		List<Integer> stateList = new ArrayList<>();
+		stateList.add(Info.STATE_SUBMIT_TO_CITY);
+		stateList.add(Info.STATE_SUBMIT_TO_COUNTY);
+		stateList.add(Info.STATE_SUBMIT_TO_PROVINCE);
+		stateList.add(Info.STATE_SUBMIT_TO_TOWN);
+		
+		return infoDAO.findByDepartmentId(year, stateList, user.getDepartmentId(), firstResult, maxResult);
+	}
+	
+	public int getCountByBackInfo(Integer year, User user) {
+		List<Integer> stateList = new ArrayList<>();
+		stateList.add(Info.STATE_AUDIT_RETURN);
+		
+		return infoDAO.getCountByDepartmentId(year, stateList, user.getDepartmentId());
+	}
+	
+	public List<Info> findByBackInfo(Integer year, User user, int firstResult, int maxResult) {
+		List<Integer> stateList = new ArrayList<>();
+		stateList.add(Info.STATE_AUDIT_RETURN);
+		
+		return infoDAO.findByDepartmentId(year, stateList, user.getDepartmentId(), firstResult, maxResult);
 	}
 }

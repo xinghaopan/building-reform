@@ -33,6 +33,7 @@ import com.cc.buildingReform.form.News;
 import com.cc.buildingReform.form.User;
 import com.cc.buildingReform.service.MenuService;
 import com.cc.buildingReform.service.NewsService;
+import com.cc.buildingReform.service.QuotaService;
 
 @RestController
 public class NewsController {
@@ -41,6 +42,8 @@ public class NewsController {
 
 	@Autowired
 	private MenuService menuService;
+
+	
 
 	private static Logger log = LoggerFactory.getLogger(NewsController.class);
 	

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>吉林省农户厕所和污水改造管理系统</title>
+<title>吉林省农村厕所改造和生活污水处理信息管理系统</title>
 <link href="/css/css.css" rel="stylesheet" type="text/css" />
 <script src="/js/jquery.min.js" type="text/javascript"></script>
 </head>

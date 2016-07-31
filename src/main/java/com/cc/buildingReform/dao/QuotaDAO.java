@@ -129,4 +129,14 @@ public class QuotaDAO extends CcHibernateDao<Quota, Integer> {
 		
 		return (List<Quota>) criteria.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Quota> yearsStatistics(Integer year) {
+		Criteria criteria = getSession().createCriteria(Quota.class);
+		
+		criteria.add(Restrictions.eq("year", year));
+		criteria.add(Restrictions.eq("departmentIsStatistics", 1));
+		
+		return (List<Quota>) criteria.list();
+	}
 }

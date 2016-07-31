@@ -19,13 +19,13 @@
 			<tbody>
 				<tr class="selectable">
 					<td class="center" width="130">乡（镇、街道）：</td>
-					<td class="left">${info.fatherDepartmentName}</td>
+					<td class="left">${info.departmentName}</td>
 					<td class="left" width="200"></td>
 				</tr>
 				
 				<tr class="selectable">
 					<td class="center" width="130">村：</td>
-					<td class="left">${info.departmentName}</td>
+					<td class="left">${info.sonDepartmentName}</td>
 					<td class="left"></td>
 				</tr>
 				
@@ -248,6 +248,19 @@
 						<c:if test="${info.houseInNewImage != null && info.houseInNewImage != ''}">
 							<img src="${info.houseInNewImage}" width="200" height="150" class="img-rounded" alt=""/>
 						</c:if>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="row-fluid">
+		<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs" style="border-top:#dddddd 1px solid">
+			<tbody>
+				<tr class="selectable">
+					<td class="center" width="130">审核意见：</td>
+					<td class="left">
+						 <textarea id="auditInfo" name="auditInfo" rows="6" style="width:98%"></textarea>
 					</td>
 				</tr>
 			</tbody>

@@ -906,7 +906,7 @@ body > .container-fluid.documentation {
   height: 46px;
   padding: 0 0 0 15px;
   line-height: 46px;
-  width:270px;
+  width:370px;
 
   font-family:"Microsoft YaHei";
  
@@ -927,7 +927,7 @@ body > .container-fluid.documentation {
   margin: 0;
   position: absolute;
   float: none;
-  left: 285px;
+  left: 375px;
   top: 6px;
   display: block;
   -moz-box-shadow: 0 1px 0 #466584;
@@ -948,7 +948,7 @@ body > .container-fluid.documentation {
 }
 .navbar.main .topnav.tn1 {
   position: absolute;
-  left: 326px;
+  left: 415px;
   top: 0;
 }
 .navbar.main .topnav,
@@ -2368,7 +2368,8 @@ body > .container-fluid.documentation {
 
 }
 .breadcrumb li {
-  text-shadow: none;
+	float:left;
+  
 }
 .well {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset, 0 2px 2px rgba(0, 0, 0, 0.02) inset, 0 0 0 1px rgba(255, 255, 255, 0.9) inset, 0 1px 0 rgba(255, 255, 255, 0.3) inset;

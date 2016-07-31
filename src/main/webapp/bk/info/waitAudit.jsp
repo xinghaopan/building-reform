@@ -112,12 +112,17 @@
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	$('.action-audit-pass').live("click", function() {
+		if ($("#auditInfo").val() == "") {
+			alert("请填写审核意见！！！");
+			$('#auditInfo').focus();
+			return;
+		}
 		if( confirm('您确定审核通过此上报信息吗？') ) {
 			var url = $(this).attr("url");
 			$.ajax({
 				type : "get",
 				url : url,
-				data : "radom=" + Math.random(),
+				data : "radom=" + Math.random() + "&content=" + $("#auditInfo").val(),
 				dataType : "text",
 				success : function(msg) {
 					if (msg == "-999") {
@@ -137,6 +142,47 @@ jQuery(document).ready(function($) {
 					}
 					else if (msg == 1) {
 						alert("上报信息审核通过成功！！！");
+	            		window.location.reload();
+					}
+					else {
+						alert('审核失败！！！');
+					}
+				},
+				error : function(XMLHttpRequest, error, errorThrown) {
+					//alert("请求超时！！！");
+				}
+			});
+		}
+	});
+	
+	$('.action-audit-back').live("click", function() {
+		if ($("#auditInfo").val() == "") {
+			alert("请填写审核意见！！！");
+			$('#auditInfo').focus();
+			return;
+		}
+		if( confirm('您确定退回此上报信息吗？') ) {
+			var url = $(this).attr("url");
+			$.ajax({
+				type : "get",
+				url : url,
+				data : "radom=" + Math.random() + "&content=" + $("#auditInfo").val(),
+				dataType : "text",
+				success : function(msg) {
+					if (msg == "-999") {
+		        		outLogin();
+		        	}
+					else if (msg == -1) {
+	            		alert("退回信息错误！！！");
+					}
+					else if (msg == -2) {
+	            		alert("退回信息状态错误！！！");
+					}
+					else if (msg == -4) {
+	            		alert("没有权限进行审核操作！！！");
+					}
+					else if (msg == 1) {
+						alert("上报信息退回成功！！！");
 	            		window.location.reload();
 					}
 					else {

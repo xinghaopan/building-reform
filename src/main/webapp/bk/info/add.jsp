@@ -30,13 +30,21 @@
 				<div class="row-fluid">
 					<div>
 						<div class="control-group span5">
-							<label class="control-label span4" for="fatherDepartmentName">乡（镇、街道）：</label>
-							<div class="controls"><input class="span8" id="fatherDepartmentName" name="fatherDepartmentName" value="${fatherDepartment.name}" type="text" /></div>
+							<label class="control-label span4" for="fatherDepartmentName">本机单位：</label>
+							<div class="controls"><input class="span8" id="departmentName" name="departmentName" value="${user.departmentName}" type="text" /></div>
 						</div>
 						
 						<div class="control-group span5">
 							<label class="control-label span4" for="departmentName">村：</label>
-							<div class="controls"><input class="span8" id="departmentName" name="departmentName" value="${department.name}" type="text" /></div>
+							<div class="controls">
+								<select id="sonDepartmentId" name="sonDepartmentId" class="span8">
+									<option value="-1" selected>请选择</option>
+									<c:forEach items="${sonDepartmentList}" var="ssonDepartment">
+										<option value="${ssonDepartment.id}" <c:if test="${ssonDepartment.id == info.sonDepartmentId}">selected</c:if> >${ssonDepartment.name}</option>
+									</c:forEach>
+								</select>
+								<input id="sonDepartmentName" name="sonDepartmentName" value="${fatherDepartment.sonDepartmentName}" type="hidden" />
+							</div>
 						</div>
 					</div>
 					
@@ -266,7 +274,7 @@
 							<label class="control-label span4" for="rebuildEndDate">竣工日期：</label>
 							<div class="controls span8">
 								<div class="input-append">
-									<input type="text" id="rebuildEndDate" name="rebuildEndDate" value="<fmt:formatDate value='${info.rebuildBeginDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" /><span class="add-on glyphicons calendar"><i></i></span>
+									<input type="text" id="rebuildEndDate" name="rebuildEndDate" value="<fmt:formatDate value='${info.rebuildEndDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" /><span class="add-on glyphicons calendar"><i></i></span>
 								</div>
 							</div>
 						</div>
@@ -284,11 +292,51 @@
 						
 						<div class="control-group span5">
 							<label class="control-label span4" for="fundSendDate">省资金发放时间：</label>
-							<div class="controls">
-								<input class="span8" id="fundSendDate" name="fundSendDate" value="<fmt:formatDate value='${info.fundSendDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" type="text" />
+							<div class="controls span8">
+								<div class="input-append">
+									<input id="fundSendDate" name="fundSendDate" value="<fmt:formatDate value='${info.fundSendDate}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" type="text" /><span class="add-on glyphicons calendar"><i></i></span>
+								</div>
 							</div>
 						</div>
 					</div>
+               <script type="text/javascript">
+               $(document).ready(function() {
+            	   var date = new Date(),
+            	    	now = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+            	   
+					if ($('#rebuildBeginDate').val() == "") {
+						$('#rebuildBeginDate').val(now);
+						$('#rebuildBeginDate').daterangepicker({ singleDatePicker: true });
+						$('#rebuildBeginDate').val("");
+					} else {
+						$('#rebuildBeginDate').daterangepicker({ singleDatePicker: true });
+					}
+                  	
+					if ($('#rebuildEndDate').val() == "") {
+						$('#rebuildEndDate').val(now);
+						$('#rebuildEndDate').daterangepicker({ singleDatePicker: true });
+						$('#rebuildEndDate').val("");
+					} else {
+						$('#rebuildEndDate').daterangepicker({ singleDatePicker: true });
+					}
+					
+					if ($('#acceptanceDate').val() == "") {
+						$('#acceptanceDate').val(now);
+						$('#acceptanceDate').daterangepicker({ singleDatePicker: true });
+						$('#acceptanceDate').val("");
+					} else {
+						$('#acceptanceDate').daterangepicker({ singleDatePicker: true });
+					}
+					
+					if ($('#fundSendDate').val() == "") {
+						$('#fundSendDate').val(now);
+						$('#fundSendDate').daterangepicker({ singleDatePicker: true });
+						$('#fundSendDate').val("");
+					} else {
+						$('#fundSendDate').daterangepicker({ singleDatePicker: true });
+					}
+               });
+               </script>
                     
                     <div>	
 						<div class="control-group span5">
@@ -569,7 +617,56 @@
 			</div>
 		</div>
 		
-		
+		<c:if test="${auditList != null}">
+			<div class="widget" data-toggle="collapse-widget">
+				<div class="widget-head">
+					<p class="heading glyphicons edit"><i></i>审核信息</p>
+				</div>
+				
+				<div class="widget-body">
+					<c:forEach items="${auditList}" var="saudit">
+						<div class="row-fluid">
+							<div>
+								<div class="control-group span4">
+									<label class="control-label span4" for="auditState">审核结果：</label>
+									<div class="controls">
+										<c:choose>
+											<c:when test="${saudit.state == 1}">
+												<input class="span8" id="auditState" name="auditState" value="审核通过" type="text" />
+											</c:when>
+											<c:when test="${saudit.state == -1}">
+												<input class="span8" id="auditState" name="auditState" value="审核退回" type="text" />
+											</c:when>
+										</c:choose>
+									</div>
+								</div>
+								<div class="control-group span4">
+									<label class="control-label span4" for="auditDepartmentName">审核单位：</label>
+									<div class="controls">
+										<input class="span8" id="auditDepartmentName" name="auditDepartmentName" value="${saudit.auditDepartmentName}" type="text" />
+									</div>
+								</div>
+								<div class="control-group span4">
+									<label class="control-label span4" for="auditDate">审核时间：</label>
+									<div class="controls">
+										<input class="span8" id="auditDate" name="auditDate" value="<fmt:formatDate value='${saudit.date}' pattern='yyyy-MM-dd' type='date' dateStyle='long' />" type="text" />
+									</div>
+								</div>
+							</div>
+							
+							<div>
+								<div class="control-group span8">
+									<label class="control-label span2" for="auditDate">审核意见：</label>
+									<div class="controls">
+										<input class="span10" id="auditDate" name="auditDate" value="${saudit.content}" type="text" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+		</c:if>
 		<!-- Modal footer -->
 		<div class="modal-footer">
 			<a href="javascript:void(0);" id="btn_Submit" name="btn_Submit" class="btn btn-info" >保存</a>
@@ -582,7 +679,15 @@
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$("#btn_Submit").live("click", function() { 
+	$("#btn_Submit").click(function() { 
+		$("#btn_Submit").click = function() {return false};
+		
+		if ($('#sonDepartmentId').val() == -1) {
+			alert("请选择村！！！");
+			$('#sonDepartmentId').focus();
+			return;
+		}
+		$("#sonDepartmentName").val($("#sonDepartmentId").find("option:selected").text());
 		
 		// 农户情况
 		if (isNull($('#personGroup').val())) {

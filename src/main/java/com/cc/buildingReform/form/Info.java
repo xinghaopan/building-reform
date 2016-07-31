@@ -31,6 +31,11 @@ public class Info implements Serializable {
 	@Column(name = "INFO_ID", unique = true, nullable = false)
 	private Integer id;
 
+	@Column(name = "INFO_SON_DEPARTMENT_ID")
+	private String sonDepartmentId;
+	
+	@Column(name = "INFO_SON_DEPARTMENT_NAME")
+	private String sonDepartmentName;
 	/**
 	 * 农户情况
 	 */
@@ -187,9 +192,6 @@ public class Info implements Serializable {
 	@Column(name = "INFO_AUDIT_DEPARTMENT_ID")
 	private String auditDepartmentId;
 
-	@Column(name = "INFO_FATHER_DEPARTMENT_NAME")
-	private String fatherDepartmentName;
-
 	@Column(name = "INFO_DEPARTMENT_ID")
 	private String departmentId;
 
@@ -234,6 +236,22 @@ public class Info implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getSonDepartmentId() {
+		return sonDepartmentId;
+	}
+
+	public void setSonDepartmentId(String sonDepartmentId) {
+		this.sonDepartmentId = sonDepartmentId;
+	}
+
+	public String getSonDepartmentName() {
+		return sonDepartmentName;
+	}
+
+	public void setSonDepartmentName(String sonDepartmentName) {
+		this.sonDepartmentName = sonDepartmentName;
 	}
 
 	public String getPersonGroup() {
@@ -586,14 +604,6 @@ public class Info implements Serializable {
 
 	public void setAuditDepartmentId(String auditDepartmentId) {
 		this.auditDepartmentId = auditDepartmentId;
-	}
-
-	public String getFatherDepartmentName() {
-		return fatherDepartmentName;
-	}
-
-	public void setFatherDepartmentName(String fatherDepartmentName) {
-		this.fatherDepartmentName = fatherDepartmentName;
 	}
 
 	public String getDepartmentId() {

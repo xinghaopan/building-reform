@@ -8,9 +8,9 @@
 
 <div id="content">
 	<div class="loginbar">
-		<div class="loginbar_name"><input type="text" id="userName" name="userName" value="" class="biao1" /></div>
-		<div class="loginbar_password"><input type="password" id="userPassword" name="userPassword" value="" class="biao1" /></div>
-		<div class="loginbar_codes"><input type="text" id="codes" name="codes" maxlength="4" value="" class="biao2" /></div>
+		<div class="loginbar_name"><input type="text" id="userName" name="userName" value="admin" class="biao1" /></div>
+		<div class="loginbar_password"><input type="password" id="userPassword" name="userPassword" value="123456" class="biao1" /></div>
+		<div class="loginbar_codes"><input type="text" id="codes" name="codes" maxlength="4" value="1234" class="biao2" /></div>
 		<div class="loginbar_images"><img id="kaptchaImage" class="kaptchaImage" /></div>
 		<div class="loginbar_button"><input id="btn_login" name="btn_login" type="image" class="web1" src="/images/index_03.jpg" /></div>
 	</div>

@@ -35,7 +35,7 @@
            				</div>
 						
 			           	<div class=" pull-right">
-				           	<a href="#modal-simple" data-toggle="modal" url="/bk/news/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
+				           	<a href="/bk/news/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
 			           	</div>
 					</div>
 	           </div>

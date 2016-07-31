@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cc.buildingReform.Common.Common;
 import com.cc.buildingReform.form.News;
+import com.cc.buildingReform.form.Quota;
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.service.MenuService;
 import com.cc.buildingReform.service.NewsService;
+import com.cc.buildingReform.service.QuotaService;
+import com.cc.buildingReform.service.ViewStateService;
 
 
 @RestController
@@ -30,6 +33,12 @@ public class MainController {
 	@Autowired
 	private MenuService menuService;
 	
+	@Autowired
+	private ViewStateService viewStateService;
+	
+	@Autowired
+	private QuotaService quotaService;
+	
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request, Model model)	throws Exception {
 		try {
@@ -40,8 +49,9 @@ public class MainController {
 			model.addAttribute("zcwj", newsService.findByMid(16, 1, 0, 5));
 			model.addAttribute("xtgx", newsService.findByMid(15, 1, 0, 5));
 			model.addAttribute("xzzq", newsService.findByMid(14, 1, 0, 5));
-			
+			model.addAttribute("statistic", quotaService.yearsStatistics(Quota.getCurrentYear(), 13));
 			long endTime = System.currentTimeMillis();
+			viewStateService.findByFatherId(2016, "");
 			log.warn("首页加载耗时： " + (endTime-starTime));
 		}
 		catch(Exception e) {
@@ -73,6 +83,7 @@ public class MainController {
 			model.addAttribute("menu", menuService.findById(mid));
 			model.addAttribute("path", path);
 			model.addAttribute("list", newsService.findByMid(mid, 1, currentPage * count, count));
+			model.addAttribute("statistic", quotaService.yearsStatistics(Quota.getCurrentYear(), 13));
 			model.addAttribute("pages", Common.frontPages(mid, currentPage, maxPage, "", ""));
 		}
 		catch(Exception e) {
@@ -102,6 +113,7 @@ public class MainController {
 			model.addAttribute("news", news);
 			model.addAttribute("mid", mid);
 			model.addAttribute("menu", menuService.findById(mid));
+			model.addAttribute("statistic", quotaService.yearsStatistics(Quota.getCurrentYear(), 13));
 			model.addAttribute("path", path);
 			
 		}

@@ -7,7 +7,7 @@
 <!--[if gt IE 8]> <html class="ie gt-ie8"> <![endif]-->
 <!--[if !IE]><!--><html><!-- <![endif]-->
 <head>
-	<title>吉林省农户厕所和污水改造管理系统</title>
+	<title>吉林省农村厕所改造和生活污水处理信息管理系统</title>
 	
 	<!-- Meta -->
 	<meta charset="UTF-8" />
@@ -74,6 +74,10 @@
     <link rel="stylesheet" href="/css/zTreeStyle/metro.css">
     <script src="/js/jquery.ztree.all.js"></script>
     
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker-bs3.css" />
+    <script type="text/javascript" src="/js/moment.js"></script>
+    <script type="text/javascript" src="/js/daterangepicker.js"></script>
 </head>
 <%
 	User user = (User)request.getSession().getAttribute("loginUser"); 
@@ -228,15 +232,15 @@ jQuery(document).ready(function($) {
 			// 初始化 顶部菜单
 			var topMenu = "";
 			for (var i = 0; i < allMenus.length; i ++) {
-				if (allMenus[i].type >= 1) {
+				//if (allMenus[i].type >= 1) {
 					if (allMenus[i].fatherId == 0) {
-						topMenu += "<li class='hidden-phone'><a href='javascript:void(0);' menuId=" + allMenus[i].id + " class='topMenu glyphicons home'><i></i><span>" + allMenus[i].backName + "</span></a></li>";
+						topMenu += "<li class='hidden-phone'><a href='javascript:void(0);' menuId=" + allMenus[i].id + " class='topMenu glyphicons " + allMenus[i].smallImage + "'><i></i><span>" + allMenus[i].backName + "</span></a></li>";
 							
 						if (tIndex == 0) {
 							tIndex = allMenus[i].id; 
 						}
 					}
-				}
+				//}
 			}
 			
 			$(".tn1").html(topMenu);
@@ -257,9 +261,9 @@ jQuery(document).ready(function($) {
 			var thisMenu = "";
 			if (allMenus[i].fatherId == tIndex) {
 				if (allMenus[i].id == mid) {
-					thisMenu = "<li class='glyphicons display active'><a href='" + allMenus[i].backLink + "/" + allMenus[i].id + "'><i></i><span>" + allMenus[i].backName  + "</span></a></li>";
+					thisMenu = "<li class='glyphicons " + allMenus[i].smallImage  + " active'><a href='" + allMenus[i].backLink + "/" + allMenus[i].id + "'><i></i><span>" + allMenus[i].backName  + "</span></a></li>";
 				} else {
-					thisMenu = "<li class='glyphicons bin'><a href='" + allMenus[i].backLink + "/" + allMenus[i].id + "'><i></i><span>" + allMenus[i].backName  + "</span></a></li>";
+					thisMenu = "<li class='glyphicons " + allMenus[i].smallImage  + "'><a href='" + allMenus[i].backLink + "/" + allMenus[i].id + "'><i></i><span>" + allMenus[i].backName  + "</span></a></li>";
 				}
 				leftFrameMenu += thisMenu;
 			}
@@ -315,7 +319,7 @@ jQuery(document).ready(function($) {
 	<div class="navbar main hidden-print">
 	
 		<!-- Brand -->
-		<a href="javascript:void(0);" class="appbrand pull-left"><span>吉林省农户厕所和污水改造管理系统</span></a>
+		<a href="javascript:void(0);" class="appbrand pull-left"><span>吉林省农村厕所改造和生活污水处理信息管理系统</span></a>
 		
 		<!-- Menu Toggle Button -->
 		<button type="button" class="btn btn-navbar">

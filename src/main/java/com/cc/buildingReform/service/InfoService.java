@@ -23,9 +23,19 @@ public interface InfoService {
 	
 	public List<Info> findByEdit(Integer year, User user, int firstResult, int maxResult);
 	
-	public void submit(User user, Integer id);
+	public void submit(User user, Integer id, String content);
+	
+	public void back(User user, Integer id, String content);
 	
 	public int getCountByWaitAudit(Integer year, User user);
 	
 	public List<Info> findByWaitAudit(Integer year, User user, int firstResult, int maxResult);
+	
+	public int getCountByAuditInfo(Integer year, User user);
+	
+	public List<Info> findByAuditInfo(Integer year, User user, int firstResult, int maxResult);
+	
+	public int getCountByBackInfo(Integer year, User user);
+	
+	public List<Info> findByBackInfo(Integer year, User user, int firstResult, int maxResult);
 }

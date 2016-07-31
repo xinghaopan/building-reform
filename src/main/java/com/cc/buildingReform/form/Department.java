@@ -29,6 +29,9 @@ public class Department implements Serializable {
 	@Column(name = "DEPARTMENT_IS_WORK")
 	private Integer isWork;
 
+	@Column(name = "DEPARTMENT_IS_STATISTICS	")
+	private Integer isStatistics;
+
 	@Column(name = "DEPARTMENT_ORDER")
 	private Integer order;
 
@@ -73,6 +76,14 @@ public class Department implements Serializable {
 
 	public void setIsWork(Integer isWork) {
 		this.isWork = isWork;
+	}
+
+	public Integer getIsStatistics() {
+		return isStatistics;
+	}
+
+	public void setIsStatistics(Integer isStatistics) {
+		this.isStatistics = isStatistics;
 	}
 
 	public Integer getOrder() {

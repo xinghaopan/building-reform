@@ -27,6 +27,13 @@
 		<label class="control-label span3">父类名称：</label>
 		<div class="controls"><input class="span9" id="fatherName" name="fatherName" type="text" value="${fatherName}" /></div>
 		</div>
+		
+		<!-- Group -->
+		<div class="control-group span6">
+			<label class="control-label span3" for="order">排序：</label>
+			<div class="controls"><input class="span9" id="order" name="order" type="text" value="${department.order}" /></div>
+		</div>
+		<!-- // Group END -->
 	</div>
 	
 	<div class="row-fluid">
@@ -52,7 +59,7 @@
 		<div>
 		<!-- Group -->
 		<div class="control-group span6">
-			<label class="control-label span3" for="smallImage">是否执行审核：</label>
+			<label class="control-label span3" for="isWork">是否执行审核：</label>
 			<div class="controls">
 				<select id="isWork" name="isWork" class="span9">
 					<option value="1" selected>是</option>
@@ -64,8 +71,13 @@
 		
 		<!-- Group -->
 		<div class="control-group span6">
-			<label class="control-label span3" for="order">排序：</label>
-			<div class="controls"><input class="span9" id="order" name="order" type="text" value="${department.order}" /></div>
+			<label class="control-label span3" for="smallImage">是否统计：</label>
+			<div class="controls">
+				<select id="isStatistics" name="isStatistics" class="span9">
+					<option value="1" selected>是</option>
+					<option value="0" <c:if test="${department.isStatistics == null || department.isStatistics == 0}">selected</c:if> >否</option>
+				</select>
+			</div>
 		</div>
 		<!-- // Group END -->
 		</div>
