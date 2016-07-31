@@ -206,7 +206,7 @@ public class UserController {
 		try {
 			String kaptchaExpected = (String) request.getSession().getAttribute(
 					com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-			if (codes != null && (codes.equals("1234") || codes.equals(kaptchaExpected))) {
+			if (codes != null && (codes.equals(kaptchaExpected))) {
 				User user = userService.findByName(0, name);
 				if (user == null) {
 					msg = -1;
