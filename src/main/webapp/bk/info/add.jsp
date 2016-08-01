@@ -30,7 +30,7 @@
 				<div class="row-fluid">
 					<div>
 						<div class="control-group span5">
-							<label class="control-label span4" for="fatherDepartmentName">本机单位：</label>
+							<label class="control-label span4" for="fatherDepartmentName">本级单位：</label>
 							<div class="controls"><input class="span8" id="departmentName" name="departmentName" value="${user.departmentName}" type="text" /></div>
 						</div>
 						

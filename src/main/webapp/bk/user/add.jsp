@@ -31,6 +31,24 @@
 		</div>
 	</div>
 		
+	<div class="row-fluid" style="display:none;">
+		<div>
+		<!-- Group -->
+		<div class="control-group span6">
+			<label class="control-label span3" for="departmentId">departmentId：</label>
+			<div class="controls"><input class="span9" id="departmentId" name="departmentId" type="text" value="${user.departmentId}" /></div>
+		</div>
+		<!-- // Group END -->
+		
+		<!-- Group -->
+		<div class="control-group span6">
+			<label class="control-label span3" for="departmentName">departmentName：</label>
+			<div class="controls"><input class="span9" id="departmentName" name="departmentName" type="text" value="${user.departmentName}" /></div>
+		</div>
+		<!-- // Group END -->
+		</div>
+	</div>
+	
 	<div class="row-fluid">
 		<div>
 		<!-- Group -->

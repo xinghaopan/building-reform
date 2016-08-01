@@ -102,8 +102,9 @@ public class DepartmentDAO extends CcHibernateDao<Department, String> {
 		Criteria criteria = getSession().createCriteria(Department.class);
 		
 		criteria.add(Restrictions.eq("isStatistics", 1));
-		criteria.add(Restrictions.not(Restrictions.in("id", id)));
-		
+		if (id != null && !id.isEmpty()) {
+			criteria.add(Restrictions.not(Restrictions.in("id", id)));
+		}
 		criteria.addOrder(Order.asc("length"));
 		criteria.addOrder(Order.asc("id"));
 		

@@ -9,7 +9,7 @@
 		  <div class="separator bottom"></div>
 			
 			<!--  Copyright Line -->
-			<div class="copy">版权所有：吉林省建设厅</div>
+			<div class="copy">版权所有：吉林省住房和城乡建设厅</div>
 			<!--  End Copyright Line -->
 	
 		</div>
