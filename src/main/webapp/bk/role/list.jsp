@@ -45,6 +45,7 @@
 						<tr>
 							<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
 							<th class="center">角色名称</th>
+							<th class="center">默认页面</th>
 							<th class="center">排序</th>
 							<th class="center" style="width: 120px;">操作</th>
 						</tr>
@@ -55,6 +56,7 @@
 							<tr class="selectable">
 								<td class="center uniformjs"><input type="checkbox" /></td>
 								<td class="center">${srole.name}</td>
+								<td class="center">${srole.defaultPage}</td>
 								<td class="center">${srole.order}</td>
 								<td class="center">
 									<a href="/bk/role/edit/${mid}?id=${srole.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>

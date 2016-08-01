@@ -44,6 +44,15 @@
 					</div>
 				</div>
                    
+                <div class="row-fluid">
+					<div class="control-group span2"></div>
+					
+					<div class="control-group span8">
+						<label class="control-label span2" for="defaultPage">默认页面：</label>
+						<div class="controls"><input class="span6"  id="defaultPage" name="defaultPage" value="${role.defaultPage}" type="text" /></div>
+					</div>
+				</div>
+				
                	<div class="row-fluid">
 					<div class="control-group span2"></div>
 					

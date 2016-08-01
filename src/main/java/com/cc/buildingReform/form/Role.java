@@ -28,6 +28,9 @@ public class Role implements Serializable {
 	@Column(name = "ROLE_ORDER")
 	private Integer order;
 
+	@Column(name = "ROLE_DEFAULT_PAGE")
+	private String defaultPage;
+
 	public Integer getId() {
 		return id;
 	}
@@ -58,5 +61,13 @@ public class Role implements Serializable {
 
 	public void setOrder(Integer order) {
 		this.order = order;
+	}
+
+	public String getDefaultPage() {
+		return defaultPage;
+	}
+
+	public void setDefaultPage(String defaultPage) {
+		this.defaultPage = defaultPage;
 	}
 }

@@ -3,6 +3,7 @@ package com.cc.buildingReform.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cc.buildingReform.Common.Common;
 import com.cc.buildingReform.form.News;
 import com.cc.buildingReform.form.Quota;
+import com.cc.buildingReform.form.User;
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.service.MenuService;
 import com.cc.buildingReform.service.NewsService;
 import com.cc.buildingReform.service.QuotaService;
+import com.cc.buildingReform.service.RoleService;
 import com.cc.buildingReform.service.ViewStateService;
 
 
@@ -38,6 +41,9 @@ public class MainController {
 	
 	@Autowired
 	private QuotaService quotaService;
+	
+	@Autowired
+	private RoleService roleService;
 	
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request, Model model)	throws Exception {
@@ -132,9 +138,12 @@ public class MainController {
 	 */
 	@RequestMapping("/bk/main")
 	@Permissions(target = "loginUser", url = "/index")
-	public String list()	throws Exception {
+	public String list(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
-			   
+			User user = (User)request.getSession().getAttribute("loginUser");
+			if (user.getRole().getDefaultPage() != null && user.getRole().getDefaultPage() != "") {
+				return "redirect:" + user.getRole().getDefaultPage();
+			}
 		}
 		catch(Exception e) {
 			log.error("/bk/main", e);
