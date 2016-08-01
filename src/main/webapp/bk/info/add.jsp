@@ -20,7 +20,7 @@
 	
 	 	<form id="infoForm" method="post" name="infoForm" action="/bk/info/save/${mid}">
 	 	<input id="id" name="id" value="${info.id}" type="hidden" />
-
+		<input id="state" name="state" value="${info.state}" type="hidden" />
 		<div class="widget" data-toggle="collapse-widget">
 			<div class="widget-head">
 				<p class="heading glyphicons folder_open"><i></i>农户情况</p>
@@ -38,7 +38,7 @@
 							<label class="control-label span4" for="departmentName">村：</label>
 							<div class="controls">
 								<select id="sonDepartmentId" name="sonDepartmentId" class="span8">
-									<option value="-1" selected>请选择</option>
+									<option value="-1">请选择</option>
 									<c:forEach items="${sonDepartmentList}" var="ssonDepartment">
 										<option value="${ssonDepartment.id}" <c:if test="${ssonDepartment.id == info.sonDepartmentId}">selected</c:if> >${ssonDepartment.name}</option>
 									</c:forEach>
@@ -65,7 +65,7 @@
 							<label class="control-label span4" for="personSex">性别：</label>
 							<div class="controls">
 								<select id="personSex" name="personSex" class="span8">
-									<option value="-1" selected>请选择</option>
+									<option value="-1">请选择</option>
 									<option value="1" <c:if test="${info.personSex == 1}">selected</c:if>>男</option>
 									<option value="2" <c:if test="${info.personSex == 2}">selected</c:if>>女</option>
 								</select>
@@ -173,7 +173,7 @@
 							<label class="control-label span4" for="toiletType">改厕类型：</label>
 							<div class="controls">
 								<select id="toiletType" name="toiletType" class="span8">
-									<option value="-1" selected>请选择</option>
+									<option value="-1">请选择</option>
 									<c:forEach items="${dicList}" var="sdic">
 										<c:if test="${sdic.keyValue == 'toiletType'}">
 											<option value="${sdic.value}" <c:if test="${sdic.value == info.toiletType}">selected</c:if> >${sdic.name}</option>
@@ -189,7 +189,7 @@
 							<label class="control-label span4" for="rebuildMode">改造模式：</label>
 							<div class="controls">
 								<select id="rebuildMode" name="rebuildMode" class="span8">
-									<option value="-1" selected>请选择</option>
+									<option value="-1">请选择</option>
 									<c:forEach items="${dicList}" var="sdic">
 										<c:if test="${sdic.keyValue == 'rebuildMode'}">
 											<option value="${sdic.value}" <c:if test="${sdic.value == info.rebuildMode}">selected</c:if> >${sdic.name}</option>
@@ -207,7 +207,7 @@
 							<label class="control-label span4" for="username">房屋改造方式：</label>
 							<div class="controls">
 								<select id="buildMode" name="buildMode" class="span8">
-									<option value="-1" selected>请选择</option>
+									<option value="-1">请选择</option>
 									<c:forEach items="${dicList}" var="sdic">
 										<c:if test="${sdic.keyValue == 'buildMode'}">
 											<option value="${sdic.value}" <c:if test="${sdic.value == info.buildMode}">selected</c:if> >${sdic.name}</option>
@@ -249,7 +249,7 @@
 							<label class="control-label span2" for="planYear">计划改厕年份：</label>
 							<div class="controls">
 								<select id="planYear" name="planYear" class="span4">
-									<option value="-1" selected>请选择</option>
+									<option value="-1">请选择</option>
 									<c:forEach items="${dicList}" var="sdic">
 										<c:if test="${sdic.keyValue == 'planYear'}">
 											<option value="${sdic.value}" <c:if test="${sdic.value == info.planYear}">selected</c:if> >${sdic.name}</option>
@@ -679,6 +679,35 @@
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	var edit = '${info.state}';
+	
+	$.fn.selectReadOnly=function(){
+        var tem=$(this).children('option').index($(this).children("option:selected"));
+        $(this).change(function(){
+              $(this).children('option').eq(tem).attr("selected",true);
+        });
+    }
+    
+	// 当前信息状态为审核结束，则基本信息不能修改
+	if (edit == 10) {
+		$('#sonDepartmentId').selectReadOnly();
+		$('#personGroup').attr("readonly", "readonly");
+		$('#personName').attr("readonly", "readonly");
+		$('#personSex').selectReadOnly();
+		$('#personNation').attr("readonly", "readonly");
+		$('#personId').attr("readonly", "readonly");
+		$('.personImg').attr("disabled", true);
+		$('#personAddr').attr("readonly", "readonly");
+		$('#personNum').attr("readonly", "readonly");
+		$('#personTel').attr("readonly", "readonly");
+		$('#houseAge').attr("readonly", "readonly");
+		$('#houseOldType').attr("readonly", "readonly");
+		$('#planYear').selectReadOnly();
+		$('#fillUserName').attr("readonly", "readonly");
+		$('#fillUserTel').attr("readonly", "readonly");
+		$('#fillUserUnit').attr("readonly", "readonly");
+	}
+	
 	$("#btn_Submit").click(function() { 
 		$("#btn_Submit").click = function() {return false};
 		
@@ -760,7 +789,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 
-		
+		/*
 		// 改造情况
 		if ($('#toiletType').val() == -1) {
 			alert("请选择改厕类型！！！");
@@ -794,7 +823,7 @@ jQuery(document).ready(function($) {
 			$('#houseNewSize1').focus();
 			return;
 		} 
-		
+		*/
 		
 		// 进度情况
 		if ($('#planYear').val() == -1) {
@@ -802,7 +831,7 @@ jQuery(document).ready(function($) {
 			$('#planYear').focus();
 			return;
 		}
-		
+		/*
 		if (!isDate($('#rebuildBeginDate').val())) {
 			alert("开工日期只能是日期类型！！！");
 			$('#rebuildBeginDate').focus();
@@ -899,7 +928,7 @@ jQuery(document).ready(function($) {
 		if ($("#houseInNewImg").val() != "" && !validate_img(document.forms["infoForm"]["houseInNewImg"].files[0], "厕所室内照片（改厕后）")) {
 			return;
 		}
-		
+		*/
 		
 		// 填报人
 		if (isNull($('#fillUserName').val())) {

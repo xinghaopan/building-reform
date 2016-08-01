@@ -92,6 +92,9 @@
 									</c:choose>
 								</td>
 								<td class="center">
+									<c:if test="${sinfo.state == 10 && sinfo.userId == user.id}">
+										<a href="/bk/info/edit/${mid}?id=${sinfo.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
+									</c:if>
 								</td>
 							</tr>
 							<!-- // Item END -->

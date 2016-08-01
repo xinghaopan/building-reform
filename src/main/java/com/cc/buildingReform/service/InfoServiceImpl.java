@@ -50,9 +50,10 @@ public class InfoServiceImpl implements InfoService {
 			
 		}
 		
-		// 保存上报信息，无论新增还是修改，都将状态置为 编辑状态
-		info.setState(Info.STATE_EDIT);
-		
+		if (!info.getState().equals(Info.STATE_OVER)) {
+			// 保存上报信息，无论新增还是修改，都将状态置为 编辑状态
+			info.setState(Info.STATE_EDIT);
+		}
 		infoDAO.saveOrUpdate(info);
 	}
 
