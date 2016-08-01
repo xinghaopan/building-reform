@@ -17,5 +17,6 @@
 	    <mapping class="com.cc.buildingReform.form.Dic" />
 	    <mapping class="com.cc.buildingReform.form.ViewState" />
 	    <mapping class="com.cc.buildingReform.form.Audit" />
+	    <mapping class="com.cc.buildingReform.form.Feedback" />
 	</session-factory>
 </hibernate-configuration>
