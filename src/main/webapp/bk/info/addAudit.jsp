@@ -3,7 +3,6 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<form id="dicForm" method="post" name="dicForm" action="/bk/dic/save/${mid}" >
 <!-- Modal heading -->
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -254,6 +253,7 @@
 		</table>
 	</div>
 	
+	<form id="infoForm" method="post" name="infoForm" action="">
 	<div class="row-fluid">
 		<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs" style="border-top:#dddddd 1px solid">
 			<tbody>
@@ -266,6 +266,7 @@
 			</tbody>
 		</table>
 	</div>
+	</form>
 </div>
 <!-- // Modal body END -->
 
@@ -276,4 +277,3 @@
 	<a href="javascript:void(0);" url="/bk/info/back/${mid}?id=${info.id}" class="btn btn-info action-audit-back" >审核退回</a>
 </div>
 <!-- // Modal footer END -->
-</form>

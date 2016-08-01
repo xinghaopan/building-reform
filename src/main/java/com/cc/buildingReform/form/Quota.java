@@ -38,16 +38,16 @@ public class Quota implements Serializable {
 	@Column(name = "QUOTA_DEPARTMENT_IS_STATISTICS")
 	private Integer departmentIsStatistics;
 	
-	@Column(name = "QUOTA_BEGIN_NUM")
+	@Column(name = "QUOTA_BEGIN_NUM", updatable = false, insertable = false)
 	private Integer beginNum;
 
-	@Column(name = "QUOTA_END_NUM")
+	@Column(name = "QUOTA_END_NUM", updatable = false, insertable = false)
 	private Integer endNum;
 	
-	@Column(name = "QUOTA_ACCEPTANCE_NUM")
+	@Column(name = "QUOTA_ACCEPTANCE_NUM", updatable = false, insertable = false)
 	private Integer acceptanceNum;
 	
-	@Column(name = "QUOTA_FUND_SEND_NUM")
+	@Column(name = "QUOTA_FUND_SEND_NUM", updatable = false, insertable = false)
 	private Integer fundSendNum;
 	
 	@Column(name = "QUOTA_NUM")

@@ -277,9 +277,9 @@ public class InfoController {
 	}
 	
 	@Permissions(target = "loginUser", url = "")
-	@RequestMapping(value = "/bk/info/submit/{mid}")
+	@RequestMapping(value = "/bk/info/submit/{mid}", method = RequestMethod.POST)
 	public void submit(@PathVariable("mid") Integer mid, @RequestParam("id") Integer id, 
-			@RequestParam(value = "content",required = false) String content, Model model, 
+			@RequestParam("auditInfo") String content, Model model, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int msg = 1;
 		try {
@@ -322,9 +322,9 @@ public class InfoController {
 	}
 	
 	@Permissions(target = "loginUser", url = "")
-	@RequestMapping(value = "/bk/info/back/{mid}")
+	@RequestMapping(value = "/bk/info/back/{mid}", method = RequestMethod.POST)
 	public void back(@PathVariable("mid") Integer mid, @RequestParam("id") Integer id, 
-			@RequestParam(value = "content",required = false) String content, Model model, 
+			@RequestParam("auditInfo") String content, Model model, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int msg = 1;
 		try {

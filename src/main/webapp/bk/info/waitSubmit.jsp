@@ -102,7 +102,9 @@
 		
 		<div class="widget widget-tabs">		
 			<div class="widget-body">
-	
+				<form id="infoForm" method="post" name="infoForm" action="">
+					<input type="hidden" id="auditInfo" name="auditInfo" />
+				</form>
 			</div>
 		</div>
 		<!-- // Google Vizualization DataTable Widget END -->
@@ -115,26 +117,22 @@ jQuery(document).ready(function($) {
 	$('.action-submit').click(function(){
 		if( confirm('您确定要上报【' + $(this).attr("bname") + '】吗？') ){
 			var url = $(this).attr("url");
-			$.ajax({
-				type : "get",
-				url : url,
-				data : "radom=" + Math.random(),
-				dataType : "text",
-				success : function(msg) {
-					if (msg == "-999") {
-		        		outLogin();
-		        	}
-	            	else if (msg == 1) {
-	            		window.location.reload();
-					}
-					else {
-						alert('【' + $(this).attr("bname") + '】上报失败！！！');
-					}
-				},
-				error : function(XMLHttpRequest, error, errorThrown) {
-					//alert("请求超时！！！");
-				}
-			});
+			$("#infoForm").attr("action", url);
+			
+			var options = { 
+		            success : function(msg) {
+		            	if (msg == "-999") {
+			        		outLogin();
+			        	}
+		            	else if (msg == 1) {
+		            		window.location.reload();
+						}
+						else {
+							alert('【' + $(this).attr("bname") + '】上报失败！！！');
+						}
+		            } 
+	        }; 
+	        $("#infoForm").ajaxSubmit(options);
 		}
 	});
 	
