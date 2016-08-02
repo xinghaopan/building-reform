@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -24,15 +24,15 @@
 	
 	<div class="row-fluid">
 		<div class="control-group span10">
-			<label class="control-label span3" for="title">标题：</label>
-			<div class="controls"><input class="span9" id="title" name="title" type="text" value="${feedback.title}" /></div>
+			<label class="control-label span2" for="title">标题：</label>
+			<div class="controls"><input class="span10" id="title" name="title" type="text" value="${feedback.title}" /></div>
 		</div>
-
 	</div>
-	<div class="row-fluid">
-		<div class="control-group span10">
-			<label class="control-label span3" for="askContent">内容d：</label>
-			<div class="controls"><textarea class="span9" id="askContent" name="askContent" rows="6" style="width:98%">${feedback.askContent}</textarea></div>
+	
+	<div class="control-group row-fluid">
+		<label class="control-label">反馈内容：</label>
+		<div class="controls">
+			<textarea id="mustHaveId" class="wysihtml5 span12" id="askContent" name="askContent" rows="5">${feedback.askContent}</textarea>
 		</div>
 	</div>
 </div>

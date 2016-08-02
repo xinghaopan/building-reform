@@ -45,7 +45,6 @@
 						<tr>
 							<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
 							<th class="center">标题</th>
-							<th class="center">内容</th>
 							<th class="center">反馈用户</th>
 							<th class="center">状态</th>
 							<th class="center">反馈日期</th>
@@ -58,7 +57,6 @@
 							<tr class="selectable">
 								<td class="center uniformjs"><input type="checkbox" /></td>
 								<td class="center">${sfeedback.title}</td>
-								<td class="center">${sfeedback.askContent}</td>
 								<td class="center">${sfeedback.userName}</td>
 								<td class="center">
 									<c:choose>

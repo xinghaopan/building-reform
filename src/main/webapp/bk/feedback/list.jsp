@@ -39,46 +39,48 @@
 			           	</div>
 					</div>
 	           </div>
-	         
-				<div class="row-fluid">
-					<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs">
-					<thead>
-						<tr>
-							<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
-							<th class="center">标题</th>
-							<th class="center">回复内容</th>
-							<th class="center">回复人</th>
-							<th class="center">状态</th>
-							<th class="center">回复日期</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${list}" var="sfeedback">
-							<!-- Item -->
-							<tr class="selectable">
-								<td class="center uniformjs"><input type="checkbox" /></td>
-								<td class="center">${sfeedback.title}</td>
-								<td class="center">${sfeedback.replyContent}</td>
-								<td class="center">${sfeedback.replyUserName}</td>
-								<td class="center">
-									<c:choose>
-										<c:when test="${sfeedback.state == 1}">已回复</c:when>
-										<c:when test="${sfeedback.state == 0}">未回复</c:when>
-									</c:choose>
-								</td>
-								<td class="center"><fmt:formatDate value="${sfeedback.replyDate}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></td>
-							</tr>
-							<!-- // Item END -->
-						</c:forEach>
-					</tbody>
-					</table>
-				</div>
 			</div>
 		</div>
 	    
-	 
 		<div class="separator bottom"></div> 
+		
+		<c:forEach items="${list}" var="sfeedback">
+			<div class="widget" data-toggle="collapse-widget">
+				<div class="widget-head">
+					<p class="heading">
+						${sfeedback.title}&nbsp;&nbsp;
+						<fmt:formatDate value="${sfeedback.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" />&nbsp;&nbsp;-&nbsp;&nbsp;
+						${sfeedback.userName}
+					</p>
+				</div>
+		        
+				<div class="widget-body">
+		            <div class="row-fluid">内容：${sfeedback.askContent}</div>
+		            
+		            <div class="row-fluid separator">
+						回复内容：${sfeedback.replyContent}
+		            </div>
+		             
+		            <div class="row-fluid separator">
+		             	回复人：${sfeedback.replyUserName}&nbsp;&nbsp;
+		             	日期：<fmt:formatDate value="${sfeedback.replyDate}" pattern="yyyy-MM-dd" type="date" dateStyle="long" />
+		            </div>
+				</div>
+			</div>
 	    
+	 		<div class="separator bottom"></div> 
+ 		</c:forEach>
+ 		
+ 		<div class="pagination pagination-centered margin-none">
+		
+			<ul>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;每页条数：<input id="count" name="count" type="text" value="${count}" class="page_count" style="width:25px;"/></li>
+				${pages}
+			</ul>
+		</div>
+		
+		<div class="separator bottom"></div> 
+		
 		<div class="widget widget-tabs">		
 			<div class="widget-body">
 	

@@ -2,6 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <form id="feedbackForm" method="post" name="feedbackForm" action="/bk/feedback/saveEdit/${mid}" >
 <!-- Modal heading -->
 <div class="modal-header">
@@ -29,16 +30,29 @@
 		</div>
 
 	</div>
-	<div class="row-fluid">
-		<div class="control-group span10">
-			<label class="control-label span3" for="askContent">内容：</label>
-			<div class="controls"><textarea class="span9" id="askContent" name="askContent" rows="6" style="width:98%">${feedback.askContent}</textarea></div>
+	
+	<div class="control-group row-fluid">
+		<label class="control-label">反馈内容：</label>
+		<div class="controls">
+			<textarea id="mustHaveId" class="wysihtml5 span12" id="askContent" name="askContent" rows="5">${feedback.askContent}</textarea>
 		</div>
 	</div>
+	
 	<div class="row-fluid">
-		<div class="control-group span10">
-			<label class="control-label span3" for="askContent">回复内容：</label>
-			<div class="controls"><textarea class="span9" id="replyContent" name="replyContent" rows="6" style="width:98%">${feedback.replyContent}</textarea></div>
+		<div class="control-group span6">
+			<label class="control-label span3" for="firstname">反馈人：</label>
+			<div class="controls"><input class="span9" id="firstname" name="firstname" type="text" value="${feedback.userName}"/></div>
+		</div>
+		
+		<div class="control-group span6">
+			<label class="control-label span3" for="lastname">反馈时间：</label>
+			<div class="controls"><input class="span9" id="lastname" name="lastname" type="text" value='<fmt:formatDate value="${feedback.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" />'/></div>
+		</div>
+	</div>
+	<div class="control-group row-fluid">
+		<label class="control-label">回复内容：</label>
+		<div class="controls">
+			<textarea id="mustHaveId" class="wysihtml5 span12" id="replyContent" name="replyContent" rows="5">${feedback.replyContent}</textarea>
 		</div>
 	</div>
 </div>
