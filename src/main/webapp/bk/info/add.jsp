@@ -581,6 +581,46 @@
         
 		<div class="separator bottom"></div>
 		
+		<div class="widget" data-toggle="collapse-widget" >
+			<div class="widget-head">
+				<p class="heading glyphicons bank"><i></i>委托书照片</p>
+			</div>
+			<div class="widget-body">
+				<div class="row-fluid">
+					<div class="control-group span5">
+						<label class="control-label span6" for="personDelegateImage">委托书照片：</label>
+						<div class="input-append span6">
+							<input id="personDelegateImage" name="personDelegateImage" type="hidden" value="${info.personDelegateImage}" />
+							<input id="personDelegateImg" name="personDelegateImg" value="" type="file" style="display:none;">
+  							<button class="btn personDelegateImg" type="button">浏览</button>
+					  	</div>
+					</div>
+				</div>
+				<div class="row-fluid">
+                   	<div class="control-group span5">
+	                    <label class="control-label span4" for="lastname"></label>
+	                    <div class="input-append span8">
+							<c:choose>
+	                    		<c:when test="${info.personDelegateImage != null && info.personDelegateImage != ''}">
+	                    			<img id="personDelegateIg" name="personDelegateIg" src="${info.personDelegateImage}" class="img-polaroid img-sfz"  alt=""/>
+	                    		</c:when>
+	                    		<c:otherwise>
+	                    			<img id="personDelegateIg" name="personDelegateIg" src="/images/nopic.png" class="img-polaroid img-sfz"  alt=""/>
+	                    		</c:otherwise>
+	                    	</c:choose>  
+						</div>  
+                    </div>
+				</div>
+					
+				<div class="row-fluid">
+					<label class="control-label span8" for="lastname"><font size="10" color="red">*农户本人手持委托书的照片</font></label>
+				</div>
+			</div>
+	           
+		</div>
+        
+		<div class="separator bottom"></div>
+		
 		<div class="widget" data-toggle="collapse-widget">
 			<div class="widget-head">
 				<p class="heading glyphicons edit"><i></i>填报人</p>
@@ -1064,6 +1104,20 @@ jQuery(document).ready(function($) {
 			$("#houseInNewIg").attr("src", objUrl) ;      
 		}else {
 			$("#houseInNewIg").attr("src", "/images/nopic.png") ; 
+		}
+	});
+	
+	$('.personDelegateImg').click(function() {
+		$("#personDelegateImg").click();
+	});
+	
+	$("#personDelegateImg").on("change", function() {
+		$("#personDelegateImage").val($(this).val());
+		var objUrl = getObjectURL(this.files[0]) ;  
+		if (objUrl) {
+			$("#personDelegateIg").attr("src", objUrl) ;      
+		}else {
+			$("#personDelegateIg").attr("src", "/images/nopic.png") ; 
 		}
 	});
 	

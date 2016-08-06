@@ -173,6 +173,9 @@ public class Info implements Serializable {
 
 	@Column(name = "INFO_HOUSE_IN_NEW_IMAGE")
 	private String houseInNewImage;
+	
+	@Column(name = "INFO_PERSON_DELEGATE_IMAGE")
+	private String personDelegateImage;
 
 	/**
 	 * 填报人
@@ -572,6 +575,14 @@ public class Info implements Serializable {
 
 	public void setHouseInNewImage(String houseInNewImage) {
 		this.houseInNewImage = houseInNewImage;
+	}
+
+	public String getPersonDelegateImage() {
+		return personDelegateImage;
+	}
+
+	public void setPersonDelegateImage(String personDelegateImage) {
+		this.personDelegateImage = personDelegateImage;
 	}
 
 	public String getFillUserName() {
