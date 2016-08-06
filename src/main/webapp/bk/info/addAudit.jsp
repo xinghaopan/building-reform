@@ -253,6 +253,25 @@
 		</table>
 	</div>
 	
+	<div class="row-fluid">
+		<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs" style="border-top:#dddddd 1px solid">
+			<thead>
+                 <tr class="selectable">
+					<td class="center">委托书照片</td>
+				</tr>
+			</thead>
+			<tbody>																						
+				<tr class="selectable">						
+					<td class="center">
+						<c:if test="${info.personDelegateImage != null && info.personDelegateImage != ''}">
+							<img src="${info.personDelegateImage}" width="200" height="150" class="img-rounded" alt=""/>
+						</c:if>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
 	<form id="infoForm" method="post" name="infoForm" action="">
 	<div class="row-fluid">
 		<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs" style="border-top:#dddddd 1px solid">
