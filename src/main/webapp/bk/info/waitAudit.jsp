@@ -44,6 +44,7 @@
 							</div>
            				</div>
 						
+			           		<a href="#modal-simple" data-toggle="modal" url="/bk/info/editBatch/${mid}" class="action-edit btn btn-icon btn-info glyphicons circle_ok"><i></i>批量审核</a>
 			           	<div class=" pull-right">
 			           	</div>
 					</div>
@@ -53,7 +54,7 @@
 					<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs">
 					<thead>
 						<tr>
-							<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
+							<th style="width: 1%;"><input type="checkbox" id="checkAll" name="checkAll" /></th>
 							<th class="center">计划年度</th>
 							<th class="center">户主姓名</th>
 							<th class="center">身份证号</th>
@@ -67,7 +68,7 @@
 						<c:forEach items="${list}" var="sinfo">
 							<!-- Item -->
 							<tr class="selectable">
-								<td class="center uniformjs"><input type="checkbox" /></td>
+								<td class="center"><input type="checkbox" class="ids" value="${sinfo.id}"/></td>
 								<td class="center">${sinfo.planYear}</td>
 								<td class="center">${sinfo.personName}</td>
 								<td class="center">${sinfo.personId}</td>
@@ -111,6 +112,65 @@
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	$(".action-batch-pass").live("click", function() { 
+		var s = "";
+		$('.ids').each(function(){ 
+			if($(this).attr("checked")){
+				if (s != "") {
+					s += "," + $(this).val();
+				}
+				else {
+					s = $(this).val();
+				}
+			}
+		}); 
+		
+		if (s == "") {
+			alert("请至少选择一条信息进行批量审核通过操作！！！");
+			return;
+		}
+		
+		if ($("#auditInfo").val() == "") {
+			alert("请填写审核意见！！！");
+			$('#auditInfo').focus();
+			return;
+		}
+		
+		if( confirm('您确定要审核通过选中的信息吗？') ) {
+			var url = $(this).attr("url") + "?ids=" + s;
+			
+			$("#infoForm").attr("action", url);
+			
+			var options = { 
+		            success : function(msg) {
+		            	if (msg == "-999") {
+			        		outLogin();
+			        	}
+						else if (msg == -1) {
+		            		alert("上报信息错误！！！");
+			        	}
+		            	else if (msg == -2) {
+		            		alert("上报信息状态错误！！！");
+			        	}
+		            	else if (msg == -3) {
+		            		alert("上级机构不存在！！！");
+			        	}
+		            	else if (msg == -4) {
+		            		alert("没有权限进行审核操作！！！");
+			        	}
+		            	else if (msg == 1) {
+		            		window.location.reload();
+						}
+						else {
+							alert('上报失败！！！');
+						}
+		            } 
+	        }; 
+			
+	        $("#infoForm").ajaxSubmit(options);
+		}
+	});
+	
 	$('.action-audit-pass').live("click", function() {
 		
 		if ($("#auditInfo").val() == "") {
@@ -148,6 +208,64 @@ jQuery(document).ready(function($) {
 						}
 		            } 
 	        }; 
+	        $("#infoForm").ajaxSubmit(options);
+		}
+	});
+	
+	$(".action-batch-back").live("click", function() { 
+		var s = "";
+		$('.ids').each(function(){ 
+			if($(this).attr("checked")){
+				if (s != "") {
+					s += "," + $(this).val();
+				}
+				else {
+					s = $(this).val();
+				}
+			}
+		}); 
+		
+		if (s == "") {
+			alert("请至少选择一条信息进行批量审核退回操作！！！");
+			return;
+		}
+		
+		if ($("#auditInfo").val() == "") {
+			alert("请填写审核意见！！！");
+			$('#auditInfo').focus();
+			return;
+		}
+		
+		if( confirm('您确定要审核退回选中的信息吗？') ) {
+			var url = $(this).attr("url") + "?ids=" + s;
+			$("#infoForm").attr("action", url);
+			
+			var options = { 
+		            success : function(msg) {
+		            	if (msg == "-999") {
+			        		outLogin();
+			        	}
+						else if (msg == -1) {
+		            		alert("上报信息错误！！！");
+			        	}
+		            	else if (msg == -2) {
+		            		alert("上报信息状态错误！！！");
+			        	}
+		            	else if (msg == -3) {
+		            		alert("上级机构不存在！！！");
+			        	}
+		            	else if (msg == -4) {
+		            		alert("没有权限进行审核操作！！！");
+			        	}
+		            	else if (msg == 1) {
+		            		window.location.reload();
+						}
+						else {
+							alert('上报失败！！！');
+						}
+		            } 
+	        }; 
+			
 	        $("#infoForm").ajaxSubmit(options);
 		}
 	});

@@ -43,6 +43,11 @@ public class InfoServiceImpl implements InfoService {
 				throw new RuntimeException("-1");
 			}
 			
+			// 校验身份证号是否被占用
+			if (this.checkId(info.getId(), info.getPersonId()) == 0) {
+				throw new RuntimeException("-10");
+			}
+			
 			// 剩余指标 - 1
 			list.get(0).setRestNum(list.get(0).getRestNum() - 1);
 			
@@ -152,6 +157,26 @@ public class InfoServiceImpl implements InfoService {
 		infoDAO.saveOrUpdate(info);
 	}
 
+	public void batchSubmit(User user, String ids, String content) {
+		if (ids != null && ids != "") {
+			String[] idArr = ids.split(",");
+			for (int i = 0; i < idArr.length; i ++) {
+				Integer id = Integer.parseInt(idArr[i]);
+				this.submit(user, id, content);
+			}
+		}
+	}
+	
+	public void batchBack(User user, String ids, String content) {
+		if (ids != null && ids != "") {
+			String[] idArr = ids.split(",");
+			for (int i = 0; i < idArr.length; i ++) {
+				Integer id = Integer.parseInt(idArr[i]);
+				this.back(user, id, content);
+			}
+		}
+	}
+	
 	public void back(User user, Integer id, String content) {
 		Info info = infoDAO.get(id);
 		// 不能为空
@@ -295,5 +320,41 @@ public class InfoServiceImpl implements InfoService {
 		stateList.add(Info.STATE_AUDIT_RETURN);
 		
 		return infoDAO.findByDepartmentId(year, stateList, user.getDepartmentId(), firstResult, maxResult);
+	}
+	
+	public int checkId(Integer id, String idcard) {
+		return infoDAO.checkId(id, idcard);
+	}
+	
+	public int getCountByDepartmentId(Integer year, String departmentId) {
+		return infoDAO.getCountByDepartmentId(year, departmentId);
+	}
+
+	public List<Info> findByDepartmentId(Integer year, String departmentId, int firstResult, int maxResult) {
+		return infoDAO.findByDepartmentId(year, departmentId, firstResult, maxResult);
+	}
+	
+	public int getCountByNoOpen(Integer year, String departmentId) {
+		return infoDAO.getCountByDate(year, departmentId, "rebuildBeginDate");
+	}
+	
+	public List<Info> findByNoOpen(Integer year, String departmentId, int firstResult, int maxResult) {
+		return infoDAO.findByDate(year, departmentId, "rebuildBeginDate", firstResult, maxResult);
+	}
+	
+	public int getCountByNoOver(Integer year, String departmentId) {
+		return infoDAO.getCountByDate(year, departmentId, "rebuildEndDate");
+	}
+	
+	public List<Info> findByNoOver(Integer year, String departmentId, int firstResult, int maxResult) {
+		return infoDAO.findByDate(year, departmentId, "rebuildEndDate", firstResult, maxResult);
+	}
+	
+	public int getCountByNoAcceptance(Integer year, String departmentId) {
+		return infoDAO.getCountByDate(year, departmentId, "acceptanceDate");
+	}
+	
+	public List<Info> findByNoAcceptance(Integer year, String departmentId, int firstResult, int maxResult) {
+		return infoDAO.findByDate(year, departmentId, "acceptanceDate", firstResult, maxResult);
 	}
 }

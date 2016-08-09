@@ -1,6 +1,5 @@
 package com.cc.buildingReform.controller;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,11 +65,99 @@ public class InfoController {
 	 */
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/list{path}/{mid}")
-	public String list(@PathVariable("mid") Integer mid, @PathVariable("path") String path, 
-			@RequestParam(value = "year", required = false) Integer year,
+	public String list(@PathVariable("mid") Integer mid, 
+			@RequestParam(value = "year", required = false) Integer year, 
+			@RequestParam(value = "fatherId", required = false) String fatherId, 
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
-			HttpServletRequest request, Model model) throws Exception {
+			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
+			if (year == null) {
+				year = Quota.getCurrentYear();
+			}
+			
+			if (currentPage == null) {
+				currentPage = 0;
+			}
+			
+			if (count == null || count == 0) {
+				count = 10;
+			}
+				
+			if (fatherId == null || fatherId == "") {
+				fatherId = user.getDepartmentId();
+				model.addAttribute("list", quotaService.findByDepartmentId(year, fatherId));
+			} else {
+				model.addAttribute("list", quotaService.findByFatherDepartmentId(year, fatherId));
+			}
+			
+			model.addAttribute("mid", mid);
+			model.addAttribute("dicList", dicService.findAll());
+			model.addAttribute("year", year);
+			model.addAttribute("user", user);
+		}
+		catch(Exception e) {
+			log.error("/bk/info/list", e);
+		}
+		
+		return "/bk/info/list";
+	}
+//	public String list(@PathVariable("mid") Integer mid, @PathVariable("path") String path, 
+//			@RequestParam(value = "year", required = false) Integer year,
+//			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+//			@RequestParam(value = "count", required = false) Integer count,
+//			HttpServletRequest request, Model model) throws Exception {
+//		try {
+//			User user = (User) request.getSession().getAttribute("loginUser");
+//			
+//			if (year == null) {
+//				year = Quota.getCurrentYear();
+//			}
+//			
+//			if (currentPage == null) {
+//				currentPage = 0;
+//			}
+//			
+//			if (count == null || count == 0) {
+//				count = 10;
+//			}
+//			
+//			int maxCount = infoService.getCount(year, user);
+//			int maxPage = (maxCount - 1) / count + 1;
+//			
+//			List<Quota> quotaList = quotaService.findByDepartmentId(year, user.getDepartmentId());
+//			
+//			model.addAttribute("count", count);
+//			model.addAttribute("maxPage", maxPage);
+//			model.addAttribute("mid", mid);
+//			model.addAttribute("path", path);
+//			model.addAttribute("user", user);
+//			
+//			model.addAttribute("list", infoService.findAll(year, user, currentPage * count, count));
+//			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
+//			if(quotaList != null && !quotaList.isEmpty()) {
+//				model.addAttribute("quota", quotaList.get(0));
+//			}
+//			model.addAttribute("year", year);
+//			model.addAttribute("dicList", dicService.findAll());
+//		}
+//		catch(Exception e) {
+//			log.error("/bk/info/list" + path + "/" + mid, e);
+//		}
+//		
+//		return "/bk/info/list" + path;
+//	}
+
+	@Permissions(target = "loginUser", url = "/index")
+	@RequestMapping("/bk/info/sublist/{mid}")
+	public String sublist(@PathVariable("mid") Integer mid, 
+			@RequestParam(value = "year", required = false) Integer year, 
+			@RequestParam(value = "fatherId", required = false) String fatherId, 
+			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+			@RequestParam(value = "count", required = false) Integer count,
+			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		try {
 			User user = (User) request.getSession().getAttribute("loginUser");
 			
@@ -86,32 +173,89 @@ public class InfoController {
 				count = 10;
 			}
 			
-			int maxCount = infoService.getCount(year, user);
+			int maxCount = infoService.getCountByDepartmentId(year, fatherId);
 			int maxPage = (maxCount - 1) / count + 1;
 			
-			List<Quota> quotaList = quotaService.findByDepartmentId(year, user.getDepartmentId());
 			
 			model.addAttribute("count", count);
 			model.addAttribute("maxPage", maxPage);
 			model.addAttribute("mid", mid);
-			model.addAttribute("path", path);
 			model.addAttribute("user", user);
-			
-			model.addAttribute("list", infoService.findAll(year, user, currentPage * count, count));
+			model.addAttribute("list", infoService.findByDepartmentId(year, fatherId, currentPage * count, count));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
-			if(quotaList != null && !quotaList.isEmpty()) {
-				model.addAttribute("quota", quotaList.get(0));
-			}
 			model.addAttribute("year", year);
 			model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
-			log.error("/bk/info/list" + path + "/" + mid, e);
+			log.error("/bk/info/sublist" + mid, e);
 		}
 		
-		return "/bk/info/list" + path;
+		return "/bk/info/sublist";
 	}
-
+	
+	@Permissions(target = "loginUser", url = "/index")
+	@RequestMapping("/bk/info/other{path}/{mid}")
+	public String other(@PathVariable("mid") Integer mid, @PathVariable("path") String path, 
+			@RequestParam(value = "year", required = false) Integer year, 
+			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+			@RequestParam(value = "count", required = false) Integer count,
+			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
+			if (year == null) {
+				year = Quota.getCurrentYear();
+			}
+			
+			if (currentPage == null) {
+				currentPage = 0;
+			}
+			
+			if (count == null || count == 0) {
+				count = 10;
+			}
+			
+			if ("NoOpen".equals(path)) {
+				int maxCount = infoService.getCountByNoOpen(year, user.getDepartmentId());
+				int maxPage = (maxCount - 1) / count + 1;
+				
+				model.addAttribute("maxPage", maxPage);
+				
+				model.addAttribute("list", infoService.findByNoOpen(year, user.getDepartmentId(), currentPage * count, count));
+				model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
+			}
+			else if ("NoOver".equals(path)) {
+				int maxCount = infoService.getCountByNoOver(year, user.getDepartmentId());
+				int maxPage = (maxCount - 1) / count + 1;
+				
+				model.addAttribute("maxPage", maxPage);
+				
+				model.addAttribute("list", infoService.findByNoOver(year, user.getDepartmentId(), currentPage * count, count));
+				model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
+			}
+			else if ("NoAcceptance".equals(path)) {
+				int maxCount = infoService.getCountByNoAcceptance(year, user.getDepartmentId());
+				int maxPage = (maxCount - 1) / count + 1;
+				
+				model.addAttribute("maxPage", maxPage);
+				
+				model.addAttribute("list", infoService.findByNoAcceptance(year, user.getDepartmentId(), currentPage * count, count));
+				model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
+			}
+			model.addAttribute("count", count);
+			model.addAttribute("mid", mid);
+			model.addAttribute("user", user);
+			model.addAttribute("path", path);
+			model.addAttribute("year", year);
+			model.addAttribute("dicList", dicService.findAll());
+		}
+		catch(Exception e) {
+			log.error("/bk/info/other" + mid, e);
+		}
+		
+		return "/bk/info/other";
+	}
+	
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/auditInfo/{mid}")
 	public String auditInfo(@PathVariable("mid") Integer mid, 
@@ -293,28 +437,73 @@ public class InfoController {
 			if (e.getMessage() != null) {
 				if (e.getMessage().equals("-1")) {
 					msg = -1;
-					log.warn("/bk/info/del?id=" + id, "上报信息错误！！！");
+					log.warn("/bk/info/submit?id=" + id, "上报信息错误！！！");
 				}
 				else if (e.getMessage().equals("-2")) {
 					msg = -1;
-					log.warn("/bk/info/del?id=" + id, "上报信息状态错误！！！");
+					log.warn("/bk/info/submit?id=" + id, "上报信息状态错误！！！");
 				}
 				else if (e.getMessage().equals("-3")) {
 					msg = -1;
-					log.warn("/bk/info/del?id=" + id, "上级机构不存在！！！");
+					log.warn("/bk/info/submit?id=" + id, "上级机构不存在！！！");
 				}
 				else if (e.getMessage().equals("-4")) {
 					msg = -1;
-					log.warn("/bk/info/del?id=" + id, "没有权限进行审核操作！！！");
+					log.warn("/bk/info/submit?id=" + id, "没有权限进行审核操作！！！");
 				}
 				else {
 					msg = 0;
-					log.error("/bk/info/del?id=" + id, e);
+					log.error("/bk/info/submit?id=" + id, e);
 				}
 			}
 			else {
 				msg = 0;
-				log.error("/bk/info/del?id=" + id, e);
+				log.error("/bk/info/submit?id=" + id, e);
+			}
+		}
+		
+		Common.print(response, msg);
+	}
+	
+	@Permissions(target = "loginUser", url = "")
+	@RequestMapping(value = "/bk/info/batchSubmit/{mid}", method = RequestMethod.POST)
+	public void submit(@PathVariable("mid") Integer mid, @RequestParam("ids") String ids, 
+			@RequestParam("auditInfo") String content, Model model, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int msg = 1;
+		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
+			infoService.batchSubmit(user, ids, content);
+		} catch (Exception e) {
+			msg = 0;
+			log.error("/bk/info/batchSubmit?id=" + ids, e);
+			
+			if (e.getMessage() != null) {
+				if (e.getMessage().equals("-1")) {
+					msg = -1;
+					log.warn("/bk/info/batchSubmit?id=" + ids, "上报信息错误！！！");
+				}
+				else if (e.getMessage().equals("-2")) {
+					msg = -1;
+					log.warn("/bk/info/batchSubmit?id=" + ids, "上报信息状态错误！！！");
+				}
+				else if (e.getMessage().equals("-3")) {
+					msg = -1;
+					log.warn("/bk/info/batchSubmit?id=" + ids, "上级机构不存在！！！");
+				}
+				else if (e.getMessage().equals("-4")) {
+					msg = -1;
+					log.warn("/bk/info/batchSubmit?id=" + ids, "没有权限进行审核操作！！！");
+				}
+				else {
+					msg = 0;
+					log.error("/bk/info/batchSubmit?id=" + ids, e);
+				}
+			}
+			else {
+				msg = 0;
+				log.error("/bk/info/batchSubmit?id=" + ids, e);
 			}
 		}
 		
@@ -333,29 +522,70 @@ public class InfoController {
 			infoService.back(user, id, content);
 		} catch (Exception e) {
 			msg = 0;
-			log.error("/bk/info/del?id=" + id, e);
+			log.error("/bk/info/back?id=" + id, e);
 			
 			if (e.getMessage() != null) {
 				if (e.getMessage().equals("-1")) {
 					msg = -1;
-					log.warn("/bk/info/del?id=" + id, "退回信息错误！！！");
+					log.warn("/bk/info/back?id=" + id, "退回信息错误！！！");
 				}
 				else if (e.getMessage().equals("-2")) {
 					msg = -1;
-					log.warn("/bk/info/del?id=" + id, "退回信息状态错误！！！");
+					log.warn("/bk/info/back?id=" + id, "退回信息状态错误！！！");
 				}
 				else if (e.getMessage().equals("-4")) {
 					msg = -1;
-					log.warn("/bk/info/del?id=" + id, "没有权限进行审核操作！！！");
+					log.warn("/bk/info/back?id=" + id, "没有权限进行审核操作！！！");
 				}
 				else {
 					msg = 0;
-					log.error("/bk/info/del?id=" + id, e);
+					log.error("/bk/info/back?id=" + id, e);
 				}
 			}
 			else {
 				msg = 0;
-				log.error("/bk/info/del?id=" + id, e);
+				log.error("/bk/info/del?back=" + id, e);
+			}
+		}
+		
+		Common.print(response, msg);
+	}
+	
+	@Permissions(target = "loginUser", url = "")
+	@RequestMapping(value = "/bk/info/batchBack/{mid}", method = RequestMethod.POST)
+	public void batchBack(@PathVariable("mid") Integer mid, @RequestParam("ids") String ids, 
+			@RequestParam("auditInfo") String content, Model model, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int msg = 1;
+		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
+			infoService.batchBack(user, ids, content);
+		} catch (Exception e) {
+			msg = 0;
+			log.error("/bk/info/batchBack?id=" + ids, e);
+			
+			if (e.getMessage() != null) {
+				if (e.getMessage().equals("-1")) {
+					msg = -1;
+					log.warn("/bk/info/batchBack?id=" + ids, "退回信息错误！！！");
+				}
+				else if (e.getMessage().equals("-2")) {
+					msg = -1;
+					log.warn("/bk/info/batchBack?id=" + ids, "退回信息状态错误！！！");
+				}
+				else if (e.getMessage().equals("-4")) {
+					msg = -1;
+					log.warn("/bk/info/batchBack?id=" + ids, "没有权限进行审核操作！！！");
+				}
+				else {
+					msg = 0;
+					log.error("/bk/info/batchBack?id=" + ids, e);
+				}
+			}
+			else {
+				msg = 0;
+				log.error("/bk/info/del?batchBack=" + ids, e);
 			}
 		}
 		
@@ -441,53 +671,62 @@ public class InfoController {
 				MultipartFile file = multiRequest.getFile("personImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
-					file.transferTo(new File(path + fileName)); 
+					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setPersonImage(fileName);
 				}
 				
 				file = multiRequest.getFile("acceptanceImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
-					file.transferTo(new File(path + fileName)); 
+					//file.transferTo(new File(path + fileName)); 
+					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setAcceptanceImage(fileName);
 				}
 				
 				file = multiRequest.getFile("fundSendImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
-					file.transferTo(new File(path + fileName)); 
+					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setFundSendImage(fileName);
 				}
 				
 				file = multiRequest.getFile("houseOldImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
-					file.transferTo(new File(path + fileName)); 
+					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setHouseOldImage(fileName);
 				}
 				
 				file = multiRequest.getFile("houseBuildingImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
-					file.transferTo(new File(path + fileName)); 
+					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setHouseBuildingImage(fileName);
 				}
 				
 				file = multiRequest.getFile("houseOutNewImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
-					file.transferTo(new File(path + fileName)); 
+					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setHouseOutNewImage(fileName);
 				}
 				
 				file = multiRequest.getFile("houseInNewImg");
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
-					file.transferTo(new File(path + fileName)); 
+					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
+					info.setHouseInNewImage(fileName);
+				}
+				
+				file = multiRequest.getFile("personDelegateImg");
+				if (file != null) {
+					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
+					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setHouseInNewImage(fileName);
 				}
 			}  
 			
+			info.setPersonId(info.getPersonId().toUpperCase());
 			info.setDepartmentId(user.getDepartmentId());
 			info.setDepartmentName(user.getDepartmentName());
 			info.setUserId(user.getId());
@@ -502,6 +741,10 @@ public class InfoController {
 				if (e.getMessage().equals("-1")) {
 					msg = -1;
 					log.warn("/bk/info/save/", "计划年度" + info.getPlanYear() + "没有剩余的指标进行上报！！！");
+				}
+				else if (e.getMessage().equals("-10")) {
+					msg = -10;
+					log.warn("/bk/info/save/", "身份证号也被注册！！！");
 				}
 				else {
 					msg = 0;
@@ -562,6 +805,24 @@ public class InfoController {
 		
 		Common.print(response, msg);
 	}
+	
+	@Permissions(target = "loginUser", url = "/index")
+	@RequestMapping("/bk/info/checkId/{mid}")
+	public void checkId(@PathVariable("mid") Integer mid, 
+			@RequestParam(value = "id", required = false) Integer id, 
+			@RequestParam("idcard") String idcard, 
+			HttpServletResponse response, Model model) throws Exception {
+		int msg = 1;
+		try {
+			msg = infoService.checkId(id, idcard);
+		} catch (Exception e) {
+			msg = -1;
+			log.error("/bk/info/checkId?id=" + id, e);
+		}
+		
+		Common.print(response, msg);
+	}
+	
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) throws Exception {

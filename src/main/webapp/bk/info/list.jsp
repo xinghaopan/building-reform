@@ -46,9 +46,12 @@
            				</div>
 						
 			           	<div class=" pull-right">
-			           		<c:if test="${quota != null}">
-			           			本年度指标数：${quota.num} &nbsp;&nbsp;&nbsp;&nbsp;剩余指标：${quota.restNum} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			           		</c:if>
+			           		<c:if test="${fn:length(user.departmentId) == 2}">
+				           		<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
+				           	</c:if>
+				           	<c:if test="${isDistribute == 1}">
+				           		<a href="/bk/quota/distribute/${mid}" class="btn btn-icon btn-info glyphicons circle_ok"><i></i>指标发放</a>
+				           	</c:if>
 			           	</div>
 					</div>
 	           </div>
@@ -58,44 +61,42 @@
 					<thead>
 						<tr>
 							<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
-							<th class="center">户主姓名</th>
-							<th class="center">身份证号</th>
-							<th class="center">民族</th>
-							<th class="center">联系电话</th>
 							<th class="center">机构</th>
-							<th class="center">当前状态</th>
-							<th class="center" style="width: 120px;">操作</th>
+							<th class="center">年度</th>
+							<th class="center">指标数量</th>
+							<th class="center">开工数量</th>
+							<th class="center">竣工数量</th>
+							<th class="center">验收数量</th>
+							<th class="center">完成度</th>
+							<th class="center">发放日期</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${list}" var="sinfo">
+						<c:forEach items="${list}" var="squota">
 							<!-- Item -->
 							<tr class="selectable">
 								<td class="center uniformjs"><input type="checkbox" /></td>
-								<td class="center">${sinfo.personName}</td>
-								<td class="center">${sinfo.personId}</td>
-								<td class="center">${sinfo.personNation}</td>
-								<td class="center">${sinfo.personTel}</td>
-								<td class="center">${sinfo.departmentName}</td>
 								<td class="center">
 									<c:choose>
-										<c:when test="${sinfo.state == 0}">编辑中</c:when>
-										<c:when test="${sinfo.state == 80}">等待镇审核</c:when>
-										<c:when test="${sinfo.state == 60}">等待县区审核</c:when>
-										<c:when test="${sinfo.state == 40}">等待市审核</c:when>
-										<c:when test="${sinfo.state == 20}">等待省厅审核</c:when>
-										<c:when test="${sinfo.state == 10}">审核结束</c:when>
-										<c:when test="${sinfo.state == -1}">退回</c:when>
-										<c:when test="${sinfo.state == -2}">撤回</c:when>
-										
-										<c:otherwise>未知</c:otherwise>
+										<c:when test="${fn:length(squota.departmentId) == 10}">
+											<a href="/bk/info/sublist/${mid}?year=${year}&fatherId=${squota.departmentId}" target="_self">${squota.departmentName}</a>
+										</c:when>
+										<c:otherwise>
+											<a href="/bk/info/list/${mid}?year=${year}&fatherId=${squota.departmentId}" target="_self">${squota.departmentName}</a>
+										</c:otherwise>
 									</c:choose>
 								</td>
+								<td class="center">${squota.year}</td>
+								<td class="center">${squota.num}</td>
+								<td class="center">${squota.beginNum}</td>
+								<td class="center">${squota.endNum}</td>
+								<td class="center">${squota.acceptanceNum}</td>
 								<td class="center">
-									<c:if test="${sinfo.state == 10 && sinfo.userId == user.id}">
-										<a href="/bk/info/edit/${mid}?id=${sinfo.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
+									<c:if test="${squota.num != null && squota.num != 0}">
+										<fmt:formatNumber value="${(squota.num - squota.restNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
 									</c:if>
 								</td>
+								<td class="center"><fmt:formatDate value="${squota.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></td>
 							</tr>
 							<!-- // Item END -->
 						</c:forEach>
@@ -105,16 +106,7 @@
 			</div>
 		</div>
 	    
-	 	<div class="separator bottom"></div> 
-	    
-	    <div class="pagination pagination-centered margin-none">
-		
-			<ul>
-				<li>&nbsp;&nbsp;&nbsp;&nbsp;每页条数：<input id="count" name="count" type="text" value="${count}" class="page_count" style="width:25px;"/></li>
-				${pages}
-			</ul>
-		</div>
-		
+	 
 		<div class="separator bottom"></div> 
 	    
 		<div class="widget widget-tabs">		
@@ -141,7 +133,10 @@ jQuery(document).ready(function($) {
 					if (msg == "-999") {
 		        		outLogin();
 		        	}
-	            	else if (msg == 1) {
+					else if (msg == -1) {
+	            		alert("指标已分配无法删除");
+					}
+					else if (msg == 1) {
 	            		window.location.reload();
 					}
 					else {
@@ -190,6 +185,12 @@ jQuery(document).ready(function($) {
 	            	else if (msg == -2) {
 	            		alert("此机构的年度指标已经存在！！！");
 		        	}
+	            	else if (msg == -3) {
+	            		alert("本机构的年度指标不存在，无法发放！！！");
+		        	}
+	            	else if (msg == -4) {
+	            		alert("修改后本机构指标不够发放下级机构！！！");
+		        	}
 	            	else if (msg == 1) {
 	            		alert("年度指标信息保存成功！！！");
 	            		window.location.reload();
@@ -199,14 +200,13 @@ jQuery(document).ready(function($) {
 	            	}
 	            } 
         }; 
-        $("#infoForm").ajaxSubmit(options); 
+        $("#quotaForm").ajaxSubmit(options); 
 	});
 	
 	$('.btn_Search').click(function(){
-		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val() + "&year=" + $('#year').val();
+		var para = "?year=" + $('#year').val();
 		window.open("/bk/info/list/${mid}" + para, "_self");
 	});
-	
 });
 </script>
 <%@ include file="/bk/bottom.jsp" %>

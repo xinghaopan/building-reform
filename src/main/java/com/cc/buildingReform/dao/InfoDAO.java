@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -155,6 +156,79 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		criteria.add(Restrictions.eq("planYear", year));
 		criteria.add(Restrictions.eq("auditDepartmentId", departmentId));
 		criteria.add(Restrictions.eq("state", departmentId.length() * 10));
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+		
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+		
+		return (List<Info>) criteria.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public int checkId(Integer id, String idcard) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+		
+		if (id != null) {
+			criteria.add(Restrictions.ne("id", id));
+		}
+		criteria.add(Restrictions.eq("personId", idcard.toUpperCase()));
+		
+		List<Info> list = (List<Info>) criteria.list();
+		
+		if (list != null && !list.isEmpty()) {
+			return 0;
+		} 
+		else {
+			return 1;
+		}
+	}
+	
+	public int getCountByDepartmentId(Integer year, String departmentId) {
+		Criteria criteria = this.getSession().createCriteria(Info.class);
+		
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("sonDepartmentId", departmentId));
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Info> findByDepartmentId(Integer year, String departmentId, int firstResult, int maxResult) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+		
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("sonDepartmentId", departmentId));
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+		
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+		
+		return (List<Info>) criteria.list();
+		
+	}
+	
+	public int getCountByDate(Integer year, String departmentId, String propertyName) {
+		Criteria criteria = this.getSession().createCriteria(Info.class);
+		
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("departmentId", departmentId));
+		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
+		criteria.add(Property.forName(propertyName).isNull());
+		
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Info> findByDate(Integer year, String departmentId, String propertyName, int firstResult, int maxResult) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+		
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("departmentId", departmentId));
+		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
+		criteria.add(Property.forName(propertyName).isNull());
+		
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
 		

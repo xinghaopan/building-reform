@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="/bk/top.jsp" %>
 <!-- Content -->
 <div id="content">
@@ -45,7 +46,9 @@
            				</div>
 						
 			           	<div class=" pull-right">
-				           	<a href="javascript:void(0);" url="/bk/info/batchSubmit/${mid}" class="btn-batch btn btn-icon btn-info glyphicons circle_ok"><i></i>批量上报</a>
+			           		<c:if test="${quota != null}">
+			           			本年度指标数：${quota.num} &nbsp;&nbsp;&nbsp;&nbsp;剩余指标：${quota.restNum} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			           		</c:if>
 			           	</div>
 					</div>
 	           </div>
@@ -54,13 +57,13 @@
 					<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs">
 					<thead>
 						<tr>
-							<th style="width: 1%;"><input type="checkbox" id="checkAll" name="checkAll" /></th>
-							<th class="center">计划年度</th>
+							<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
 							<th class="center">户主姓名</th>
 							<th class="center">身份证号</th>
 							<th class="center">民族</th>
 							<th class="center">联系电话</th>
 							<th class="center">机构</th>
+							<th class="center">当前状态</th>
 							<th class="center" style="width: 120px;">操作</th>
 						</tr>
 					</thead>
@@ -68,17 +71,30 @@
 						<c:forEach items="${list}" var="sinfo">
 							<!-- Item -->
 							<tr class="selectable">
-								<td class="center"><input type="checkbox" class="ids" value="${sinfo.id}"/></td>
-								<td class="center">${sinfo.planYear}</td>
+								<td class="center uniformjs"><input type="checkbox" /></td>
 								<td class="center">${sinfo.personName}</td>
 								<td class="center">${sinfo.personId}</td>
 								<td class="center">${sinfo.personNation}</td>
 								<td class="center">${sinfo.personTel}</td>
 								<td class="center">${sinfo.departmentName}</td>
 								<td class="center">
-									<a href="javascript:void(0);" url="/bk/info/submit/${mid}?id=${sinfo.id}" bname="${sinfo.personName}" class="btn-action glyphicons upload btn-success action-submit"><i></i></a>
-									<a href="/bk/info/edit/${mid}?id=${sinfo.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
-									<a href="javascript:void(0);" url="/bk/info/del/${mid}?id=${sinfo.id}" bname="${sinfo.personName}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
+									<c:choose>
+										<c:when test="${sinfo.state == 0}">编辑中</c:when>
+										<c:when test="${sinfo.state == 80}">等待镇审核</c:when>
+										<c:when test="${sinfo.state == 60}">等待县区审核</c:when>
+										<c:when test="${sinfo.state == 40}">等待市审核</c:when>
+										<c:when test="${sinfo.state == 20}">等待省厅审核</c:when>
+										<c:when test="${sinfo.state == 10}">审核结束</c:when>
+										<c:when test="${sinfo.state == -1}">退回</c:when>
+										<c:when test="${sinfo.state == -2}">撤回</c:when>
+										
+										<c:otherwise>未知</c:otherwise>
+									</c:choose>
+								</td>
+								<td class="center">
+									<c:if test="${sinfo.state == 10 && sinfo.userId == user.id}">
+										<a href="/bk/info/edit/${mid}?id=${sinfo.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
+									</c:if>
 								</td>
 							</tr>
 							<!-- // Item END -->
@@ -89,23 +105,21 @@
 			</div>
 		</div>
 	    
-		<div class="separator bottom"></div> 
+	 	<div class="separator bottom"></div> 
 	    
 	    <div class="pagination pagination-centered margin-none">
 		
 			<ul>
-				<li>&nbsp;&nbsp;&nbsp;&nbsp;每页条数d：<input id="count" name="count" type="text" value="${count}" class="page_count" style="width:25px;"/></li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;每页条数：<input id="count" name="count" type="text" value="${count}" class="page_count" style="width:25px;"/></li>
 				${pages}
 			</ul>
 		</div>
 		
 		<div class="separator bottom"></div> 
-		
+	    
 		<div class="widget widget-tabs">		
 			<div class="widget-body">
-				<form id="infoForm" method="post" name="infoForm" action="">
-					<input type="hidden" id="auditInfo" name="auditInfo" />
-				</form>
+	
 			</div>
 		</div>
 		<!-- // Google Vizualization DataTable Widget END -->
@@ -115,28 +129,6 @@
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('.action-submit').click(function(){
-		if( confirm('您确定要上报【' + $(this).attr("bname") + '】吗？') ){
-			var url = $(this).attr("url");
-			$("#infoForm").attr("action", url);
-			
-			var options = { 
-		            success : function(msg) {
-		            	if (msg == "-999") {
-			        		outLogin();
-			        	}
-		            	else if (msg == 1) {
-		            		window.location.reload();
-						}
-						else {
-							alert('【' + $(this).attr("bname") + '】上报失败！！！');
-						}
-		            } 
-	        }; 
-	        $("#infoForm").ajaxSubmit(options);
-		}
-	});
-	
 	$('.action-del').click(function(){
 		if( confirm('您确定要删除【' + $(this).attr("bname") + '】吗？') ){
 			var url = $(this).attr("url");
@@ -148,18 +140,6 @@ jQuery(document).ready(function($) {
 				success : function(msg) {
 					if (msg == "-999") {
 		        		outLogin();
-		        	}
-					else if (msg == -1) {
-	            		alert("上报信息错误！！！");
-		        	}
-	            	else if (msg == -2) {
-	            		alert("上报信息状态错误！！！");
-		        	}
-	            	else if (msg == -3) {
-	            		alert("上级机构不存在！！！");
-		        	}
-	            	else if (msg == -4) {
-	            		alert("没有权限进行审核操作！！！");
 		        	}
 	            	else if (msg == 1) {
 	            		window.location.reload();
@@ -222,62 +202,11 @@ jQuery(document).ready(function($) {
         $("#infoForm").ajaxSubmit(options); 
 	});
 	
-	$(".btn-batch").live("click", function() { 
-		var s = "";
-		$('.ids').each(function(){ 
-			if($(this).attr("checked")){
-				if (s != "") {
-					s += "," + $(this).val();
-				}
-				else {
-					s = $(this).val();
-				}
-			}
-		}); 
-		
-		if (s == "") {
-			alert("请至少选择一条信息进行批量上报操作！！！");
-			return;
-		}
-		
-		if( confirm('您确定要上报选中的信息吗？') ) {
-			var url = $(this).attr("url") + "?ids=" + s;
-			$("#infoForm").attr("action", url);
-			
-			var options = { 
-		            success : function(msg) {
-		            	if (msg == "-999") {
-			        		outLogin();
-			        	}
-						else if (msg == -1) {
-		            		alert("上报信息错误！！！");
-			        	}
-		            	else if (msg == -2) {
-		            		alert("上报信息状态错误！！！");
-			        	}
-		            	else if (msg == -3) {
-		            		alert("上级机构不存在！！！");
-			        	}
-		            	else if (msg == -4) {
-		            		alert("没有权限进行审核操作！！！");
-			        	}
-		            	else if (msg == 1) {
-		            		window.location.reload();
-						}
-						else {
-							alert('上报失败！！！');
-						}
-		            } 
-	        }; 
-			
-	        $("#infoForm").ajaxSubmit(options);
-		}
+	$('.btn_Search').click(function(){
+		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val() + "&year=" + $('#year').val();
+		window.open("/bk/info/list/${mid}" + para, "_self");
 	});
 	
-	$('.btn_Search').click(function(){
-		var para = "?year=" + $('#year').val() + "&currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val();
-		window.open("/bk/info/waitSubmit/${mid}" + para, "_self");
-	});
 });
 </script>
 <%@ include file="/bk/bottom.jsp" %>

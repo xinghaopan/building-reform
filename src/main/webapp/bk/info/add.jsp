@@ -81,7 +81,12 @@
                     <div>
 						<div class="control-group span5">
 							<label class="control-label span4" for="personId">身份证号：</label>
-							<div class="controls"><input class="span8"  id="personId" name="personId" value="${info.personId}" type="text" /></div>
+							<div class="controls span8">
+								<input class="span8"  id="personId" name="personId" value="${info.personId}" type="text" />
+								<font id="personIdError" color="red" style="display:none;">身份证号不正确！！！</font>
+								<font id="personIdDuplicate" color="red" style="display:none;">身份证号已被注册过！！！</font>
+								<input type="hidden" id="checkPersonId" name="checkPersonId" value="${info.personId}" />
+							</div>
 						</div>
 						
 						<div class="control-group span5">
@@ -748,6 +753,53 @@ jQuery(document).ready(function($) {
 		$('#fillUserUnit').attr("readonly", "readonly");
 	}
 	
+	$("#personId").blur(function(){
+		$("#checkPersonId").val("-1");
+		$('#personIdError').attr("style", "display:none;");
+		$('#personIdDuplicate').attr("style", "display:none;");
+		
+		if (!IdCardValidate($(this).val())) {
+			$('#personIdError').attr("style", "");
+		} else {
+			
+			var id = $("#id").val();
+			var idcard = $("#personId").val();
+			
+			var para = "";
+			if (id != "") {
+				para = "id=" + id;
+			}
+			
+			if (para != "") {
+				para += "&idcard=" + idcard;
+			}
+			else {
+				para = "idcard=" + idcard;
+			}
+			
+			$.ajax({
+				type : "get",
+				url : '/bk/info/checkId/${mid}?' + para,
+				data : "radom=" + Math.random(),
+				dataType : "text",
+				success : function(msg) {
+					if (msg == "-999") {
+		        		outLogin();
+		        	}
+	            	else if (msg == 1) {
+	            		$("#checkPersonId").val($("#personId").val());
+					}
+					else {
+						$('#personIdDuplicate').attr("style", "");
+					}
+				},
+				error : function(XMLHttpRequest, error, errorThrown) {
+					$('#personIdError').attr("style", "");
+				}
+			});
+		}
+	});
+	
 	$("#btn_Submit").click(function() { 
 		$("#btn_Submit").click = function() {return false};
 		
@@ -781,19 +833,19 @@ jQuery(document).ready(function($) {
 			alert("民族不能为空！！！");
 			$('#personNation').focus();
 			return;
-		}
+		} 
 		
-		if (isNull($('#personId').val())) {
-			alert("身份证号不能为空！！！");
+		if (!IdCardValidate($('#checkPersonId').val())) {
+			alert("身份证号信息不正确！！！");
 			$('#personId').focus();
-			if ($('#personId').val().length != 15 && $('#personId').val().length != 18) {
-				alert("身份证号只能为15位或18位！！！");
-				$('#personId').focus();
-			}
 			return;
 		}
 		
-		if ($("#personImg").val() != "" && !validate_img(document.forms["infoForm"]["personImg"].files[0], "持证照片")) {
+		if ($("#personImage").val() == "") {
+			alert("请上传农户本人拿身份证照片!!!");
+			return;
+		}
+		else if ($("#personImg").val() != "" && !validate_img(document.forms["infoForm"]["personImg"].files[0], "农户本人拿身份证照片")) {
 			return;
 		}
 		
@@ -889,11 +941,11 @@ jQuery(document).ready(function($) {
 			$('#acceptanceDate').focus();
 			return;
 		}
-	
+	*/
 		if ($("#acceptanceImg").val() != "" && !validate_img(document.forms["infoForm"]["acceptanceImg"].files[0], "验收照片")) {
 			return;
 		}
-		
+	/*	
 		if (!isDate($('#fundSendDate').val())) {
 			alert("省资金发放时间只能是日期类型！！！");
 			$('#fundSendDate').focus();
@@ -951,8 +1003,9 @@ jQuery(document).ready(function($) {
 			return;
 		} 
 		
+		*/
 		
-		// 改造照片
+		// 改造照片, 如果上传了，则校验上传文件类型
 		if ($("#houseOldImg").val() != "" && !validate_img(document.forms["infoForm"]["houseOldImg"].files[0], "位置照片（改厕前）")) {
 			return;
 		}
@@ -968,7 +1021,10 @@ jQuery(document).ready(function($) {
 		if ($("#houseInNewImg").val() != "" && !validate_img(document.forms["infoForm"]["houseInNewImg"].files[0], "厕所室内照片（改厕后）")) {
 			return;
 		}
-		*/
+		
+		if ($("#personDelegateImg").val() != "" && !validate_img(document.forms["infoForm"]["personDelegateImg"].files[0], "农户本人手持委托书的照片")) {
+			return;
+		}
 		
 		// 填报人
 		if (isNull($('#fillUserName').val())) {
@@ -996,6 +1052,9 @@ jQuery(document).ready(function($) {
 		        	}
 	            	else if (msg == -1) {
 	            		alert("没有剩余的指标进行上报！！！");
+		        	}
+	            	else if (msg == -10) {
+	            		alert("身份证号已被注册！！！");
 		        	}
 	            	else if (msg == 1) {
 	            		alert("农户信息保存成功！！！");
