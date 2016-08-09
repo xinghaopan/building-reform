@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
 import com.cc.buildingReform.Common.ServerProperty;
+import com.cc.buildingReform.form.Department;
 import com.cc.buildingReform.form.User;
+import com.cc.buildingReform.service.DepartmentService;
 import com.cc.buildingReform.service.RoleService;
 import com.cc.buildingReform.service.UserService;
 
@@ -29,6 +31,9 @@ public class UserController {
 
 	@Autowired
 	private RoleService roleService;
+
+	@Autowired
+	private DepartmentService departmentService;
 
 	@Autowired
 	private ServerProperty serverProperty;
@@ -47,6 +52,10 @@ public class UserController {
 	public String list(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
+			@RequestParam(value = "roleId", required = false) Integer roleId,
+			@RequestParam(value = "departmentId", required = false) String departmentId,
+			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "trueName", required = false) String trueName,
 			Model model) throws Exception {
 		try {
 			if (currentPage == null) {
@@ -57,14 +66,19 @@ public class UserController {
 				count = 10;
 			}
 			
-			int maxCount = userService.getCount();
+			int maxCount = userService.getCount(roleId, departmentId, name, trueName);
 			int maxPage = (maxCount - 1) / count + 1;
 			model.addAttribute("count", count);
 			model.addAttribute("maxPage", maxPage);
 			
 			model.addAttribute("mid", mid);
-			model.addAttribute("list", userService.findAll(currentPage * count, count));
+			model.addAttribute("list", userService.search(roleId, departmentId, name, trueName, currentPage * count, count));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
+			model.addAttribute("roleId", roleId);
+			model.addAttribute("departmentId", departmentId);
+			model.addAttribute("name", name);
+			model.addAttribute("trueName", trueName);
+			model.addAttribute("roleList", roleService.findAll());
 			model.addAttribute("password", serverProperty.getUserPassword());
 		}
 		catch(Exception e) {
@@ -123,7 +137,15 @@ public class UserController {
 				if (user.getId() == null) {
 					user.setPassword(Common.MD5(serverProperty.getUserPassword()));
 				}
-				userService.save(user);
+				
+				Department department = departmentService.findById(user.getDepartmentId());
+				
+				if (department != null) {
+					userService.save(user);
+				}
+				else {
+					msg = -2;
+				}
 			}
 			else {
 				msg = -1;

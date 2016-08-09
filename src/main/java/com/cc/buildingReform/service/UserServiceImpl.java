@@ -43,4 +43,12 @@ public class UserServiceImpl implements UserService {
 	public List<User> findAll(int firstResult, int maxResult) {
 		return userDAO.findAll(firstResult, maxResult);
 	}
+	
+	public int getCount(Integer roleId, String departmentId, String name, String trueName) {
+		return userDAO.getCount(roleId, departmentId, name, trueName);
+	}
+	
+	public List<User> search(Integer roleId, String departmentId, String name, String trueName, int firstResult, int maxResult) {
+		return userDAO.search(roleId, departmentId, name, trueName, firstResult, maxResult);
+	}
 }

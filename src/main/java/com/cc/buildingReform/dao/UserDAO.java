@@ -3,6 +3,7 @@ package com.cc.buildingReform.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -74,6 +75,55 @@ public class UserDAO extends CcHibernateDao<User, Integer> {
 	@SuppressWarnings("unchecked")
 	public List<User> findAll(int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(User.class);
+		
+		criteria.addOrder(Order.desc("id"));
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+		
+		return (List<User>) criteria.list();
+	}
+	
+	public int getCount(Integer roleId, String departmentId, String name, String trueName) {
+		Criteria criteria = this.getSession().createCriteria(User.class);
+		
+		if (roleId != null && roleId != 0) {
+			criteria.add(Restrictions.eq("role.id", roleId));
+		}
+		
+		if (departmentId != null && departmentId != "") {
+			criteria.add(Restrictions.eq("departmentId", departmentId));
+		}
+		
+		if (name != null && name != "") {
+			criteria.add(Restrictions.eq("name", name));
+		}
+		
+		if (trueName != null && trueName != "") {
+			criteria.add(Restrictions.eq("trueName", trueName));
+		}
+		
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> search(Integer roleId, String departmentId, String name, String trueName, int firstResult, int maxResult) {
+		Criteria criteria = getSession().createCriteria(User.class);
+		
+		if (roleId != null && roleId != 0) {
+			criteria.add(Restrictions.eq("role.id", roleId));
+		}
+		
+		if (departmentId != null && departmentId != "") {
+			criteria.add(Restrictions.like("departmentId", departmentId, MatchMode.ANYWHERE));
+		}
+		
+		if (name != null && name != "") {
+			criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
+		}
+		
+		if (trueName != null && trueName != "") {
+			criteria.add(Restrictions.like("trueName", trueName, MatchMode.ANYWHERE));
+		}
 		
 		criteria.addOrder(Order.desc("id"));
 		criteria.setFirstResult(firstResult);

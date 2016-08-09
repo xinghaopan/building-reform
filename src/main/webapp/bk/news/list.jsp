@@ -28,7 +28,8 @@
 					<div class="widget-titel">
 						<div class="span7">
 							<input type="text" id="search_title" name="search_title" value="${title}" placeholder="标题" >&nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="text" id="search_content" name="search_content" value="${content}" placeholder="内容" >&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="text" id="search_content" name="search_content" value="${content}" placeholder="内容" >&nbsp;&nbsp;&nbsp;&nbsp;
+							
 							<div class="input-append">
 								<button class="btn btn_Search" type="button" currentPage="0">搜索</button>
 							</div>

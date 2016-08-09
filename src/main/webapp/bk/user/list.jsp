@@ -32,6 +32,19 @@
 				<div class="row-fluid">
 					<div class="widget-titel">
 						<div class="span7">
+							<select id="roleId" name="roleId">
+								<option value="0">选择角色</option>
+								<c:forEach items="${roleList}" var="srole">
+									<option value="${srole.id}" <c:if test="${srole.id == roleId}">selected</c:if> >${srole.name}</option>
+								</c:forEach>
+							</select>
+							<input type="text" id="search_departmentId" name="search_departmentId" value="${departmentId}" placeholder="所属机构编码" >&nbsp;&nbsp;
+							<input type="text" id="search_name" name="search_name" value="${name}" placeholder="帐号" >&nbsp;&nbsp;
+							<input type="text" id="search_trueName" name="search_trueName" value="${trueName}" placeholder="真实姓名" >&nbsp;&nbsp;
+							
+							<div class="input-append">
+								<button class="btn btn_Search" type="button" currentPage="0">搜索</button>
+							</div>
 						</div>
 						
 			           	<div class=" pull-right">
@@ -60,7 +73,7 @@
 								<td class="center">${suser.trueName}</td>
 								<td class="center">${suser.role.name}</td>
 								<td class="center">
-									<a href="javascript:void(0)" url="/bk/user/initPassword/${mid}?id=${suser.id}" bname="${suser.name}" class="btn-action glyphicons pencil btn-success action-initPassword" ><i></i></a>
+									<a href="javascript:void(0)" url="/bk/user/initPassword/${mid}?id=${suser.id}" bname="${suser.name}" class="btn-action glyphicons magic btn-success action-initPassword" ><i></i></a>
 									<a href="#modal-simple" data-toggle="modal" url="/bk/user/edit/${mid}?id=${suser.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
 									<a href="javascript:void(0);" url="/bk/user/del/${mid}?id=${suser.id}" bname="${suser.name}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
 								</td>
@@ -187,9 +200,9 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		
-		if (!isUnsignedInteger($('#order').val())) {
-			alert("排序只能为数字！！！");
-			$('#order').focus();
+		if (isNull($('#departmentId').val())) {
+			alert("机构编码不能为空！！！");
+			$('#departmentId').focus();
 			return;
 		}
 		
@@ -200,6 +213,9 @@ jQuery(document).ready(function($) {
 		        	}
 	            	else if (msg == -1) {
 	            		alert("帐号：[" + $('#name').val() + "]已存在，无法保存！！！");
+		        	}
+	            	else if (msg == -2) {
+	            		alert("请正确填写机构编码！！！");
 		        	}
 	            	else if (msg == 1) {
 	            		if (id == 0) {
@@ -220,6 +236,22 @@ jQuery(document).ready(function($) {
 	
 	$('.btn_Search').click(function(){
 		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val();
+		if ($("#roleId").val() != 0) {
+			para += "&roleId=" + $("#roleId").val();
+		}
+		
+		if ($("#search_departmentId").val() != "") {
+			para += "&departmentId=" + $("#search_departmentId").val();
+		}
+		
+		if ($("#search_name").val() != "") {
+			para += "&name=" + $("#search_name").val();
+		}
+		
+		if ($("#search_trueName").val() != "") {
+			para += "&trueName=" + $("#search_trueName").val();
+		}
+	
 		window.open("/bk/user/list/${mid}" + para, "_self");
 	});
 });

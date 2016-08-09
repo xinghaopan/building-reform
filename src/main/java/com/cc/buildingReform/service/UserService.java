@@ -19,4 +19,8 @@ public interface UserService {
 	public int getCount();
 
 	public List<User> findAll(int firstResult, int maxResult);
+	
+	public int getCount(Integer roleId, String departmentId, String name, String trueName);
+	
+	public List<User> search(Integer roleId, String departmentId, String name, String trueName, int firstResult, int maxResult);
 }
