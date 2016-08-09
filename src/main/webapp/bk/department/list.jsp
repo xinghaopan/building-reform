@@ -34,7 +34,6 @@
 						</div>
 						
 			           	<div class=" pull-right">
-				           	<a href="#modal-simple" data-toggle="modal" url="/bk/department/edit/${mid}?fatherId=${fatherId}" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
 			           	</div>
 					</div>
 	           </div>
@@ -65,14 +64,16 @@
     function addHoverDom(treeId, treeNode) {
         var sObj = $("#" + treeNode.tId + "_span");
         if (treeNode.editNameFlag || $("#editBtn_"+treeNode.tId).length>0) return;
-        var addStr = "<span class='button edit action-edit' href='#modal-simple' data-toggle='modal' url='/bk/department/edit/${mid}' fatherId='" + treeNode.pId + "' tid='" + treeNode.id + "' id='editBtn_" + treeNode.tId + "'></span>";
+        var addStr = "<span class='button add action-edit' href='#modal-simple' data-toggle='modal' url='/bk/department/edit/${mid}' fatherId='" + treeNode.id + "' tid='0' id='addBtn_" + treeNode.tId + "'></span>";
+        addStr += "<span class='button edit action-edit' href='#modal-simple' data-toggle='modal' url='/bk/department/edit/${mid}' fatherId='" + treeNode.pId + "' tid='" + treeNode.id + "' id='editBtn_" + treeNode.tId + "'></span>";
         addStr += "<span class='button remove' id='removeBtn_" + treeNode.tId + "' title='add node' onfocus='this.blur();'></span>";
         sObj.after(addStr);
     };
 
     function removeHoverDom(treeId, treeNode) {
-        $("#removeBtn_"+treeNode.tId).unbind().remove();
-        $("#editBtn_"+treeNode.tId).unbind().remove();
+    	$("#addBtn_" + treeNode.tId).unbind().remove();
+    	$("#removeBtn_" + treeNode.tId).unbind().remove();
+        $("#editBtn_" + treeNode.tId).unbind().remove();
     };
 
     var setting = {
@@ -159,7 +160,10 @@ jQuery(document).ready(function($) {
 	});
 	
 	$('.action-edit').live("click", function() { 
-		var url = $(this).attr("url") + "?fatherId=" + $(this).attr("fatherId") + "&id=" + $(this).attr("tid");
+		var url = $(this).attr("url") + "?fatherId=" + $(this).attr("fatherId");
+		if ($(this).attr("tid") != "0") {
+			url += "&id=" + $(this).attr("tid");
+		}
 		
 		$.ajax({
 			type : "get",
