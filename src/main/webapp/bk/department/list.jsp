@@ -6,7 +6,7 @@
 <!-- Content -->
 <div id="content">
 	<div class="breadcrumb">
-		<img src="/images/photo_02.jpg"  alt=""/>&nbsp;您当前的位置：
+		<img src="/images/photo_02.jpg"  alt=""/>&nbsp;您当前的位置2：
 		<b class="center-navigation" style="font-weight:normal"></b>
 	</div>
 
@@ -64,9 +64,14 @@
     function addHoverDom(treeId, treeNode) {
         var sObj = $("#" + treeNode.tId + "_span");
         if (treeNode.editNameFlag || $("#editBtn_"+treeNode.tId).length>0) return;
+        
+        var names = treeNode.name.replace(treeNode.id, "");
+        names = names.substring(21);
+        names = names.substring(0, names.length - 33);
+        
         var addStr = "<span class='button add action-edit' href='#modal-simple' data-toggle='modal' url='/bk/department/edit/${mid}' fatherId='" + treeNode.id + "' tid='0' id='addBtn_" + treeNode.tId + "'></span>";
         addStr += "<span class='button edit action-edit' href='#modal-simple' data-toggle='modal' url='/bk/department/edit/${mid}' fatherId='" + treeNode.pId + "' tid='" + treeNode.id + "' id='editBtn_" + treeNode.tId + "'></span>";
-        addStr += "<span class='button remove' id='removeBtn_" + treeNode.tId + "' title='add node' onfocus='this.blur();'></span>";
+        addStr += "<span class='button remove action-del' url='/bk/department/del/${mid}?id=" + treeNode.id + "' bname='" + names + "' id='removeBtn_" + treeNode.tId + "' title='add node' onfocus='this.blur();'></span>";
         sObj.after(addStr);
     };
 
@@ -133,7 +138,7 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('.action-del').click(function(){
+	$('.action-del').live("click", function() { 
 		if( confirm('您确定要删除【' + $(this).attr("bname") + '】吗？') ){
 			var url = $(this).attr("url");
 			$.ajax({
