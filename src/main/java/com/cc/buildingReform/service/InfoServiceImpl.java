@@ -9,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cc.buildingReform.dao.ArchiveInfoDAO;
 import com.cc.buildingReform.dao.AuditDAO;
 import com.cc.buildingReform.dao.DepartmentDAO;
+import com.cc.buildingReform.dao.IdcardDAO;
 import com.cc.buildingReform.dao.InfoDAO;
 import com.cc.buildingReform.dao.QuotaDAO;
+import com.cc.buildingReform.form.ArchiveInfo;
 import com.cc.buildingReform.form.Audit;
 import com.cc.buildingReform.form.Department;
+import com.cc.buildingReform.form.Idcard;
 import com.cc.buildingReform.form.Info;
 import com.cc.buildingReform.form.Quota;
 import com.cc.buildingReform.form.User;
@@ -25,6 +29,12 @@ public class InfoServiceImpl implements InfoService {
 
 	@Autowired
 	private InfoDAO infoDAO;
+	
+	@Autowired
+	private IdcardDAO idcardDAO;
+	
+	@Autowired
+	private ArchiveInfoDAO archiveInfoDAO;
 	
 	@Autowired
 	private QuotaDAO quotaDAO;
@@ -44,7 +54,7 @@ public class InfoServiceImpl implements InfoService {
 			}
 			
 			// 校验身份证号是否被占用
-			if (this.checkId(info.getId(), info.getPersonId()) == 0) {
+			if (idcardDAO.checkId(info.getId(), info.getPersonId()) == 0) {
 				throw new RuntimeException("-10");
 			}
 			
@@ -60,6 +70,9 @@ public class InfoServiceImpl implements InfoService {
 			info.setState(Info.STATE_EDIT);
 		}
 		infoDAO.saveOrUpdate(info);
+		
+		// 保存身份证号
+		idcardDAO.saveOrUpdate(new Idcard(info));
 	}
 
 	public void remove(Integer id) {
@@ -323,7 +336,7 @@ public class InfoServiceImpl implements InfoService {
 	}
 	
 	public int checkId(Integer id, String idcard) {
-		return infoDAO.checkId(id, idcard);
+		return idcardDAO.checkId(id, idcard);
 	}
 	
 	public int getCountByDepartmentId(Integer year, String departmentId) {
@@ -356,5 +369,31 @@ public class InfoServiceImpl implements InfoService {
 	
 	public List<Info> findByNoAcceptance(Integer year, String departmentId, int firstResult, int maxResult) {
 		return infoDAO.findByDate(year, departmentId, "acceptanceDate", firstResult, maxResult);
+	}
+	
+	public int getCountByAcceptanceInfo(Integer year, User user) {
+		return infoDAO.getCountByAcceptanceInfo(year, user.getDepartmentId());
+	}
+	
+	public List<Info> findByAcceptanceInfo(Integer year, User user, int firstResult, int maxResult) {
+		return infoDAO.findByAcceptanceInfo(year, user.getDepartmentId(), firstResult, maxResult);
+	}
+	
+	/**
+	 * 信息归档 2016-08-21 by p
+	 * 
+	 */
+	public void archive(String ids, User user) {
+		String[] arr = ids.split(",");
+		for (int i = 0; i < arr.length; i ++) {
+			Info info = infoDAO.get(Integer.valueOf(arr[i]));
+			if (info != null && info.getState().equals(Info.STATE_OVER)) {
+				archiveInfoDAO.saveOrUpdate(new ArchiveInfo(info));
+				infoDAO.delete(info.getId());
+			}
+			else {
+				throw new RuntimeException("-1");
+			}
+		}
 	}
 }

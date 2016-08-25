@@ -18,5 +18,7 @@
 	    <mapping class="com.cc.buildingReform.form.ViewState" />
 	    <mapping class="com.cc.buildingReform.form.Audit" />
 	    <mapping class="com.cc.buildingReform.form.Feedback" />
+	    <mapping class="com.cc.buildingReform.form.ArchiveInfo" />
+	    <mapping class="com.cc.buildingReform.form.Idcard" />
 	</session-factory>
 </hibernate-configuration>

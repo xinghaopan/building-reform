@@ -256,6 +256,73 @@ public class InfoController {
 		return "/bk/info/other";
 	}
 	
+	/**
+	 * 验收通过信息，此列表主要提供归档功能 2016-08-21 by p
+	 * 
+	 * @param mid
+	 * @param year
+	 * @param currentPage
+	 * @param count
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@Permissions(target = "loginUser", url = "/index")
+	@RequestMapping("/bk/info/acceptanceInfo/{mid}")
+	public String acceptanceInfo(@PathVariable("mid") Integer mid, 
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+			@RequestParam(value = "count", required = false) Integer count,
+			HttpServletRequest request, Model model) throws Exception {
+		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
+			if (year == null) {
+				year = Quota.getCurrentYear();
+			}
+			
+			if (currentPage == null) {
+				currentPage = 0;
+			}
+			
+			if (count == null || count == 0) {
+				count = 10;
+			}
+			
+			int maxCount = infoService.getCountByAcceptanceInfo(year, user);
+			int maxPage = (maxCount - 1) / count + 1;
+			
+			model.addAttribute("count", count);
+			model.addAttribute("maxPage", maxPage);
+			model.addAttribute("mid", mid);
+			model.addAttribute("user", user);
+			
+			model.addAttribute("list", infoService.findByAcceptanceInfo(year, user, currentPage * count, count));
+			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
+			model.addAttribute("year", year);
+			model.addAttribute("dicList", dicService.findAll());
+		}
+		catch(Exception e) {
+			log.error("/bk/info/acceptanceInfo/" + mid, e);
+		}
+		
+		return "/bk/info/acceptanceInfo";
+	}
+	
+	
+	/**
+	 * 审核信息
+	 * 
+	 * @param mid
+	 * @param year
+	 * @param currentPage
+	 * @param count
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/auditInfo/{mid}")
 	public String auditInfo(@PathVariable("mid") Integer mid, 
@@ -298,6 +365,18 @@ public class InfoController {
 		return "/bk/info/auditInfo";
 	}
 	
+	/**
+	 * 退回信息
+	 * 
+	 * @param mid
+	 * @param year
+	 * @param currentPage
+	 * @param count
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/backInfo/{mid}")
 	public String backInfo(@PathVariable("mid") Integer mid, 
@@ -340,6 +419,18 @@ public class InfoController {
 		return "/bk/info/backInfo";
 	}
 	
+	/**
+	 * 等待提交信息
+	 * 
+	 * @param mid
+	 * @param year
+	 * @param currentPage
+	 * @param count
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/waitSubmit/{mid}")
 	public String waitSubmit(@PathVariable("mid") Integer mid, 
@@ -380,6 +471,18 @@ public class InfoController {
 		return "/bk/info/waitSubmit";
 	}
 	
+	/**
+	 * 等待审核信息
+	 * 
+	 * @param mid
+	 * @param year
+	 * @param currentPage
+	 * @param count
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/waitAudit/{mid}")
 	public String waitAudit(@PathVariable("mid") Integer mid, 
@@ -420,6 +523,47 @@ public class InfoController {
 		return "/bk/info/waitAudit";
 	}
 	
+	@Permissions(target = "loginUser", url = "")
+	@RequestMapping(value = "/bk/info/archive/{mid}", method = RequestMethod.POST)
+	public void archive(@PathVariable("mid") Integer mid, @RequestParam("ids") String ids, 
+			Model model, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int msg = 1;
+		try {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			
+			infoService.archive(ids, user);
+		} catch (Exception e) {
+			if (e.getMessage() != null) {
+				if (e.getMessage().equals("-1")) {
+					msg = -1;
+					log.warn("/bk/info/archive?id=" + ids, "归档信息错误！！！");
+				}
+				else {
+					msg = 0;
+					log.error("/bk/info/archive?id=" + ids, e);
+				}
+			}
+			else {
+				msg = 0;
+				log.error("/bk/info/archive?id=" + ids, e);
+			}
+		}
+		
+		Common.print(response, msg);
+	}
+	
+	/**
+	 * 提交审核
+	 * 
+	 * @param mid
+	 * @param id
+	 * @param content
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
 	@Permissions(target = "loginUser", url = "")
 	@RequestMapping(value = "/bk/info/submit/{mid}", method = RequestMethod.POST)
 	public void submit(@PathVariable("mid") Integer mid, @RequestParam("id") Integer id, 
@@ -465,6 +609,17 @@ public class InfoController {
 		Common.print(response, msg);
 	}
 	
+	/**
+	 * 批量提交审核
+	 * 
+	 * @param mid
+	 * @param ids
+	 * @param content
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
 	@Permissions(target = "loginUser", url = "")
 	@RequestMapping(value = "/bk/info/batchSubmit/{mid}", method = RequestMethod.POST)
 	public void submit(@PathVariable("mid") Integer mid, @RequestParam("ids") String ids, 
@@ -510,6 +665,17 @@ public class InfoController {
 		Common.print(response, msg);
 	}
 	
+	/**
+	 * 审核退回
+	 * 
+	 * @param mid
+	 * @param id
+	 * @param content
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
 	@Permissions(target = "loginUser", url = "")
 	@RequestMapping(value = "/bk/info/back/{mid}", method = RequestMethod.POST)
 	public void back(@PathVariable("mid") Integer mid, @RequestParam("id") Integer id, 
@@ -551,6 +717,17 @@ public class InfoController {
 		Common.print(response, msg);
 	}
 	
+	/**
+	 * 批量审核退回
+	 * 
+	 * @param mid
+	 * @param ids
+	 * @param content
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
 	@Permissions(target = "loginUser", url = "")
 	@RequestMapping(value = "/bk/info/batchBack/{mid}", method = RequestMethod.POST)
 	public void batchBack(@PathVariable("mid") Integer mid, @RequestParam("ids") String ids, 
@@ -806,6 +983,16 @@ public class InfoController {
 		Common.print(response, msg);
 	}
 	
+	/**
+	 * 检测身份证号
+	 * 
+	 * @param mid
+	 * @param id
+	 * @param idcard
+	 * @param response
+	 * @param model
+	 * @throws Exception
+	 */
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/checkId/{mid}")
 	public void checkId(@PathVariable("mid") Integer mid, 

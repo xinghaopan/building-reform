@@ -60,4 +60,10 @@ public interface InfoService {
 	public int getCountByNoAcceptance(Integer year, String departmentId);
 	
 	public List<Info> findByNoAcceptance(Integer year, String departmentId, int firstResult, int maxResult);
+	
+	public int getCountByAcceptanceInfo(Integer year, User user);
+	
+	public List<Info> findByAcceptanceInfo(Integer year, User user, int firstResult, int maxResult);
+	
+	public void archive(String ids, User user);
 }

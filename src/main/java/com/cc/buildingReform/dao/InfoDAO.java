@@ -1,5 +1,6 @@
 package com.cc.buildingReform.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -166,25 +167,6 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		
 	}
 	
-	@SuppressWarnings("unchecked")
-	public int checkId(Integer id, String idcard) {
-		Criteria criteria = getSession().createCriteria(Info.class);
-		
-		if (id != null) {
-			criteria.add(Restrictions.ne("id", id));
-		}
-		criteria.add(Restrictions.eq("personId", idcard.toUpperCase()));
-		
-		List<Info> list = (List<Info>) criteria.list();
-		
-		if (list != null && !list.isEmpty()) {
-			return 0;
-		} 
-		else {
-			return 1;
-		}
-	}
-	
 	public int getCountByDepartmentId(Integer year, String departmentId) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
 		
@@ -237,5 +219,34 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		
 		return (List<Info>) criteria.list();
 		
+	}
+	
+	public int getCountByAcceptanceInfo(Integer year, String departmentId) {
+		Criteria criteria = this.getSession().createCriteria(Info.class);
+		
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("departmentId", departmentId));
+		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
+		criteria.add(Restrictions.lt("acceptanceDate", new Date()));
+		
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Info> findByAcceptanceInfo(Integer year, String departmentId, int firstResult, int maxResult) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+		
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("departmentId", departmentId));
+		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
+		criteria.add(Restrictions.lt("acceptanceDate", new Date()));
+		
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+		
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+		
+		return (List<Info>) criteria.list();
 	}
 }

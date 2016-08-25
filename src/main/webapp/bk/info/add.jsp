@@ -618,7 +618,10 @@
 				</div>
 					
 				<div class="row-fluid">
-					<label class="control-label span8" for="lastname"><font size="10" color="red">*农户本人手持委托书的照片</font></label>
+					<label class="control-label span10" for="lastname"><font size="8" color="red">*户主有因不在当地，委托其他人办理的，需要户主本人手持委托书的照片。如自己办理的，则本项不需要上传照片</font></label>
+				</div>
+				<div class="row-fluid">
+					<label class="control-label span8" for="lastname"><font size="8" color="red">*委托书：委托他人办理的书面证明</font></label>
 				</div>
 			</div>
 	           
@@ -923,25 +926,75 @@ jQuery(document).ready(function($) {
 			$('#planYear').focus();
 			return;
 		}
-		/*
-		if (!isDate($('#rebuildBeginDate').val())) {
-			alert("开工日期只能是日期类型！！！");
-			$('#rebuildBeginDate').focus();
-			return;
+		
+		if ($('#rebuildBeginDate').val() != "") {
+			if (!isDate($('#rebuildBeginDate').val())) {
+				alert("开工日期只能是日期类型！！！");
+				$('#rebuildBeginDate').focus();
+				return;
+			}
 		}
 		
-		if (!isDate($('#rebuildEndDate').val())) {
-			alert("竣工日期只能是日期类型！！！");
-			$('#rebuildEndDate').focus();
-			return;
+		if ($('#rebuildEndDate').val() != "") {
+			if (!isDate($('#rebuildEndDate').val())) {
+				alert("竣工日期只能是日期类型！！！");
+				$('#rebuildEndDate').focus();
+				return;
+			}
+			else {
+				if (!isDate($('#rebuildBeginDate').val())) {
+					alert("开工日期只能是日期类型！！！");
+					$('#rebuildBeginDate').focus();
+					return;
+				}
+				else {
+					 var bArr = $('#rebuildBeginDate').val().split("-");
+					 var eArr = $('#rebuildEndDate').val().split("-");
+					 
+					 var bDate = new Date(bArr[0], bArr[1], bArr[2]);
+					 var eDate = new Date(eArr[0], eArr[1], eArr[2]);
+					 
+					 var bTime = bDate.getTime();
+					 var eDate = eDate.getTime();
+
+				    if (bTime >= eDate) {
+				        alert('竣工日期必须大于开工日期！！！');
+				        return;
+				    }
+				}
+			}
 		}
-	
-		if (!isDate($('#acceptanceDate').val())) {
-			alert("验收时间只能是日期类型！！！");
-			$('#acceptanceDate').focus();
-			return;
+		
+		if ($('#acceptanceDate').val() != "") {
+			if (!isDate($('#acceptanceDate').val())) {
+				alert("验收时间只能是日期类型！！！");
+				$('#acceptanceDate').focus();
+				return;
+			}
+			else {
+				if (!isDate($('#rebuildEndDate').val())) {
+					alert("竣工日期只能是日期类型！！！");
+					$('#rebuildEndDate').focus();
+					return;
+				}
+				else {
+					 var bArr = $('#rebuildEndDate').val().split("-");
+					 var eArr = $('#acceptanceDate').val().split("-");
+					 
+					 var bDate = new Date(bArr[0], bArr[1], bArr[2]);
+					 var eDate = new Date(eArr[0], eArr[1], eArr[2]);
+					 
+					 var bTime = bDate.getTime();
+					 var eDate = eDate.getTime();
+
+				    if (bTime >= eDate) {
+				        alert('验收时间必须大于竣工日期！！！');
+				        return;
+				    }
+				}
+			}
 		}
-	*/
+		
 		if ($("#acceptanceImg").val() != "" && !validate_img(document.forms["infoForm"]["acceptanceImg"].files[0], "验收照片")) {
 			return;
 		}
