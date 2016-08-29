@@ -75,9 +75,7 @@
 								<td class="center">${sinfo.personTel}</td>
 								<td class="center">${sinfo.sonDepartmentName}</td>
 								<td class="center">
-									<c:if test="${sinfo.state == 10 && sinfo.userId == user.id}">
-										<a href="javascript:void(0);" class="btn-action glyphicons print btn-success action-edit"><i></i></a>
-									</c:if>
+									<a href="/bk/archiveInfo/print/${mid}?id=${sinfo.id}"  class="btn-action glyphicons print btn-success action-edit"><i></i></a>
 								</td>
 							</tr>
 							<!-- // Item END -->
@@ -110,8 +108,13 @@
 	</div>	
 		
 </div>
+<script language="javascript" src="/js/jquery.jqprint-0.3.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	$('.action-print').live("click", function(){
+		$(".prints").jqprint();
+	});
+	
 	$('.btn_Search').click(function(){
 		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val() + "&year=" + $('#year').val();
 		if ($("#personId").val() != "") {

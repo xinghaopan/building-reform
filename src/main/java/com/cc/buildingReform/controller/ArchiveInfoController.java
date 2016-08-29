@@ -3,7 +3,6 @@ package com.cc.buildingReform.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,28 +14,19 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
-import com.cc.buildingReform.form.Department;
-import com.cc.buildingReform.form.Info;
+import com.cc.buildingReform.form.ArchiveInfo;
 import com.cc.buildingReform.form.Quota;
 import com.cc.buildingReform.form.User;
 import com.cc.buildingReform.service.ArchiveInfoService;
 import com.cc.buildingReform.service.AuditService;
-import com.cc.buildingReform.service.DepartmentService;
 import com.cc.buildingReform.service.DicService;
-import com.cc.buildingReform.service.InfoService;
-import com.cc.buildingReform.service.QuotaService;
 
 @RestController
 public class ArchiveInfoController {
@@ -45,6 +35,9 @@ public class ArchiveInfoController {
 
 	@Autowired
 	private DicService dicService;
+
+	@Autowired
+	private AuditService auditService;
 
 	private static Logger log = LoggerFactory.getLogger(ArchiveInfoController.class);
 	
@@ -96,6 +89,28 @@ public class ArchiveInfoController {
 		}
 		
 		return "/bk/archiveInfo/list";
+	}
+	
+	@Permissions(target = "loginUser", url = "/index")
+	@RequestMapping("/bk/archiveInfo/print/{mid}")
+	public String print(@PathVariable("mid") Integer mid,
+			@RequestParam(value = "id", required = true) Integer id, Model model,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			ArchiveInfo info = archiveInfoService.findById(id);
+			
+			model.addAttribute("mid", mid);
+			model.addAttribute("info", info);
+			
+			if (info.getId() != null && info.getId() != 0) {
+				model.addAttribute("auditList", auditService.findByInfoId(info.getId()));
+			}
+		}
+		catch(Exception e) {
+			log.error("/bk/archiveInfo/print?id=" + id, e);
+		}
+		
+		return "/bk/archiveInfo/print";
 	}
 	
 	@InitBinder
