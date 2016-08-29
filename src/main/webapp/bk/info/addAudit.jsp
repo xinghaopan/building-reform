@@ -97,12 +97,6 @@
 				</tr>
 				
 				<tr class="selectable">
-					<td class="center" width="130">旧住房建筑面积：</td>
-					<td class="left">${info.houseOldSize1}</td>
-					<td class="left"></td>
-				</tr>
-				
-				<tr class="selectable">
 					<td class="center" width="130">改厕类型：</td>
 					<td class="left">${info.toiletTypeName}</td>
 					<td class="left"></td>

@@ -884,41 +884,36 @@ jQuery(document).ready(function($) {
 			return;
 		}
 
-		/*
-		// 改造情况
-		if ($('#toiletType').val() == -1) {
-			alert("请选择改厕类型！！！");
-			$('#toiletType').focus();
-			return;
-		}
-		$("#toiletTypeName").val($("#toiletType").find("option:selected").text());
 		
-		if ($('#rebuildMode').val() == -1) {
-			alert("请选择改造模式！！！");
-			$('#rebuildMode').focus();
-			return;
+		// 改造情况
+		if ($('#toiletType').val() != -1) {
+			$("#toiletTypeName").val($("#toiletType").find("option:selected").text());
 		}
-		$("#rebuildModeName").val($("#rebuildMode").find("option:selected").text());
-
-		if ($('#buildMode').val() == -1) {
-			alert("请选择房屋改造方式！！！");
-			$('#buildMode').focus();
-			return;
+		
+		
+		if ($('#rebuildMode').val() != -1) {
+			$("#rebuildModeName").val($("#rebuildMode").find("option:selected").text());
 		}
-		$("#buildModeName").val($("#buildMode").find("option:selected").text());
+		
 
-		if (isNull($('#buildCompany').val())) {
+		if ($('#buildMode').val() != -1) {
+			$("#buildModeName").val($("#buildMode").find("option:selected").text());
+		}
+		
+
+		/* if (isNull($('#buildCompany').val())) {
 			alert("改造企业名称不能为空！！！");
 			$('#buildCompany').focus();
 			return;
-		}
+		} */
 		
-		if (!isUnsignedDouble($('#houseNewSize1').val())) {
-			alert("厕所改造后面积只能是数字！！！");
-			$('#houseNewSize1').focus();
-			return;
-		} 
-		*/
+		if ($('#houseNewSize1').val() != '') {
+			if (!isUnsignedDouble($('#houseNewSize1').val())) {
+				alert("厕所改造后面积只能是数字！！！");
+				$('#houseNewSize1').focus();
+				return;
+			} 
+		}
 		
 		// 进度情况
 		if ($('#planYear').val() == -1) {
@@ -998,11 +993,13 @@ jQuery(document).ready(function($) {
 		if ($("#acceptanceImg").val() != "" && !validate_img(document.forms["infoForm"]["acceptanceImg"].files[0], "验收照片")) {
 			return;
 		}
-	/*	
-		if (!isDate($('#fundSendDate').val())) {
-			alert("省资金发放时间只能是日期类型！！！");
-			$('#fundSendDate').focus();
-			return;
+	
+		if ($('#fundSendDate').val() != '') {
+			if (!isDate($('#fundSendDate').val())) {
+				alert("省资金发放时间只能是日期类型！！！");
+				$('#fundSendDate').focus();
+				return;
+			}
 		}
 	
 		if ($("#fundSendImg").val() != "" && !validate_img(document.forms["infoForm"]["fundSendImg"].files[0], "补助资金签收单照片")) {
@@ -1023,40 +1020,47 @@ jQuery(document).ready(function($) {
 			}
 		});
 		
-		if (grantType == "") {
+		/* if (grantType == "") {
 			alert("请选择享受补助资金类型！！！");
 			$('#grant').focus();
 			return;
-		}
+		} */
 		grantType = "," + grantType;
 		$("#grantType").val(grantType);
 		$("#grantTypeName").val(grantTypeName);
 		
-		if (!isUnsignedDouble($('#sumFund').val())) {
-			alert("总投资只能是数字！！！");
-			$('#sumFund').focus();
-			return;
+		if ($('#sumFund').val() != '') {
+			if (!isUnsignedDouble($('#sumFund').val())) {
+				alert("总投资只能是数字！！！");
+				$('#sumFund').focus();
+				return;
+			}
 		}
 		
-		if (!isUnsignedDouble($('#grantProvinceFund').val())) {
-			alert("省级补助资金只能是数字！！！");
-			$('#grantProvinceFund').focus();
-			return;
+		if ($('#grantProvinceFund').val()) {
+			if (!isUnsignedDouble($('#grantProvinceFund').val())) {
+				alert("省级补助资金只能是数字！！！");
+				$('#grantProvinceFund').focus();
+				return;
+			}
 		}
 		
-		if (!isUnsignedDouble($('#grantCountiesFund').val())) {
-			alert("县市区补助资金只能是数字！！！");
-			$('#grantCountiesFund').focus();
-			return;
+		if ($('#grantCountiesFund').val()) {
+			if (!isUnsignedDouble($('#grantCountiesFund').val())) {
+				alert("县市区补助资金只能是数字！！！");
+				$('#grantCountiesFund').focus();
+				return;
+			}
 		}
 		
-		if (!isUnsignedDouble($('#personSelfFund').val())) {
-			alert("农户自筹资金只能是数字！！！");
-			$('#personSelfFund').focus();
-			return;
-		} 
+		if ($('#personSelfFund').val()) {
+			if (!isUnsignedDouble($('#personSelfFund').val())) {
+				alert("农户自筹资金只能是数字！！！");
+				$('#personSelfFund').focus();
+				return;
+			} 
+		}
 		
-		*/
 		
 		// 改造照片, 如果上传了，则校验上传文件类型
 		if ($("#houseOldImg").val() != "" && !validate_img(document.forms["infoForm"]["houseOldImg"].files[0], "位置照片（改厕前）")) {
