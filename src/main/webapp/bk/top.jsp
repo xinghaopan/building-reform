@@ -260,17 +260,49 @@ jQuery(document).ready(function($) {
 		for(var i = 0; i < allMenus.length; i ++) {
 			var thisMenu = "";
 			if (allMenus[i].fatherId == tIndex) {
-				if (allMenus[i].id == mid) {
-					thisMenu = "<li class='glyphicons " + allMenus[i].smallImage  + " active'><a href='" + allMenus[i].backLink + "/" + allMenus[i].id + "'><i></i><span>" + allMenus[i].backName  + "</span></a></li>";
-				} else {
-					thisMenu = "<li class='glyphicons " + allMenus[i].smallImage  + "'><a href='" + allMenus[i].backLink + "/" + allMenus[i].id + "'><i></i><span>" + allMenus[i].backName  + "</span></a></li>";
+				var active = allMenus[i].id == mid ? "active" : "";
+				
+				var sub = "";
+				for (var j = 0; j < allMenus.length; j ++) {
+					if (allMenus[j].fatherId == allMenus[i].id) {
+						if (active == "") {
+							active = allMenus[j].id == mid ? "active" : "";
+						}
+						sub += "<li class=''><a href='" + allMenus[j].backLink + "/" + allMenus[j].id + "'><span>" + allMenus[j].backName + "</span></a></li>";
+					}
 				}
+				
+				var hasSubmenu = "";
+				var toggle = "";
+				
+				if (sub != "") {
+					var open = active == "" ? "" : "in";
+					
+					sub = "<ul class='" + open + " collapse' id='menu_" + allMenus[i].id + "'>" + sub + "</ul>";
+					hasSubmenu = "hasSubmenu ";
+					toggle = "data-toggle='collapse'";
+				}
+				
+				
+				
+				var url = allMenus[i].backLink == "" ? "#menu_" + allMenus[i].id : allMenus[i].backLink + "/" + allMenus[i].id;
+				
+				thisMenu = "<li class='" + hasSubmenu + "glyphicons " + allMenus[i].smallImage  + " " + active + "'><a " + toggle + " href='" + url + "'><i></i><span>" + allMenus[i].backName + "</span></a>" + sub + "</li>";
+				
+				
 				leftFrameMenu += thisMenu;
 			}
 		}
 		
 		$(".leftMenu").html(leftFrameMenu);
 		
+		$(".glyphicons").click(function() {
+			$(".glyphicons").each(function() {
+				$(this).removeClass("active");
+			});
+			$(this).addClass("active");
+		});
+		//$('.collapse').collapse();
 	}
 	
 	function initNavigation() {
@@ -390,7 +422,9 @@ jQuery(document).ready(function($) {
 		</span>
 		<!-- // Sidebar Profile END -->
 		
-		<ul class="leftMenu"></ul>
+		<ul class="leftMenu">
+				<li class="hasSubmenu"><a data-toggle="collapse" class="glyphicons notes" href="#menu_landing"><i></i><span>已上报信息</span></a><ul class="in collapse" id="menu_landing" style="height: auto;"><li class=""><a href="#"><span>二级栏目</span></a></li><li class=""><a href="#"><span>二级栏目</span></a></li></ul></li>
+		</ul>
 		
 		<div class="clearfix"></div>
 		
