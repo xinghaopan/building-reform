@@ -24,16 +24,19 @@
 	
 	<div class="row-fluid">
 		<div class="control-group span6">
-		<label class="control-label span3">父类名称：</label>
-		<div class="controls"><input class="span9" id="fatherName" name="fatherName" type="text" value="${fatherName}" /></div>
+			<label class="control-label span3">父类名称：</label>
+			<div class="controls"><input class="span9" id="fatherName" name="fatherName" type="text" value="${fatherName}" /></div>
 		</div>
 		
-		<!-- Group -->
 		<div class="control-group span6">
+			<label class="control-label span3" for="order">指标管理机构：</label>
+			<div class="controls"><input class="span9" id="quotaManageId" name="quotaManageId" type="text" value="${department.quotaManageId}" /></div>
+		</div>
+		
+		<div class="control-group span6" style="display:none;">
 			<label class="control-label span3" for="order">排序：</label>
 			<div class="controls"><input class="span9" id="order" name="order" type="text" value="${department.order}" /></div>
 		</div>
-		<!-- // Group END -->
 	</div>
 	
 	<div class="row-fluid">

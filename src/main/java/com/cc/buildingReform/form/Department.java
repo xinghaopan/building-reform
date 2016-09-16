@@ -20,6 +20,9 @@ public class Department implements Serializable {
 	@Column(name = "DEPARTMENT_FATHER_ID")
 	private String fatherId;
 
+	@Column(name = "DEPARTMENT_QUOTA_MANAGE_ID")
+	private String quotaManageId;
+
 	@Column(name = "DEPARTMENT_NAME")
 	private String name;
 
@@ -52,6 +55,14 @@ public class Department implements Serializable {
 
 	public void setFatherId(String fatherId) {
 		this.fatherId = fatherId;
+	}
+
+	public String getQuotaManageId() {
+		return quotaManageId;
+	}
+
+	public void setQuotaManageId(String quotaManageId) {
+		this.quotaManageId = quotaManageId;
 	}
 
 	public String getName() {
