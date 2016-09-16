@@ -230,27 +230,35 @@ public class InfoServiceImpl implements InfoService {
 		int len = departmentId.length();
 		// 当前机构id长度必须大于2
 		if (len > 2) {
-			String fatherId = departmentId.substring(0, len - 2);
-			 // 如果父机构编码的后2位为00,则说明有断档，直接跳过00，再找上级父机构
-			if (!fatherId.substring(fatherId.length() - 2, fatherId.length()).equals("00")) {
-				Department father = departmentDAO.get(fatherId);
-				// 查询父机构是否存在
+			Department department = departmentDAO.get(departmentId);
+			if (department != null) {
+				Department father = departmentDAO.get(department.getQuotaManageId());
 				if (father != null) {
-					// 父机构是否处理业务, 如果不处理则跳过，再找上级父机构
-					if (father.getIsWork() == 1) {
-						return father;
-					} else {
-						return getFatherDepartment(fatherId);
-					}
-				} else {
-					return null;
+					return father;
 				}
-			} else {
-				return getFatherDepartment(fatherId);
 			}
-		} else {
-			return null;
-		}
+//			String fatherId = departmentId.substring(0, len - 2);
+//			 // 如果父机构编码的后2位为00,则说明有断档，直接跳过00，再找上级父机构
+//			if (!fatherId.substring(fatherId.length() - 2, fatherId.length()).equals("00")) {
+//				Department father = departmentDAO.get(fatherId);
+//				// 查询父机构是否存在
+//				if (father != null) {
+//					// 父机构是否处理业务, 如果不处理则跳过，再找上级父机构
+//					if (father.getIsWork() == 1) {
+//						return father;
+//					} else {
+//						return getFatherDepartment(fatherId);
+//					}
+//				} else {
+//					return null;
+//				}
+//			} else {
+//				return getFatherDepartment(fatherId);
+//			}
+		} 
+			
+		return null;
+		
 	}
 	
 	public Info findById(Integer id) {

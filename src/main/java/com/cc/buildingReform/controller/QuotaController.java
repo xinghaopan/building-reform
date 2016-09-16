@@ -262,6 +262,10 @@ public class QuotaController {
 					msg = -1;
 					log.warn("/bk/quota/distributeSave/", "本单位剩余指标不够此次发放！！！");
 				}
+				if (e.getMessage().equals("-2")) {
+					msg = -2;
+					log.warn("/bk/quota/distributeSave/", "下发单位的指标已经存在！！！");
+				}
 				else {
 					msg = 0;
 					log.error("/bk/quota/distributeSave/", e);

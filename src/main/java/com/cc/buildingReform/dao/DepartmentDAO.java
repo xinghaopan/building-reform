@@ -97,6 +97,24 @@ public class DepartmentDAO extends CcHibernateDao<Department, String> {
 		return (List<Department>) criteria.list();
 	}
 	
+	/**
+	 * 查询指定机构负责指标管理的所有机构 2016-09-16 by p
+	 * 
+	 * @param quotaManageId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Department> findByQuotaManageId(String quotaManageId) {
+		Criteria criteria = getSession().createCriteria(Department.class);
+		
+		criteria.add(Restrictions.eq("quotaManageId", quotaManageId));
+		
+		criteria.addOrder(Order.asc("length"));
+		criteria.addOrder(Order.asc("id"));
+		
+		return (List<Department>) criteria.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Department> findByIsStatistics(List<String> id, int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Department.class);

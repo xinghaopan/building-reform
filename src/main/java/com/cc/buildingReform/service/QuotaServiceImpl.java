@@ -86,6 +86,11 @@ public class QuotaServiceImpl implements QuotaService {
 				throw new RuntimeException("-1");
 			}
 			
+			List<Quota> selfList = quotaDAO.findByDepartmentId(quota.getYear(), quota.getDepartmentId());
+			if (selfList != null && !selfList.isEmpty()) {
+				throw new RuntimeException("-2");
+			}
+			
 			// 本单位指标 - 1
 			list.get(0).setRestNum(list.get(0).getRestNum() - quota.getNum());
 			quotaDAO.saveOrUpdate(list.get(0));

@@ -1,6 +1,5 @@
 package com.cc.buildingReform.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 	
 	public List<Department> findWaitDistribute(User user) {
-		String departmentId = user.getDepartmentId();
+		/*String departmentId = user.getDepartmentId();
 		List<Integer> length = new ArrayList<>();
 		// 省厅用户，需要选择出市和县区两级机构
 		if (departmentId.length() == 2) {
@@ -78,5 +77,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 			List<Department> l = departmentDAO.findByFatherId(user.getDepartmentId());
 			return l;
 		}
+		*/
+		return departmentDAO.findByQuotaManageId(user.getDepartmentId());
 	}
 }

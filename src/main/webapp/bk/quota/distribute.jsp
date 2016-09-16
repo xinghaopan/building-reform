@@ -8,10 +8,11 @@
 <script>
 	var departmentList = new Array();
 	
-	function pushDepartment(id, fatherId, name, isWork) {
+	function pushDepartment(id, fatherId, quotaManageId, name, isWork) {
 		var current = new Object();
 	    current.id = id;
 	    current.fatherId = fatherId;
+	    current.quotaManageId = quotaManageId;
 	    current.name = name;
 	    current.isWork = isWork;
 	    departmentList.push(current);
@@ -19,7 +20,7 @@
 </script>
 
 <c:forEach items="${departmentList}" var="sdepartment">
-	<script>pushDepartment('${sdepartment.id}', '${sdepartment.fatherId}', '${sdepartment.name}', '${sdepartment.isWork}');</script>
+	<script>pushDepartment('${sdepartment.id}', '${sdepartment.fatherId}', '${sdepartment.quotaManageId}', '${sdepartment.name}', '${sdepartment.isWork}');</script>
 </c:forEach>
 
 <!-- Content -->
@@ -120,31 +121,44 @@ jQuery(document).ready(function($) {
 		
 		for (var i = 0; i < departmentList.length; i ++) {
 			if (departmentList[i].fatherId == departmentId) {
-				 $("#fatherDepartmentId").append("<option value='" + departmentList[i].id + "' isWork='" + departmentList[i].isWork + "'>" + departmentList[i].name + "</option>");  
+				 $("#fatherDepartmentId").append("<option value='" + departmentList[i].id + "'>" + departmentList[i].name + "</option>");  
 			}
 		}
 		
 		$("#fatherDepartmentId").change(function() {
-			setDepartmentId($(this).val(), $(this).find("option:selected").text(), $(this).find("option:selected").attr("isWork"));
+			setDepartmentId($(this).val(), $(this).find("option:selected").text(), 1);
 		});
 	} else {
 		setDepartmentId(departmentId, '', 0);
 	}
 	
-	function setDepartmentId(fatherId, text, isWork) {
+	function setDepartmentId(fatherId, text, type) {
 		$("#departmentId").empty();
-		if (isWork == 0) {
-			$("#departmentId").append("<option value='-1'>请选择</option>");
-			
+		
+		if (type == 0) {
 			for (var i = 0; i < departmentList.length; i ++) {
+				// 找出指定机构id的直系子机构
 				if (departmentList[i].fatherId == fatherId) {
-					 $("#departmentId").append("<option value='" + departmentList[i].id + "'>" + departmentList[i].name + "</option>");  
+					$("#departmentId").append("<option value='" + departmentList[i].id + "' text='" + departmentList[i].name + "'>" + departmentList[i].name + "</option>");
 				}
 			}
 		}
 		else {
-			$("#departmentId").append("<option value='" + fatherId + "'>" + text + "</option>");
+			// 循环机构
+			for (var i = 0; i < departmentList.length; i ++) {
+				// 找出指定机构id的直系子机构
+				if (departmentList[i].fatherId == fatherId) {
+					// 虽然是直系子机构，但指标管理机构不是本机构，显示出来
+					if (departmentList[i].fatherId != departmentList[i].quotaManageId) {
+						$("#departmentId").append("<option value='" + departmentList[i].id + "' text='" + departmentList[i].name + "'>" + departmentList[i].name + "</option>");	
+					}
+				}
+			}
+			
+			$("#departmentId").prepend("<option value='" + fatherId + "' text='" + text + "'>市本级</option>");
 		}
+		
+		$("#departmentId").prepend("<option value='-1'>请选择</option>");
 	}
 	
 	$("#btn_Submit").live("click", function() { 
@@ -153,7 +167,7 @@ jQuery(document).ready(function($) {
 			$('#departmentId').focus();
 			return;
 		}
-		$("#departmentName").val($("#departmentId").find("option:selected").text());
+		$("#departmentName").val($("#departmentId").find("option:selected").attr("text"));
 		
 		if ($('#year').val() == -1) {
 			alert("请选择年度！！！");
@@ -174,6 +188,9 @@ jQuery(document).ready(function($) {
 		        	}
 	            	else if (msg == -1) {
 	            		alert("本单位剩余指标不够此次发放！！！");
+		        	}
+	            	else if (msg == -2) {
+	            		alert("下发单位的指标已经存在！！！");
 		        	}
 	            	else if (msg == 1) {
 	            		alert("指标发放成功！！！");
