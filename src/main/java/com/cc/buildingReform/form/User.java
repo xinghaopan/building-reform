@@ -51,6 +51,9 @@ public class User implements Serializable {
 	@Column(name = "USER_DEPARTMENT_NAME")
 	private String departmentName;
 	
+	@Column(name = "USER_KEY")
+	private String key;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -121,5 +124,13 @@ public class User implements Serializable {
 
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 }

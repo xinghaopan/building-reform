@@ -67,6 +67,28 @@ public class MainController {
 		return "/index";
 	}
 	
+	@RequestMapping("/adminIndex")
+	public String adminIndex(HttpServletRequest request, Model model)	throws Exception {
+		try {
+			long starTime = System.currentTimeMillis();
+			
+			model.addAttribute("mid", 0);
+			model.addAttribute("gzdt", newsService.findByMid(17, 1, 0, 5));
+			model.addAttribute("zcwj", newsService.findByMid(16, 1, 0, 5));
+			model.addAttribute("xtgx", newsService.findByMid(15, 1, 0, 5));
+			model.addAttribute("xzzq", newsService.findByMid(14, 1, 0, 5));
+			model.addAttribute("statistic", quotaService.yearsStatistics(Quota.getCurrentYear(), 13));
+			long endTime = System.currentTimeMillis();
+			viewStateService.findByFatherId(2016, "");
+			log.warn("首页加载耗时： " + (endTime-starTime));
+		}
+		catch(Exception e) {
+			log.error("/index", e);
+		}
+		
+		return "/adminIndex";
+	}
+	
 	@RequestMapping("/news/list{path}/{mid}")
 	public String list(@PathVariable("mid") Integer mid, @PathVariable("path") String path, 
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,

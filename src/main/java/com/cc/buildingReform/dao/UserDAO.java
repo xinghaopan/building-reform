@@ -23,6 +23,7 @@ public class UserDAO extends CcHibernateDao<User, Integer> {
 	public List<User> findAll() {
 		Criteria criteria = getSession().createCriteria(User.class);
 		
+		criteria.addOrder(Order.asc("departmentId"));
 		criteria.addOrder(Order.desc("id"));
 		
 		return (List<User>) criteria.list();
@@ -76,7 +77,9 @@ public class UserDAO extends CcHibernateDao<User, Integer> {
 	public List<User> findAll(int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(User.class);
 		
+		criteria.addOrder(Order.asc("departmentId"));
 		criteria.addOrder(Order.desc("id"));
+		
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);
 		
@@ -125,10 +128,33 @@ public class UserDAO extends CcHibernateDao<User, Integer> {
 			criteria.add(Restrictions.like("trueName", trueName, MatchMode.ANYWHERE));
 		}
 		
+		criteria.addOrder(Order.asc("departmentId"));
 		criteria.addOrder(Order.desc("id"));
+		
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);
 		
 		return (List<User>) criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public User findByKey(String key) {
+		Criteria criteria = getSession().createCriteria(User.class);
+		
+		if (key != null && !"".equals(key)) {
+			criteria.add(Restrictions.eq("key", key));
+			List<User> l = (List<User>) criteria.list();
+			
+			if(l != null && l.size() > 0) {
+				return l.get(0);
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
+		
 	}
 }

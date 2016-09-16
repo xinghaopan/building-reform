@@ -34,7 +34,7 @@
 	<div class="control-group row-fluid">
 		<label class="control-label">反馈内容：</label>
 		<div class="controls">
-			<textarea id="mustHaveId" class="wysihtml5 span12" id="askContent" name="askContent" rows="5">${feedback.askContent}</textarea>
+			<textarea class="wysihtml5 span12" id="askContent" name="askContent" rows="5">${feedback.askContent}</textarea>
 		</div>
 	</div>
 	
@@ -52,7 +52,7 @@
 	<div class="control-group row-fluid">
 		<label class="control-label">回复内容：</label>
 		<div class="controls">
-			<textarea id="mustHaveId" class="wysihtml5 span12" id="replyContent" name="replyContent" rows="5">${feedback.replyContent}</textarea>
+			<textarea class="wysihtml5 span12" id="replyContent" name="replyContent" rows="5">${feedback.replyContent}</textarea>
 		</div>
 	</div>
 </div>

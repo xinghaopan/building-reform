@@ -134,6 +134,7 @@
 $(document).ready(function () {
 	// ajaxSubmit
 	var id = '<%=user.getId() %>';
+	var keySn = '<%=user.getKey() %>';
 	if (id == null || id == '') {
 		id = 0;
 	}
@@ -199,6 +200,10 @@ jQuery(document).ready(function($) {
 				if (msg == 1) {
 					alert('退出登录状态成功！！！');
 					window.open("/index", "_self");
+				}
+				else if (msg == 2) {
+					alert('退出登录状态成功！！！');
+					window.open("/adminIndex", "_self");
 				}
 				else {
 					alert('退出登录状态失败！！！');

@@ -10,7 +10,16 @@
 				<li>
 					<b>${status.index+1}</b>
 					<p>${squota.departmentName}</p>
-					<b><fmt:formatNumber value="${(squota.num - squota.restNum) * 100 / squota.num}" pattern="##"  />%</b>
+					<b>
+						<c:choose>
+							<c:when test="${squota.num != 0}">
+								<fmt:formatNumber value="${(squota.num - squota.restNum) * 100 / squota.num}" pattern="##"  />%
+							</c:when>
+							<c:otherwise>
+								0%
+							</c:otherwise>
+						</c:choose>
+					</b>
 				</li>
 			</c:forEach>
 		</ul>

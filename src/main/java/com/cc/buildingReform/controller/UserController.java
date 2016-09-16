@@ -141,6 +141,7 @@ public class UserController {
 				Department department = departmentService.findById(user.getDepartmentId());
 				
 				if (department != null) {
+					user.setDepartmentName(department.getName());
 					userService.save(user);
 				}
 				else {
@@ -232,14 +233,48 @@ public class UserController {
 				User user = userService.findByName(0, name);
 				if (user == null) {
 					msg = -1;
-				} else if (!Common.MD5(password).equals(user.getPassword())) {
-					msg = -2;
+				} else {
+					if (user.getKey() == null || "".equals(user.getKey())) {
+						if (!Common.MD5(password).equals(user.getPassword())) {
+							msg = -2;
+						}
+						else {
+							request.getSession().setAttribute("loginUser", user);
+						}
+					}
+					else {
+						msg = -5;
+					}
+					
+				}
+			}
+			else {
+				msg = -3;
+			}
+			
+		} catch (Exception e) {
+			msg = 0;
+			log.error("/bk/user/login", e);
+		}
+		
+		Common.print(response, msg);
+	}
+	
+	@RequestMapping(value = "/bk/user/adminLogin")
+	public void adminLogin(@RequestParam("keySn") String keySn,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int msg = 1;
+		try {
+			if (keySn != null && !"".equals(keySn)) {
+				User user = userService.findByKey(keySn);
+				if (user == null) {
+					msg = -1;
 				} else {
 					request.getSession().setAttribute("loginUser", user);
 				}
 			}
 			else {
-				msg = -3;
+				msg = -1;
 			}
 			
 		} catch (Exception e) {
@@ -303,6 +338,10 @@ public class UserController {
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int msg = 1;
 		try {
+			User user = (User)request.getSession().getAttribute("loginUser");
+			if (user.getKey() != null && !"".equals(user.getKey())) {
+				msg = 2;
+			}
 			request.getSession().invalidate();
 		} catch (Exception e) {
 			msg = 0;

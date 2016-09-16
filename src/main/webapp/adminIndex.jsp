@@ -5,7 +5,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="/top.jsp" %>
-
+<OBJECT classid="clsid:A5F1473C-3BAF-4098-885A-9DD332433FD5" id="Com11If" name="Com11If" codebase="/ocx/NG_MgrCtrl.dll"></OBJECT>
+<input type="hidden" id="keySn" name="keySn" value="dds" />
 <div id="content">
 	<div class="loginbar">
 		<div class="loginbar_name"><input type="text" id="userName" name="userName" value="" class="biao1" /></div>
@@ -14,6 +15,7 @@
 		<div class="loginbar_images"><img id="kaptchaImage" class="kaptchaImage" /></div>
 		<div class="loginbar_button"><input id="btn_login" name="btn_login" type="image" class="web1" src="/images/index_03.jpg" /></div>
 	</div>
+	
 <script>
     jQuery(document).ready(function ($) {
     	$('.kaptchaImage').click(function (event) {//生成验证码  
@@ -50,67 +52,109 @@
         });
 
         $('#btn_login').click(function () {
-        	if ($('#userName').val() == "") {
-        		alert("用户名不能为空！！！");
-        		$('#userName').focus();
-        		return;
-        	}
-            
-        	if ($('#userPassword').val() == "") {
-        		alert("密码不能为空！！！");
-        		$('#userPassword').focus();
-        		return;
-        	}
-            
-        	if ($('#codes').val() == "") {
-        		alert("验证码不能为空！！！");
-        		$('#codes').focus();
-        		return;
-        	}
-            
-        	$.ajax({
-                type: "get",
-                url: "/bk/user/login",
-                data: "radom=" + Math.random() + "&name=" + $('#userName').val() + "&password=" + $('#userPassword').val() + "&codes=" + $('#codes').val(),
-                dataType: "json",
-                success: function (msg) {
-                    if (msg == 0) {
-                        alert("系统错误！！！");
+        	var slotList = document.getElementById("Com11If").GetSlotList();
+    		if( null != slotList ) {
+    			var slotIDs = new VBArray( slotList ).toArray();
+    			
+    			var tokenInfo = document.getElementById("Com11If").GetTokenInfo(slotIDs[0]);
+    			if( tokenInfo )
+    			{
+    				document.getElementById("keySn").value = tokenInfo.GetSerialNumber();
+    				$.ajax({
+                        type: "get",
+                        url: "/bk/user/adminLogin",
+                        data: "radom=" + Math.random() + "&keySn=" + tokenInfo.GetSerialNumber(),
+                        dataType: "json",
+                        success: function (msg) {
+                            if (msg == 0) {
+                                alert("系统错误！！！");
+                            }
+                            else if (msg == -1) {
+                                alert("身份锁信息错误！！！");
+                            }
+                            else if (msg == 1) {
+                                window.open("/bk/main", "_self");
+                            }
+                            else {
+                                alert("未知错误！！！");
+                            }
+                        },
+                        error: function (XMLHttpRequest, error, errorThrown) {
+                            alert(error);
+                            alert(errorThrown);
+                        }
+                    });
+    			}else
+
+    			{
+    				alert("身份锁读取错误!");
+    				return false;
+    			}
+    		}
+    		else {
+    			if ($('#userName').val() == "") {
+            		alert("用户名不能为空！！！");
+            		$('#userName').focus();
+            		return;
+            	}
+                
+            	if ($('#userPassword').val() == "") {
+            		alert("密码不能为空！！！");
+            		$('#userPassword').focus();
+            		return;
+            	}
+                
+            	if ($('#codes').val() == "") {
+            		alert("验证码不能为空！！！");
+            		$('#codes').focus();
+            		return;
+            	}
+            	
+            	$.ajax({
+                    type: "get",
+                    url: "/bk/user/login",
+                    data: "radom=" + Math.random() + "&name=" + $('#userName').val() + "&password=" + $('#userPassword').val() + "&codes=" + $('#codes').val(),
+                    dataType: "json",
+                    success: function (msg) {
+                        if (msg == 0) {
+                            alert("系统错误！！！");
+                        }
+                        else if (msg == -1) {
+                            alert("用户密码错误！！！");
+                        }
+                        else if (msg == -2) {
+                        	alert("用户密码错误！！！");
+                        }
+                        else if (msg == -3) {
+                            alert("验证码错误！！！");
+                        }
+                        else if (msg == -5) {
+                            alert("请用身份锁登录！！！");
+                        }
+                        else if (msg == 1) {
+                            window.open("/bk/main", "_self");
+                        }
+                        else {
+                            alert("未知错误！！！");
+                        }
+                    },
+                    error: function (XMLHttpRequest, error, errorThrown) {
+                        alert(error);
+                        alert(errorThrown);
                     }
-                    else if (msg == -1) {
-                        alert("用户密码错误！！！");
-                    }
-                    else if (msg == -2) {
-                    	alert("用户密码错误！！！");
-                    }
-                    else if (msg == -3) {
-                        alert("验证码错误！！！");
-                    }
-                    else if (msg == -5) {
-                        alert("请用身份锁登录！！！");
-                    }
-                    else if (msg == 1) {
-                        window.open("/bk/main", "_self");
-                    }
-                    else {
-                        alert("未知错误！！！");
-                    }
-                },
-                error: function (XMLHttpRequest, error, errorThrown) {
-                    alert(error);
-                    alert(errorThrown);
-                }
-            });
+                });
+    		}
+        	
         });
     });
 </script>
 
 	<div class="hot">
 		<ul>
-			<li style="float:left;"><a href="#" target="_blank"><img src="/images/index_06.jpg" width="240" height="79"  alt=""/></a></li>
-			<li style="float:left; margin-left:13px;"><a href="#" target="_blank"><img src="/images/index_07.jpg" width="240" height="79"  alt=""/></a></li>
-			<li style="float:left; margin-left:13px;"><a href="#" target="_blank"><img src="/images/index_08.jpg" width="240" height="79"  alt=""/></a></li>
-			<li style="float:right;"><a href="#" target="_blank"><img src="/images/index_09.jpg" width="240" height="79"  alt=""/></a></li>
+			<li style="float:left;"><a href="#" target="_blank"><img src="images/index_06.jpg" width="240" height="79"  alt=""/></a></li>
+			<li style="float:left; margin-left:13px;"><a href="#" target="_blank"><img src="images/index_07.jpg" width="240" height="79"  alt=""/></a></li>
+			<li style="float:left; margin-left:13px;"><a href="#" target="_blank"><img src="images/index_08.jpg" width="240" height="79"  alt=""/></a></li>
+			<li style="float:right;"><a href="#" target="_blank"><img src="images/index_09.jpg" width="240" height="79"  alt=""/></a></li>
 		</ul>
 	</div>
 
@@ -122,7 +166,7 @@
 			<div class="container_right_one">
 				<div class="container_right_title">
 					<a href="/news/list/17" target="_self">
-						<img src="/images/index_12.jpg" width="370" height="45"  alt=""/>
+						<img src="images/index_12.jpg" width="370" height="45"  alt=""/>
 					</a>
 				</div>
 				
@@ -151,7 +195,7 @@
 			<div class="container_right_two">
 				<div class="container_right_title">
 					<a href="/news/list/16" target="_selft">
-						<img src="/images/index_13.jpg" width="370" height="45"  alt=""/>
+						<img src="images/index_13.jpg" width="370" height="45"  alt=""/>
 					</a>
 				</div>
 				
@@ -180,7 +224,7 @@
 			<div class="container_right_three">
 				<div class="container_right_title">
 					<a href="/news/list/15" target="_self">
-						<img src="/images/index_14.jpg" width="370" height="45"  alt=""/>
+						<img src="images/index_14.jpg" width="370" height="45"  alt=""/>
 					</a>
 				</div>
 				
@@ -209,7 +253,7 @@
 			<div class="container_right_four">
 				<div class="container_right_title">
 					<a href="/news/list/14" target="_self">
-						<img src="/images/index_15.jpg" width="370" height="45"  alt=""/>
+						<img src="images/index_15.jpg" width="370" height="45"  alt=""/>
 					</a>
 				</div>
 				

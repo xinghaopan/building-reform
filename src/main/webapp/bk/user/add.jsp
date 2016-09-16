@@ -15,19 +15,15 @@
 
 	<div class="row-fluid" style="display:none;">
 		<div>
-		<!-- Group -->
 		<div class="control-group span6">
 			<label class="control-label span3" for="id">id：</label>
 			<div class="controls"><input class="span9" id="id" name="id" type="text" value="${user.id}" /></div>
 		</div>
-		<!-- // Group END -->
 		
-		<!-- Group -->
 		<div class="control-group span6">
 			<label class="control-label span3" for="password">密码：</label>
 			<div class="controls"><input class="span9" id="password" name="password" type="text" value="${user.password}" /></div>
 		</div>
-		<!-- // Group END -->
 		</div>
 	</div>
 		
@@ -71,6 +67,11 @@
 			<div class="controls"><input class="span9" id="departmentId" name="departmentId" type="text" value="${user.departmentId}" /></div>
 		</div>
 		<!-- // Group END -->
+		
+		<div class="control-group span6" style="display:none;">
+			<label class="control-label span3" for="key">key：</label>
+			<div class="controls"><input class="span9" id="key" name="key" type="text" value="${user.key}" /></div>
+		</div>
 		</div>
 	</div>
 </div>

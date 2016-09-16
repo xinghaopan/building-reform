@@ -51,4 +51,8 @@ public class UserServiceImpl implements UserService {
 	public List<User> search(Integer roleId, String departmentId, String name, String trueName, int firstResult, int maxResult) {
 		return userDAO.search(roleId, departmentId, name, trueName, firstResult, maxResult);
 	}
+	
+	public User findByKey(String key) {
+		return userDAO.findByKey(key);
+	}
 }
