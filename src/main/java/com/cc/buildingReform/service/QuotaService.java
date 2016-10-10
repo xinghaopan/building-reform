@@ -28,5 +28,7 @@ public interface QuotaService {
 	
 	public List<Quota> findByFatherDepartmentId(Integer year, String fatherDepartmentId);
 	
+	public List<Quota> findByDistributeId(String distributeId, Integer year);
+	
 	public List<Quota> yearsStatistics(Integer year, Integer num);
 }

@@ -347,12 +347,62 @@ public class InfoServiceImpl implements InfoService {
 		return idcardDAO.checkId(id, idcard);
 	}
 	
-	public int getCountByDepartmentId(Integer year, String departmentId) {
-		return infoDAO.getCountByDepartmentId(year, departmentId);
+	public int getCountByDepartmentId(Integer year, String departmentId, Integer state) {
+		List<String> list = new ArrayList<>();
+		if (departmentId.length() > 2) {
+			if (departmentId.length() == 10) {
+				list.add(departmentId);
+			}
+			else {
+				list = departmentDAO.findByQuotaManageId(departmentId).stream().distinct().map(n -> n.getId()).collect(Collectors.toList());
+			}
+		}
+		
+		String property1 = null;
+		String property2 = null;
+		
+		if (state.equals(1)) {
+			property1 = "rebuildBeginDate";
+			property2 = "rebuildEndDate";
+		}
+		else if (state.equals(2)) {
+			property1 = "rebuildEndDate";
+			property2 = "acceptanceDate";
+		}
+		else if (state.equals(3)) {
+			property1 = "acceptanceDate";
+		}
+		
+		return infoDAO.getCountByManageDepartmentId(year, list, property1, property2);
 	}
 
-	public List<Info> findByDepartmentId(Integer year, String departmentId, int firstResult, int maxResult) {
-		return infoDAO.findByDepartmentId(year, departmentId, firstResult, maxResult);
+	public List<Info> findByDepartmentId(Integer year, String departmentId, Integer state, int firstResult, int maxResult) {
+		List<String> list = new ArrayList<>();
+		if (departmentId.length() > 2) {
+			if (departmentId.length() == 10) {
+				list.add(departmentId);
+			}
+			else {
+				list = departmentDAO.findByQuotaManageId(departmentId).stream().distinct().map(n -> n.getId()).collect(Collectors.toList());
+			}
+		}
+		
+		String property1 = null;
+		String property2 = null;
+		
+		if (state.equals(1)) {
+			property1 = "rebuildBeginDate";
+			property2 = "rebuildEndDate";
+		}
+		else if (state.equals(2)) {
+			property1 = "rebuildEndDate";
+			property2 = "acceptanceDate";
+		}
+		else if (state.equals(3)) {
+			property1 = "acceptanceDate";
+		}
+		
+		return infoDAO.findByManageDepartmentId(year, list, property1, property2, firstResult, maxResult);
 	}
 	
 	public int getCountByNoOpen(Integer year, String departmentId) {
@@ -397,7 +447,10 @@ public class InfoServiceImpl implements InfoService {
 			Info info = infoDAO.get(Integer.valueOf(arr[i]));
 			if (info != null && info.getState().equals(Info.STATE_OVER)) {
 				archiveInfoDAO.saveOrUpdate(new ArchiveInfo(info));
-				infoDAO.delete(info.getId());
+				// TODO 暂时不删除归档信息
+				//infoDAO.delete(info.getId());
+				info.setState(Info.STATE_ARCHIVE);
+				infoDAO.saveOrUpdate(info);
 			}
 			else {
 				throw new RuntimeException("-1");

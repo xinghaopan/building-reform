@@ -24,6 +24,7 @@ public class Info implements Serializable {
 	public static final Integer STATE_SUBMIT_TO_PROVINCE = 20;
 	
 	public static final Integer STATE_OVER = 10;
+	public static final Integer STATE_ARCHIVE = 5;
 	public static final Integer STATE_AUDIT_RETURN = -1;
 	
 	@Id

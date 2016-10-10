@@ -45,9 +45,9 @@ public interface InfoService {
 	
 	public int checkId(Integer id, String idcard);
 	
-	public int getCountByDepartmentId(Integer year, String departmentId);
+	public int getCountByDepartmentId(Integer year, String departmentId, Integer state);
 	
-	public List<Info> findByDepartmentId(Integer year, String departmentId, int firstResult, int maxResult);
+	public List<Info> findByDepartmentId(Integer year, String departmentId, Integer state, int firstResult, int maxResult);
 	
 	public int getCountByNoOpen(Integer year, String departmentId);
 	

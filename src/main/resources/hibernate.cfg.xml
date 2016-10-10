@@ -20,5 +20,6 @@
 	    <mapping class="com.cc.buildingReform.form.Feedback" />
 	    <mapping class="com.cc.buildingReform.form.ArchiveInfo" />
 	    <mapping class="com.cc.buildingReform.form.Idcard" />
+	    <mapping class="com.cc.buildingReform.form.StatisticsQuota" />
 	</session-factory>
 </hibernate-configuration>

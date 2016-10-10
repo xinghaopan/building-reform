@@ -67,7 +67,8 @@
 							<th class="center">开工数量</th>
 							<th class="center">竣工数量</th>
 							<th class="center">验收数量</th>
-							<th class="center">完成度</th>
+							<th class="center">竣工完成度</th>
+							<th class="center">验收完成度</th>
 							<th class="center">发放日期</th>
 							<th class="center" style="width: 120px;">操作</th>
 						</tr>
@@ -79,9 +80,9 @@
 								<td class="center uniformjs"><input type="checkbox" /></td>
 								<td class="center">
 									<c:choose>
-										<c:when test="${fn:length(squota.departmentId) == 10}">${squota.departmentName}</c:when>
+										<c:when test="${fn:length(squota.id) == 10}">${squota.name}</c:when>
 										<c:otherwise>
-											<a href="/bk/quota/list/${mid}?year=${year}&fatherId=${squota.departmentId}" target="_self">${squota.departmentName}</a>
+											<a href="/bk/quota/list/${mid}?year=${year}&fatherId=${squota.id}" target="_self">${squota.name}</a>
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -92,15 +93,20 @@
 								<td class="center">${squota.acceptanceNum}</td>
 								<td class="center">
 									<c:if test="${squota.num != null && squota.num != 0}">
-										<fmt:formatNumber value="${(squota.num - squota.restNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
+										<fmt:formatNumber value="${(squota.endNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
+									</c:if>
+								</td>
+								<td class="center">
+									<c:if test="${squota.num != null && squota.num != 0}">
+										<fmt:formatNumber value="${(squota.acceptanceNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
 									</c:if>
 								</td>
 								<td class="center"><fmt:formatDate value="${squota.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></td>
 								<td class="center">
-									<c:if test="${squota.distributeDepartmentId == user.departmentId}">
-										<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=${squota.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
+									<c:if test="${squota.quotaManageId == user.departmentId && squota.quotaId != 0}">
+										<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=${squota.quotaId}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
 									
-										<a href="javascript:void(0);" url="/bk/quota/del/${mid}?id=${squota.id}" bname="${squota.departmentName}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
+										<a href="javascript:void(0);" url="/bk/quota/del/${mid}?id=${squota.quotaId}" bname="${squota.name}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
 									</c:if>
 								</td>
 							</tr>

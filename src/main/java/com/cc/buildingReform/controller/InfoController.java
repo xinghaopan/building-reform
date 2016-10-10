@@ -2,6 +2,7 @@ package com.cc.buildingReform.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,12 +31,14 @@ import com.cc.buildingReform.Common.Common;
 import com.cc.buildingReform.form.Department;
 import com.cc.buildingReform.form.Info;
 import com.cc.buildingReform.form.Quota;
+import com.cc.buildingReform.form.StatisticsQuota;
 import com.cc.buildingReform.form.User;
 import com.cc.buildingReform.service.AuditService;
 import com.cc.buildingReform.service.DepartmentService;
 import com.cc.buildingReform.service.DicService;
 import com.cc.buildingReform.service.InfoService;
 import com.cc.buildingReform.service.QuotaService;
+import com.cc.buildingReform.service.StatisticsQuotaService;
 
 @RestController
 public class InfoController {
@@ -51,6 +54,9 @@ public class InfoController {
 	@Autowired
 	private DepartmentService departmentService;
 
+	@Autowired
+	private StatisticsQuotaService statisticsQuotaService;
+	
 	@Autowired
 	private AuditService auditService;
 
@@ -86,12 +92,33 @@ public class InfoController {
 				count = 10;
 			}
 				
+			List<Quota> quotaList = new ArrayList<>();
+			List<StatisticsQuota> list = new ArrayList<>();
+			
 			if (fatherId == null || fatherId == "") {
 				fatherId = user.getDepartmentId();
-				model.addAttribute("list", quotaService.findByDepartmentId(year, fatherId));
-			} else {
-				model.addAttribute("list", quotaService.findByFatherDepartmentId(year, fatherId));
+				quotaList = quotaService.findByDepartmentId(year, fatherId);
+				list = statisticsQuotaService.findByDepartmentId(fatherId, year);
+				
+			} 
+			else {
+				quotaList = quotaService.findByDistributeId(fatherId, year);
+				list = statisticsQuotaService.findByQuotaManageId(fatherId, year);
 			}
+			
+			for (int i = 0; i < list.size(); i ++) {
+				for (int j = 0; j < quotaList.size(); j ++) {
+					if (list.get(i).getId().equals(quotaList.get(j).getDepartmentId())) {
+						list.get(i).setQuotaId(quotaList.get(j).getId());
+						list.get(i).setNum(quotaList.get(j).getNum());
+						list.get(i).setRestNum(quotaList.get(j).getRestNum());
+						list.get(i).setDate(quotaList.get(j).getDate());
+						break;
+					}
+				} 
+			}
+			
+			model.addAttribute("list", list);
 			
 			model.addAttribute("mid", mid);
 			model.addAttribute("dicList", dicService.findAll());
@@ -154,9 +181,10 @@ public class InfoController {
 	@RequestMapping("/bk/info/sublist/{mid}")
 	public String sublist(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "year", required = false) Integer year, 
-			@RequestParam(value = "fatherId", required = false) String fatherId, 
+			@RequestParam(value = "fatherId", required = true) String fatherId, 
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
+			@RequestParam(value = "state", required = false) Integer state,
 			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		try {
 			User user = (User) request.getSession().getAttribute("loginUser");
@@ -173,7 +201,11 @@ public class InfoController {
 				count = 10;
 			}
 			
-			int maxCount = infoService.getCountByDepartmentId(year, fatherId);
+			if (state == null) {
+				state = 0;
+			}
+			
+			int maxCount = infoService.getCountByDepartmentId(year, fatherId, state);
 			int maxPage = (maxCount - 1) / count + 1;
 			
 			
@@ -181,9 +213,11 @@ public class InfoController {
 			model.addAttribute("maxPage", maxPage);
 			model.addAttribute("mid", mid);
 			model.addAttribute("user", user);
-			model.addAttribute("list", infoService.findByDepartmentId(year, fatherId, currentPage * count, count));
+			model.addAttribute("fatherId", fatherId);
+			model.addAttribute("list", infoService.findByDepartmentId(year, fatherId, state, currentPage * count, count));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			model.addAttribute("year", year);
+			model.addAttribute("state", state);
 			model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {

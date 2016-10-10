@@ -1,5 +1,6 @@
 package com.cc.buildingReform.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,12 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
-import com.cc.buildingReform.form.Department;
 import com.cc.buildingReform.form.Quota;
+import com.cc.buildingReform.form.StatisticsQuota;
 import com.cc.buildingReform.form.User;
 import com.cc.buildingReform.service.DepartmentService;
 import com.cc.buildingReform.service.DicService;
 import com.cc.buildingReform.service.QuotaService;
+import com.cc.buildingReform.service.StatisticsQuotaService;
 
 @RestController
 public class QuotaController {
@@ -33,6 +35,9 @@ public class QuotaController {
 
 	@Autowired
 	private DepartmentService departmentService;
+
+	@Autowired
+	private StatisticsQuotaService statisticsQuotaService;
 
 	@Autowired
 	private DicService dicService;
@@ -59,23 +64,35 @@ public class QuotaController {
 				year = Quota.getCurrentYear();
 			}
 			
+			List<Quota> quotaList = new ArrayList<>();
+			List<StatisticsQuota> list = new ArrayList<>();
+			
 			if (fatherId == null || fatherId == "") {
 				fatherId = user.getDepartmentId();
-				model.addAttribute("list", quotaService.findByDepartmentId(year, fatherId));
-			} else {
-				model.addAttribute("list", quotaService.findByFatherDepartmentId(year, fatherId));
+				quotaList = quotaService.findByDepartmentId(year, fatherId);
+				list = statisticsQuotaService.findByDepartmentId(fatherId, year);
+				
+			} 
+			else {
+				quotaList = quotaService.findByDistributeId(fatherId, year);
+				list = statisticsQuotaService.findByQuotaManageId(fatherId, year);
 			}
 			
-			Department userDepartment = departmentService.findById(user.getDepartmentId());
-			if (userDepartment != null && userDepartment.getIsWork() == 1) {
-				if (fatherId.equals(user.getDepartmentId())) {
-					List<Department> l = departmentService.findByFatherId(fatherId);
-					if (l != null && !l.isEmpty() && l.get(0).getId().length() != 10) {
-						model.addAttribute("isDistribute", 1);
+			for (int i = 0; i < list.size(); i ++) {
+				for (int j = 0; j < quotaList.size(); j ++) {
+					if (list.get(i).getId().equals(quotaList.get(j).getDepartmentId())) {
+						list.get(i).setQuotaId(quotaList.get(j).getId());
+						list.get(i).setNum(quotaList.get(j).getNum());
+						list.get(i).setRestNum(quotaList.get(j).getRestNum());
+						list.get(i).setDate(quotaList.get(j).getDate());
+						break;
 					}
-				}
+				} 
 			}
 			
+			model.addAttribute("list", list);
+			
+			model.addAttribute("isDistribute", user.getDepartmentId().length() == 8 ? 0 : 1);
 			
 			model.addAttribute("mid", mid);
 			model.addAttribute("dicList", dicService.findAll());
@@ -262,7 +279,7 @@ public class QuotaController {
 					msg = -1;
 					log.warn("/bk/quota/distributeSave/", "本单位剩余指标不够此次发放！！！");
 				}
-				if (e.getMessage().equals("-2")) {
+				else if (e.getMessage().equals("-2")) {
 					msg = -2;
 					log.warn("/bk/quota/distributeSave/", "下发单位的指标已经存在！！！");
 				}

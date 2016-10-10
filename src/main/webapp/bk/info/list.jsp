@@ -46,12 +46,6 @@
            				</div>
 						
 			           	<div class=" pull-right">
-			           		<c:if test="${fn:length(user.departmentId) == 2}">
-				           		<a href="#modal-simple" data-toggle="modal" url="/bk/quota/edit/${mid}?id=0" class="btn btn-icon btn-info glyphicons circle_ok action-edit"><i></i>新&nbsp;&nbsp;&nbsp;&nbsp;建</a>
-				           	</c:if>
-				           	<c:if test="${isDistribute == 1}">
-				           		<a href="/bk/quota/distribute/${mid}" class="btn btn-icon btn-info glyphicons circle_ok"><i></i>指标发放</a>
-				           	</c:if>
 			           	</div>
 					</div>
 	           </div>
@@ -67,7 +61,8 @@
 							<th class="center">开工数量</th>
 							<th class="center">竣工数量</th>
 							<th class="center">验收数量</th>
-							<th class="center">完成度</th>
+							<th class="center">竣工完成度</th>
+							<th class="center">验收完成度</th>
 							<th class="center">发放日期</th>
 						</tr>
 					</thead>
@@ -78,22 +73,33 @@
 								<td class="center uniformjs"><input type="checkbox" /></td>
 								<td class="center">
 									<c:choose>
-										<c:when test="${fn:length(squota.departmentId) == 10}">
-											<a href="/bk/info/sublist/${mid}?year=${year}&fatherId=${squota.departmentId}" target="_self">${squota.departmentName}</a>
+										<c:when test="${fn:length(squota.id) == 10}">
+											<a href="/bk/info/sublist/${mid}?year=${year}&fatherId=${squota.id}" target="_self">${squota.name}</a>
 										</c:when>
 										<c:otherwise>
-											<a href="/bk/info/list/${mid}?year=${year}&fatherId=${squota.departmentId}" target="_self">${squota.departmentName}</a>
+											<a href="/bk/info/list/${mid}?year=${year}&fatherId=${squota.id}" target="_self">${squota.name}</a>
 										</c:otherwise>
 									</c:choose>
 								</td>
 								<td class="center">${squota.year}</td>
 								<td class="center">${squota.num}</td>
-								<td class="center">${squota.beginNum}</td>
-								<td class="center">${squota.endNum}</td>
-								<td class="center">${squota.acceptanceNum}</td>
+								<td class="center">
+									<a href="/bk/info/sublist/${mid}?year=${year}&fatherId=${squota.id}&state=1" target="_self">${squota.beginNum}</a>
+								</td>
+								<td class="center">
+									<a href="/bk/info/sublist/${mid}?year=${year}&fatherId=${squota.id}&state=2" target="_self">${squota.endNum}</a>
+								</td>
+								<td class="center">
+									<a href="/bk/info/sublist/${mid}?year=${year}&fatherId=${squota.id}&state=3" target="_self">${squota.acceptanceNum}</a>
+								</td>
 								<td class="center">
 									<c:if test="${squota.num != null && squota.num != 0}">
-										<fmt:formatNumber value="${(squota.num - squota.restNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
+										<fmt:formatNumber value="${(squota.endNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
+									</c:if>
+								</td>
+								<td class="center">
+									<c:if test="${squota.num != null && squota.num != 0}">
+										<fmt:formatNumber value="${(squota.acceptanceNum) * 100 / squota.num}" pattern="##.##" minFractionDigits="2" />%
 									</c:if>
 								</td>
 								<td class="center"><fmt:formatDate value="${squota.date}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></td>
@@ -121,87 +127,6 @@
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('.action-del').click(function(){
-		if( confirm('您确定要删除【' + $(this).attr("bname") + '】吗？') ){
-			var url = $(this).attr("url");
-			$.ajax({
-				type : "get",
-				url : url,
-				data : "radom=" + Math.random(),
-				dataType : "text",
-				success : function(msg) {
-					if (msg == "-999") {
-		        		outLogin();
-		        	}
-					else if (msg == -1) {
-	            		alert("指标已分配无法删除");
-					}
-					else if (msg == 1) {
-	            		window.location.reload();
-					}
-					else {
-						alert('【' + $(this).attr("bname") + '】删除失败！！！');
-					}
-				},
-				error : function(XMLHttpRequest, error, errorThrown) {
-					//alert("请求超时！！！");
-				}
-			});
-		}
-	});
-	
-	$('.action-edit').click(function(){
-		var url = $(this).attr("url");
-		
-		$.ajax({
-			type : "get",
-			url : url,
-			data : "radom=" + Math.random(),
-			dataType : "text",
-			success : function(text) {
-				$("#modal-simple").html(text);
-			},
-			error : function(XMLHttpRequest, error, errorThrown) {
-				//alert("请求超时！！！");
-			}
-		});
-	});
-	
-	$("#btn_Submit").live("click", function() { 
-		if (!isUnsignedInteger($('#num').val())) {
-			alert("指标数量只能为数字！！！");
-			$('#num').focus();
-			return;
-		}
-		
-		var options = { 
-	            success : function(msg) {
-	            	if (msg == "-999") {
-		        		alert("999");
-		        	}
-	            	else if (msg == -1) {
-	            		alert("修改后的年度指标不符合规则！！！");
-		        	}
-	            	else if (msg == -2) {
-	            		alert("此机构的年度指标已经存在！！！");
-		        	}
-	            	else if (msg == -3) {
-	            		alert("本机构的年度指标不存在，无法发放！！！");
-		        	}
-	            	else if (msg == -4) {
-	            		alert("修改后本机构指标不够发放下级机构！！！");
-		        	}
-	            	else if (msg == 1) {
-	            		alert("年度指标信息保存成功！！！");
-	            		window.location.reload();
-	            	}
-	            	else {
-	            		alert("年度指标信息保存失败！！！");
-	            	}
-	            } 
-        }; 
-        $("#quotaForm").ajaxSubmit(options); 
-	});
 	
 	$('.btn_Search').click(function(){
 		var para = "?year=" + $('#year').val();

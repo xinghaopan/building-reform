@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -167,20 +169,59 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		
 	}
 	
-	public int getCountByDepartmentId(Integer year, String departmentId) {
+	public int getCountByManageDepartmentId(Integer year, List<String> departmentId, String property1, String property2) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
 		
 		criteria.add(Restrictions.eq("planYear", year));
-		criteria.add(Restrictions.eq("sonDepartmentId", departmentId));
+		
+		for (int i = 0; i < departmentId.size(); i ++) {
+			criteria.add(Restrictions.like("sonDepartmentId", departmentId.get(i), MatchMode.START));
+		}
+		
+		Date now = new Date();
+		
+		// 第一个日期字段不为空
+		if (property1 != null) {
+			criteria.add(Restrictions.le(property1, now));
+		}
+		
+		// 第二个日期字段不为空
+		if (property2 != null) {
+			// 日期为空，或大于当前时间
+			Disjunction disjunction = Restrictions.disjunction();  
+			disjunction.add(Property.forName(property2).isNull());
+			disjunction.add(Restrictions.gt(property2, now));
+			criteria.add(disjunction);
+		}
+		
 		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Info> findByDepartmentId(Integer year, String departmentId, int firstResult, int maxResult) {
+	public List<Info> findByManageDepartmentId(Integer year, List<String> departmentId, String property1, String property2, int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Info.class);
 		
 		criteria.add(Restrictions.eq("planYear", year));
-		criteria.add(Restrictions.eq("sonDepartmentId", departmentId));
+		for (int i = 0; i < departmentId.size(); i ++) {
+			criteria.add(Restrictions.like("sonDepartmentId", departmentId.get(i), MatchMode.START));
+		}
+		
+		Date now = new Date();
+		
+		// 第一个日期字段不为空
+		if (property1 != null) {
+			criteria.add(Restrictions.le(property1, now));
+		}
+		
+		// 第二个日期字段不为空
+		if (property2 != null) {
+			// 日期为空，或大于当前时间
+			Disjunction disjunction = Restrictions.disjunction();  
+			disjunction.add(Property.forName(property2).isNull());
+			disjunction.add(Restrictions.gt(property2, now));
+			criteria.add(disjunction);
+		}
+		
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
 		

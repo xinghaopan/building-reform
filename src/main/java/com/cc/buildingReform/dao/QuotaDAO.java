@@ -131,6 +131,19 @@ public class QuotaDAO extends CcHibernateDao<Quota, Integer> {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Quota> findByDistributeId(String distributeId, Integer year) {
+		Criteria criteria = getSession().createCriteria(Quota.class);
+		
+		criteria.add(Restrictions.eq("distributeDepartmentId", distributeId));
+		criteria.add(Restrictions.eq("year", year));
+		
+		criteria.addOrder(Order.asc("departmentId"));
+		criteria.addOrder(Order.desc("id"));
+		
+		return (List<Quota>) criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Quota> yearsStatistics(Integer year) {
 		Criteria criteria = getSession().createCriteria(Quota.class);
 		

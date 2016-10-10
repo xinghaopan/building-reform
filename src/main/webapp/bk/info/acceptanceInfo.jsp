@@ -83,6 +83,7 @@
 										<c:when test="${sinfo.state == 40}">等待市审核</c:when>
 										<c:when test="${sinfo.state == 20}">等待省厅审核</c:when>
 										<c:when test="${sinfo.state == 10}">审核结束</c:when>
+										<c:when test="${sinfo.state == 5}">归档</c:when>
 										<c:when test="${sinfo.state == -1}">退回</c:when>
 										<c:when test="${sinfo.state == -2}">撤回</c:when>
 										

@@ -82,6 +82,7 @@
 										<c:when test="${sinfo.state == 40}">等待市审核</c:when>
 										<c:when test="${sinfo.state == 20}">等待省厅审核</c:when>
 										<c:when test="${sinfo.state == 10}">审核结束</c:when>
+										<c:when test="${sinfo.state == 5}">归档</c:when>
 										<c:when test="${sinfo.state == -1}">退回</c:when>
 										<c:when test="${sinfo.state == -2}">撤回</c:when>
 										
@@ -89,9 +90,7 @@
 									</c:choose>
 								</td>
 								<td class="center">
-									<c:if test="${sinfo.state == 10 && sinfo.userId == user.id}">
-										<a href="/bk/info/edit/${mid}?id=${sinfo.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
-									</c:if>
+									<a href="#modal-simple" data-toggle="modal" url="/bk/info/editInfo/${mid}?id=${sinfo.id}" bname="${sinfo.personName}" class="btn-action glyphicons eye_open btn-success action-edit"><i></i></a>
 								</td>
 							</tr>
 							<!-- // Item END -->
@@ -126,8 +125,25 @@
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	$('.action-edit').click(function(){
+		var url = $(this).attr("url");
+		
+		$.ajax({
+			type : "get",
+			url : url,
+			data : "radom=" + Math.random(),
+			dataType : "text",
+			success : function(text) {
+				$("#modal-simple").html(text);
+			},
+			error : function(XMLHttpRequest, error, errorThrown) {
+				//alert("请求超时！！！");
+			}
+		});
+	});
+	
 	$('.btn_Search').click(function(){
-		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val() + "&year=" + $('#year').val();
+		var para = "?fatherId=${fatherId}&state=${state}&currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val() + "&year=" + $('#year').val();
 		window.open("/bk/info/sublist/${mid}" + para, "_self");
 	});
 	

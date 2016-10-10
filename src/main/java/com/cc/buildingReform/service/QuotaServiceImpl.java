@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cc.buildingReform.Common.Compare;
 import com.cc.buildingReform.dao.DepartmentDAO;
 import com.cc.buildingReform.dao.QuotaDAO;
+import com.cc.buildingReform.dao.StatisticsQuotaDAO;
 import com.cc.buildingReform.dao.ViewStateDAO;
 import com.cc.buildingReform.form.Department;
 import com.cc.buildingReform.form.Quota;
+import com.cc.buildingReform.form.StatisticsQuota;
 import com.cc.buildingReform.form.User;
 
 @Service
@@ -27,6 +29,9 @@ public class QuotaServiceImpl implements QuotaService {
 
 	@Autowired
 	private ViewStateDAO viewStateDAO;
+	
+	@Autowired
+	private StatisticsQuotaDAO statisticsQuotaDAO;
 	
 	public void save(Quota quota) {
 		if (quota.getId() != null && quota.getId() != 0) {
@@ -141,67 +146,68 @@ public class QuotaServiceImpl implements QuotaService {
 	}
 	
 	public List<Quota> findByDepartmentId(Integer year, String fatherDepartmentId) {
-		Department department = departmentDAO.get(fatherDepartmentId);
-		
-		if (department.getIsWork() == 1) {
-			// 对于处理业务的机构，只显示自己的指标信息
-			
-			List<Quota> quotaList = quotaDAO.findByDepartmentId(year, fatherDepartmentId);
-			if (quotaList != null && !quotaList.isEmpty()) {
-				
-				// 先统计自己的各种数量
-				List<Object[]> stateList = viewStateDAO.findByFatherId(year, fatherDepartmentId, fatherDepartmentId.length());
-				
-				for (int i = 0; i < quotaList.size(); i ++) {
-					// 查找对应指标的统计信息
-					for (int j = 0; j < stateList.size(); j ++) {
-						if (quotaList.get(i).getDepartmentId().equals(stateList.get(j)[0])) {
-							quotaList.get(i).setBeginNum(Integer.valueOf(String.valueOf(stateList.get(j)[2])));
-							quotaList.get(i).setEndNum(Integer.valueOf(String.valueOf(stateList.get(j)[3])));
-							quotaList.get(i).setAcceptanceNum(Integer.valueOf(String.valueOf(stateList.get(j)[4])));
-							quotaList.get(i).setFundSendNum(Integer.valueOf(String.valueOf(stateList.get(j)[5])));
-							
-							break;
-						}
-					}
-				}
-				
-				return quotaList;
-			} else {
-				return null;
-			}
-		} else {
-			// 对于不处理业务的机构，没有上级下发的指标，但下级肯定会有指标
-			
-			// 查询子机构
-			List<Department> sonList = departmentDAO.findByFatherId(fatherDepartmentId);
-			
-			if (sonList != null && !sonList.isEmpty()) {
-				// 先统计子机构的各种数量
-				List<Object[]> stateList = viewStateDAO.findByFatherId(year, fatherDepartmentId, sonList.get(0).getId().length());
-				
-				List<Quota> quotaList = quotaDAO.findByDepartmentId(year, sonList
-						.stream().map(Department::getId).collect(Collectors.toList()));
-				
-				for (int i = 0; i < quotaList.size(); i ++) {
-					// 查找对应指标的统计信息
-					for (int j = 0; j < stateList.size(); j ++) {
-						if (quotaList.get(i).getDepartmentId().equals(stateList.get(j)[0])) {
-							quotaList.get(i).setBeginNum(Integer.valueOf(String.valueOf(stateList.get(j)[2])));
-							quotaList.get(i).setEndNum(Integer.valueOf(String.valueOf(stateList.get(j)[3])));
-							quotaList.get(i).setAcceptanceNum(Integer.valueOf(String.valueOf(stateList.get(j)[4])));
-							quotaList.get(i).setFundSendNum(Integer.valueOf(String.valueOf(stateList.get(j)[5])));
-							
-							break;
-						}
-					}
-
-				}
-				return quotaList;
-			} else {
-				return null;
-			}
-		}
+		return quotaDAO.findByDepartmentId(year, fatherDepartmentId);
+//		Department department = departmentDAO.get(fatherDepartmentId);
+//		
+//		if (department.getIsWork() == 1) {
+//			// 对于处理业务的机构，只显示自己的指标信息
+//			
+//			List<Quota> quotaList = quotaDAO.findByDepartmentId(year, fatherDepartmentId);
+//			if (quotaList != null && !quotaList.isEmpty()) {
+//				
+//				// 先统计自己的各种数量
+//				List<Object[]> stateList = viewStateDAO.findByFatherId(year, fatherDepartmentId, fatherDepartmentId.length());
+//				
+//				for (int i = 0; i < quotaList.size(); i ++) {
+//					// 查找对应指标的统计信息
+//					for (int j = 0; j < stateList.size(); j ++) {
+//						if (quotaList.get(i).getDepartmentId().equals(stateList.get(j)[0])) {
+//							quotaList.get(i).setBeginNum(Integer.valueOf(String.valueOf(stateList.get(j)[2])));
+//							quotaList.get(i).setEndNum(Integer.valueOf(String.valueOf(stateList.get(j)[3])));
+//							quotaList.get(i).setAcceptanceNum(Integer.valueOf(String.valueOf(stateList.get(j)[4])));
+//							quotaList.get(i).setFundSendNum(Integer.valueOf(String.valueOf(stateList.get(j)[5])));
+//							
+//							break;
+//						}
+//					}
+//				}
+//				
+//				return quotaList;
+//			} else {
+//				return null;
+//			}
+//		} else {
+//			// 对于不处理业务的机构，没有上级下发的指标，但下级肯定会有指标
+//			
+//			// 查询子机构
+//			List<Department> sonList = departmentDAO.findByFatherId(fatherDepartmentId);
+//			
+//			if (sonList != null && !sonList.isEmpty()) {
+//				// 先统计子机构的各种数量
+//				List<Object[]> stateList = viewStateDAO.findByFatherId(year, fatherDepartmentId, sonList.get(0).getId().length());
+//				
+//				List<Quota> quotaList = quotaDAO.findByDepartmentId(year, sonList
+//						.stream().map(Department::getId).collect(Collectors.toList()));
+//				
+//				for (int i = 0; i < quotaList.size(); i ++) {
+//					// 查找对应指标的统计信息
+//					for (int j = 0; j < stateList.size(); j ++) {
+//						if (quotaList.get(i).getDepartmentId().equals(stateList.get(j)[0])) {
+//							quotaList.get(i).setBeginNum(Integer.valueOf(String.valueOf(stateList.get(j)[2])));
+//							quotaList.get(i).setEndNum(Integer.valueOf(String.valueOf(stateList.get(j)[3])));
+//							quotaList.get(i).setAcceptanceNum(Integer.valueOf(String.valueOf(stateList.get(j)[4])));
+//							quotaList.get(i).setFundSendNum(Integer.valueOf(String.valueOf(stateList.get(j)[5])));
+//							
+//							break;
+//						}
+//					}
+//
+//				}
+//				return quotaList;
+//			} else {
+//				return null;
+//			}
+//		}
 	}
 	
 	public List<Quota> findByFatherDepartmentId(Integer year, String fatherDepartmentId) {
@@ -269,23 +275,35 @@ public class QuotaServiceImpl implements QuotaService {
 	
 	public List<Quota> yearsStatistics(Integer year, Integer num) {
 		List<Quota> list = quotaDAO.yearsStatistics(year);
-		// 按上报率排序，并取出指定数量
-		if (list.size() < num) {
-			List<Department> departmentList = departmentDAO.findByIsStatistics(list.stream().map(n -> n.getDepartmentId()).collect(Collectors.toList()), 0, num - list.size());
-			for (int i = 0; i < departmentList.size(); i ++) {
-				Quota quota = new Quota();
-				quota.setDepartmentId(departmentList.get(i).getId());
-				quota.setDepartmentName(departmentList.get(i).getName());
-				quota.setNum(1);
-				quota.setRestNum(1);
-				list.add(quota);
+		
+//		if (list.size() < num) {
+//			List<Department> departmentList = departmentDAO.findByIsStatistics(list.stream().map(n -> n.getDepartmentId()).collect(Collectors.toList()), 0, num - list.size());
+//			for (int i = 0; i < departmentList.size(); i ++) {
+//				Quota quota = new Quota();
+//				quota.setDepartmentId(departmentList.get(i).getId());
+//				quota.setDepartmentName(departmentList.get(i).getName());
+//				quota.setNum(1);
+//				quota.setRestNum(1);
+//				list.add(quota);
+//			}
+//		}
+		List<StatisticsQuota> list2 = statisticsQuotaDAO.findByStatistics(year);
+		
+		for (int i = 0; i < list.size(); i ++) {
+			for (int j = 0; j < list2.size(); j ++) {
+				if (list2.get(j).getId().equals(list.get(i).getDepartmentId())) {
+					list.get(i).setBeginNum(list2.get(j).getBeginNum());
+					list.get(i).setEndNum(list2.get(j).getEndNum());
+					list.get(i).setAcceptanceNum(list2.get(j).getAcceptanceNum());
+					break;
+				}
 			}
 		}
-		
+		// 按上报率排序，并取出指定数量
 		list = list.stream()
 				.sorted(Compare.<Quota>compare()
 						//.thenComparing((a, b) -> getPercent(b.getNum(), b.getRestNum()).compareTo(getPercent(a.getNum(), a.getRestNum())))
-						.thenComparing((a, b) -> getPercent(b.getNum(), b.getRestNum()).compareTo(getPercent(a.getNum(), a.getRestNum())))
+						.thenComparing((a, b) -> getPercent(b.getNum(), b.getAcceptanceNum()).compareTo(getPercent(a.getNum(), a.getAcceptanceNum())))
 						.thenComparing((a, b) -> a.getDepartmentId().compareTo(b.getDepartmentId())))
 				.skip(0)
 				.limit(num)
@@ -294,9 +312,13 @@ public class QuotaServiceImpl implements QuotaService {
 		return list;
 	}
 	
-	private Double getPercent(Integer num, Integer restNum) {
-		if (num != null && restNum != null && num != 0) {
-			return Double.valueOf((num - restNum) * 100 / num);
+	public List<Quota> findByDistributeId(String distributeId, Integer year) {
+		return quotaDAO.findByDistributeId(distributeId, year);
+	}
+	
+	private Double getPercent(Integer num, Integer acceptanceNum) {
+		if (num != null && acceptanceNum != null && num != 0) {
+			return Double.valueOf(acceptanceNum * 100d / num);
 		} else {
 			return 0d;
 		}
