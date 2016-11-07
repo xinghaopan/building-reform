@@ -78,6 +78,24 @@ public class DepartmentDAO extends CcHibernateDao<Department, String> {
 	}
 	
 	/**
+	 * 查找指定id所有的父类所有机构 2016-10-10 by p
+	 * 
+	 * @param parentId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Department> findByParentId(String parentId) {
+		Criteria criteria = getSession().createCriteria(Department.class);
+		
+		criteria.add(Restrictions.eq("parentId", parentId));
+		
+		criteria.addOrder(Order.asc("length"));
+		criteria.addOrder(Order.asc("id"));
+		
+		return (List<Department>) criteria.list();
+	}
+	
+	/**
 	 * 查询指定范围的机构 2016-07-18 by p
 	 * 
 	 * @param beginCode

@@ -45,6 +45,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return departmentDAO.findByFatherId(fatherId);
 	}
 	
+	public List<Department> findByParentId(String parentId) {
+		return departmentDAO.findByParentId(parentId);
+	}
+	
 	public Department findFather(String id) {
 		if (id != null) {
 			Department r = findById(id);

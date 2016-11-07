@@ -317,13 +317,25 @@ jQuery(document).ready(function($) {
 			//$(".heading").html("<i></i>" + menu.backName);
 			while(menu.fatherId != 0) {
 				if (nav == "") {
-					nav = "<a class=\"mainFrame-first-a\" href=\""
+					if (menu.backLink == "") {
+						nav = "<a class=\"mainFrame-first-a\" href=\"javascript:void(0);\" >"
+							+ menu.backName + "</a>";
+					}
+					else {
+						nav = "<a class=\"mainFrame-first-a\" href=\""
 							+ menu.backLink + "/" + menu.id + "\" >"
 							+ menu.backName + "</a>";
+					}
 				} else {
-					nav = "<a class=\"mainFrame-first-a\" href=\""
-						+ menu.backLink + "/" + menu.id + "\" >"
-						+ menu.backName + "</a>&nbsp;&gt;&nbsp;" + nav;
+					if (menu.backLink == "") {
+						nav = "<a class=\"mainFrame-first-a\" href=\"javascript:void(0);\" >"
+							+ menu.backName + "</a>&nbsp;&gt;&nbsp;" + nav;
+					}
+					else {
+						nav = "<a class=\"mainFrame-first-a\" href=\""
+							+ menu.backLink + "/" + menu.id + "\" >"
+							+ menu.backName + "</a>&nbsp;&gt;&nbsp;" + nav;
+					}
 				}
 				menu = getMenu(menu.fatherId);
 			}
@@ -331,7 +343,7 @@ jQuery(document).ready(function($) {
 			nav = "<a class=\"mainFrame-first-a\" href=\"javascript:void(0);\" >"
 				+ menu.backName + "</a>&nbsp;&gt;&nbsp;" + nav;
 				
-			$(".center-navigation").html(nav);
+			$(".center-navigation").html(nav + $(".center-navigation").html());
 		}
 	}
 	

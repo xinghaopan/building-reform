@@ -46,6 +46,8 @@
 						
 			           	<div class=" pull-right">
 				           	<a href="javascript:void(0);" url="/bk/info/batchSubmit/${mid}" class="btn-batch btn btn-icon btn-info glyphicons circle_ok"><i></i>批量上报</a>
+				           	
+				           	<a href="javascript:void(0);" url="/bk/info/exportExcel/${mid}" class="btn-export btn btn-icon btn-info glyphicons circle_ok"><i></i>导出Excel</a>
 			           	</div>
 					</div>
 	           </div>
@@ -272,6 +274,11 @@ jQuery(document).ready(function($) {
 			
 	        $("#infoForm").ajaxSubmit(options);
 		}
+	});
+	
+	$(".btn-export").live("click", function() { 
+		var para = "?year=" + $('#year').val();
+		window.open("/bk/info/exportExcel/${mid}" + para, "_self");
 	});
 	
 	$('.btn_Search').click(function(){

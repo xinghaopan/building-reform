@@ -9,7 +9,7 @@
 <div id="content">
 	<div class="breadcrumb">
 		<img src="/images/photo_02.jpg"  alt=""/>&nbsp;您当前的位置：
-		<b class="center-navigation" style="font-weight:normal"></b>
+		<b class="center-navigation" style="font-weight:normal">${nav}</b>
 	</div>
 	
 	<div class="row-fluid row-merge"></div>

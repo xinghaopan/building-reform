@@ -97,6 +97,7 @@ public class InfoServiceImpl implements InfoService {
 		list.get(0).setRestNum(list.get(0).getRestNum() + 1);
 		quotaDAO.saveOrUpdate(list.get(0));
 		infoDAO.delete(id);
+		idcardDAO.delete(id);
 	}
 	
 	public void submit(User user, Integer id, String content) {
@@ -294,6 +295,13 @@ public class InfoServiceImpl implements InfoService {
 		return infoDAO.getCountByDepartmentId(year, Info.STATE_EDIT, departmentIdList);
 	}
 	
+	public List<Info> findByEdit(Integer year, User user) {
+		List<String> departmentIdList = new ArrayList<>();
+		departmentIdList.add(user.getDepartmentId());
+		
+		return infoDAO.findByDepartmentId(year, Info.STATE_EDIT, departmentIdList);
+	}
+	
 	public List<Info> findByEdit(Integer year, User user, int firstResult, int maxResult) {
 		List<String> departmentIdList = new ArrayList<>();
 		departmentIdList.add(user.getDepartmentId());
@@ -347,7 +355,7 @@ public class InfoServiceImpl implements InfoService {
 		return idcardDAO.checkId(id, idcard);
 	}
 	
-	public int getCountByDepartmentId(Integer year, String departmentId, Integer state) {
+	public int getCountByDepartmentId(Integer year, String departmentId, String personName, String personId, Integer state) {
 		List<String> list = new ArrayList<>();
 		if (departmentId.length() > 2) {
 			if (departmentId.length() == 10) {
@@ -373,10 +381,10 @@ public class InfoServiceImpl implements InfoService {
 			property1 = "acceptanceDate";
 		}
 		
-		return infoDAO.getCountByManageDepartmentId(year, list, property1, property2);
+		return infoDAO.getCountByManageDepartmentId(year, list, personName, personId, property1, property2);
 	}
 
-	public List<Info> findByDepartmentId(Integer year, String departmentId, Integer state, int firstResult, int maxResult) {
+	public List<Info> findByDepartmentId(Integer year, String departmentId, String personName, String personId, Integer state, int firstResult, int maxResult) {
 		List<String> list = new ArrayList<>();
 		if (departmentId.length() > 2) {
 			if (departmentId.length() == 10) {
@@ -402,7 +410,7 @@ public class InfoServiceImpl implements InfoService {
 			property1 = "acceptanceDate";
 		}
 		
-		return infoDAO.findByManageDepartmentId(year, list, property1, property2, firstResult, maxResult);
+		return infoDAO.findByManageDepartmentId(year, list, personName, personId, property1, property2, firstResult, maxResult);
 	}
 	
 	public int getCountByNoOpen(Integer year, String departmentId) {
@@ -456,5 +464,9 @@ public class InfoServiceImpl implements InfoService {
 				throw new RuntimeException("-1");
 			}
 		}
+	}
+	
+	public void statisticsQuota(Integer year) {
+		infoDAO.statisticsQuota(year);
 	}
 }

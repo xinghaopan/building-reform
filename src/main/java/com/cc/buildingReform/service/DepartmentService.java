@@ -20,6 +20,8 @@ public interface DepartmentService {
 
 	public List<Department> findByFatherId(String fatherId);
 	
+	public List<Department> findByParentId(String parentId);
+	
 	public List<Department> findByRange(String beginCode, List<Integer> length);
 	
 	public List<Department> findWaitDistribute(User user);

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.Common.Common;
+import com.cc.buildingReform.form.Department;
 import com.cc.buildingReform.form.Quota;
 import com.cc.buildingReform.form.StatisticsQuota;
 import com.cc.buildingReform.form.User;
@@ -44,6 +45,18 @@ public class QuotaController {
 
 	private static Logger log = LoggerFactory.getLogger(QuotaController.class);
 	
+	private String getNavigation(String fatherId, String me, Integer year, Integer mid) {
+		String s = "";
+		Department department = departmentService.findById(fatherId);
+		s = "&nbsp;>&nbsp<a class='mainFrame-first-a' href='/bk/quota/list/" + mid + "?year=" + year + "&fatherId=" + fatherId + "'>" + department.getName() + "</a>";
+		if (fatherId.equals("01") || me.equals(fatherId)) {
+			
+		}
+		else {
+			s = getNavigation(department.getQuotaManageId(), me, year, mid) + s;
+		}
+		return s;
+	}
 	/**
 	 * 列表页面 2015-07-30 by p
 	 * 
@@ -59,6 +72,7 @@ public class QuotaController {
 			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		try {
 			User user = (User) request.getSession().getAttribute("loginUser");
+			String nav = "";
 			
 			if (year == null) {
 				year = Quota.getCurrentYear();
@@ -76,6 +90,7 @@ public class QuotaController {
 			else {
 				quotaList = quotaService.findByDistributeId(fatherId, year);
 				list = statisticsQuotaService.findByQuotaManageId(fatherId, year);
+				nav = getNavigation(fatherId, user.getDepartmentId(), year, mid);
 			}
 			
 			for (int i = 0; i < list.size(); i ++) {
@@ -97,6 +112,7 @@ public class QuotaController {
 			model.addAttribute("mid", mid);
 			model.addAttribute("dicList", dicService.findAll());
 			model.addAttribute("year", year);
+			model.addAttribute("nav", nav);
 			model.addAttribute("user", user);
 		}
 		catch(Exception e) {

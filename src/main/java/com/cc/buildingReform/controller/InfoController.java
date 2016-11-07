@@ -1,14 +1,27 @@
 package com.cc.buildingReform.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +75,109 @@ public class InfoController {
 
 	private static Logger log = LoggerFactory.getLogger(InfoController.class);
 	
+	@RequestMapping("/bk/info/exportExcel/{mid}")
+	 public void exportExcel(@RequestParam(value = "year", required = false) Integer year,
+			 HttpServletRequest request, HttpServletResponse response)  {  
+	     // 生成提示信息，  
+	     response.setContentType("application/vnd.ms-excel");  
+	     String codedFileName = null;  
+	     OutputStream fOut = null;  
+	     try  
+	     {  
+	         // 进行转码，使其支持中文文件名  
+	         codedFileName = java.net.URLEncoder.encode("导出农户信息", "UTF-8");  
+	         response.setHeader("content-disposition", "attachment;filename=" + codedFileName + ".xls");  
+	         // 产生工作簿对象  
+	         HSSFWorkbook workbook = new HSSFWorkbook();  
+	         //产生工作表对象  
+	         HSSFSheet sheet = workbook.createSheet();  
+	         
+	         User user = (User) request.getSession().getAttribute("loginUser");
+				
+	         List<Info> list = infoService.findByEdit(year, user);
+				
+	         HSSFRow row;
+	         HSSFCell cell;
+	         row = sheet.createRow(0);
+             
+             cell = row.createCell((int)0);
+             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+             cell.setCellValue("姓名");
+             
+             cell = row.createCell((int)1);
+             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+             cell.setCellValue("身份证号");
+             
+             cell = row.createCell((int)2);
+             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+             cell.setCellValue("机构");
+             
+             cell = row.createCell((int)3);
+             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+             cell.setCellValue("村民小组");
+             
+             cell = row.createCell((int)4);
+             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+             cell.setCellValue("电话");
+             
+	         for (int i = 0; i < list.size(); i++)  {
+	        	 Info info = list.get(i);
+	             row = sheet.createRow((int)i + 1);
+	             
+	             cell = row.createCell((int)0);
+	             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+	             cell.setCellValue(info.getPersonName());
+	             
+	             cell = row.createCell((int)1);
+	             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+	             cell.setCellValue(info.getPersonId());
+	             
+	             cell = row.createCell((int)2);
+	             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+	             cell.setCellValue(info.getSonDepartmentName());
+	             
+	             cell = row.createCell((int)3);
+	             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+	             cell.setCellValue(info.getPersonGroup());
+	             
+	             cell = row.createCell((int)4);
+	             cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+	             cell.setCellValue(info.getPersonTel());
+	             
+	         }  
+	         fOut = response.getOutputStream();  
+	         workbook.write(fOut);  
+	     }  
+	     catch (UnsupportedEncodingException e1)  
+	     {}  
+	     catch (Exception e)  
+	     {}  
+	     finally  
+	     {  
+	         try  
+	         {  
+	             fOut.flush();  
+	             fOut.close();  
+	         }  
+	         catch (IOException e)  
+	         {}  
+	     }  
+	     System.out.println("文件生成...");  
+	 }  
+	
+	private String getNavigation(String fatherId, String me, Integer year, Integer mid) {
+		String s = "";
+		Department department = departmentService.findById(fatherId);
+		s = "&nbsp;>&nbsp<a class='mainFrame-first-a' href='/bk/info/list/" + mid + "?year=" + year + "&fatherId=" + fatherId + "'>" + department.getName() + "</a>";
+		if (fatherId.equals("01") || me.equals(fatherId)) {
+			
+		}
+		else {
+			s = getNavigation(department.getQuotaManageId(), me, year, mid) + s;
+		}
+		return s;
+	}
+	
 	/**
 	 * 列表页面 2015-08-05 by p
 	 * 
@@ -79,6 +195,7 @@ public class InfoController {
 			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		try {
 			User user = (User) request.getSession().getAttribute("loginUser");
+			String nav = "";
 			
 			if (year == null) {
 				year = Quota.getCurrentYear();
@@ -104,6 +221,7 @@ public class InfoController {
 			else {
 				quotaList = quotaService.findByDistributeId(fatherId, year);
 				list = statisticsQuotaService.findByQuotaManageId(fatherId, year);
+				nav = getNavigation(fatherId, user.getDepartmentId(), year, mid);
 			}
 			
 			for (int i = 0; i < list.size(); i ++) {
@@ -123,6 +241,7 @@ public class InfoController {
 			model.addAttribute("mid", mid);
 			model.addAttribute("dicList", dicService.findAll());
 			model.addAttribute("year", year);
+			model.addAttribute("nav", nav);
 			model.addAttribute("user", user);
 		}
 		catch(Exception e) {
@@ -182,12 +301,15 @@ public class InfoController {
 	public String sublist(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "year", required = false) Integer year, 
 			@RequestParam(value = "fatherId", required = true) String fatherId, 
+			@RequestParam(value = "personName", required = false) String personName, 
+			@RequestParam(value = "personId", required = false) String personId, 
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
 			@RequestParam(value = "state", required = false) Integer state,
 			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		try {
 			User user = (User) request.getSession().getAttribute("loginUser");
+			String nav = getNavigation(fatherId, user.getDepartmentId(), year, mid);
 			
 			if (year == null) {
 				year = Quota.getCurrentYear();
@@ -205,7 +327,7 @@ public class InfoController {
 				state = 0;
 			}
 			
-			int maxCount = infoService.getCountByDepartmentId(year, fatherId, state);
+			int maxCount = infoService.getCountByDepartmentId(year, fatherId, personName, personId, state);
 			int maxPage = (maxCount - 1) / count + 1;
 			
 			
@@ -214,10 +336,13 @@ public class InfoController {
 			model.addAttribute("mid", mid);
 			model.addAttribute("user", user);
 			model.addAttribute("fatherId", fatherId);
-			model.addAttribute("list", infoService.findByDepartmentId(year, fatherId, state, currentPage * count, count));
+			model.addAttribute("list", infoService.findByDepartmentId(year, fatherId, personName, personId, state, currentPage * count, count));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			model.addAttribute("year", year);
 			model.addAttribute("state", state);
+			model.addAttribute("personName", personName);
+			model.addAttribute("personId", personId);
+			model.addAttribute("nav", nav);
 			model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
@@ -1044,6 +1169,36 @@ public class InfoController {
 		Common.print(response, msg);
 	}
 	
+	@Permissions(target = "loginUser", url = "/index")
+	@RequestMapping("/bk/info/statisticsByYear/{mid}")
+	public String statisticsByYear(@PathVariable("mid") Integer mid, 
+			HttpServletRequest request, Model model) throws Exception {
+		try {
+			model.addAttribute("dicList", dicService.findAll());
+			model.addAttribute("mid", mid);
+		}
+		catch(Exception e) {
+			log.error("/bk/info/statistics/" + mid, e);
+		}
+		
+		return "/bk/info/statistics";
+	}
+	
+	@Permissions(target = "loginUser", url = "/index")
+	@RequestMapping("/bk/info/statistics/{mid}")
+	public void statistics(@PathVariable("mid") Integer mid, 
+			@RequestParam("year") Integer year, 
+			HttpServletResponse response, Model model) throws Exception {
+		int msg = 1;
+		try {
+			infoService.statisticsQuota(year);
+		} catch (Exception e) {
+			msg = -1;
+			log.error("/bk/info/statistics?year=" + year, e);
+		}
+		
+		Common.print(response, msg);
+	}
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) throws Exception {

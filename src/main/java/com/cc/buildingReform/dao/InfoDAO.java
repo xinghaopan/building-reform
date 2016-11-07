@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -16,6 +17,11 @@ import com.cc.buildingReform.form.Info;
 
 @Repository
 public class InfoDAO extends CcHibernateDao<Info, Integer> {
+	public void statisticsQuota(Integer year) {
+		SQLQuery query = getSession().createSQLQuery("{CALL PRO_STATISTICS_QUOTA(?)}");
+		query.setInteger(0, year);
+		query.executeUpdate();
+	}
 	/**
 	 * 查询所有信息  2016-06-25 by p
 	 * 
@@ -62,6 +68,22 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		return (List<Info>) criteria.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Info> findByDepartmentId(Integer year, Integer state, List<String> departmentIdList) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+		
+		criteria.add(Restrictions.eq("planYear", year));
+		if (state != null) {
+			criteria.add(Restrictions.eq("state", state));
+		}
+		criteria.add(Restrictions.in("departmentId", departmentIdList));
+
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+		
+		return (List<Info>) criteria.list();
+		
+	}
 	
 	/**
 	 * 根据上报信息状态和所属机构查询上报信息（数量） 2016-07-19 by p
@@ -169,13 +191,21 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		
 	}
 	
-	public int getCountByManageDepartmentId(Integer year, List<String> departmentId, String property1, String property2) {
+	public int getCountByManageDepartmentId(Integer year, List<String> departmentId, String personName, String personId, String property1, String property2) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
 		
 		criteria.add(Restrictions.eq("planYear", year));
 		
 		for (int i = 0; i < departmentId.size(); i ++) {
 			criteria.add(Restrictions.like("sonDepartmentId", departmentId.get(i), MatchMode.START));
+		}
+		
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+		
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
 		}
 		
 		Date now = new Date();
@@ -198,12 +228,20 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Info> findByManageDepartmentId(Integer year, List<String> departmentId, String property1, String property2, int firstResult, int maxResult) {
+	public List<Info> findByManageDepartmentId(Integer year, List<String> departmentId, String personName, String personId, String property1, String property2, int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Info.class);
 		
 		criteria.add(Restrictions.eq("planYear", year));
 		for (int i = 0; i < departmentId.size(); i ++) {
 			criteria.add(Restrictions.like("sonDepartmentId", departmentId.get(i), MatchMode.START));
+		}
+		
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+		
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
 		}
 		
 		Date now = new Date();

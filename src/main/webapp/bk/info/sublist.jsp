@@ -9,7 +9,7 @@
 <div id="content">
 	<div class="breadcrumb">
 		<img src="/images/photo_02.jpg"  alt=""/>&nbsp;您当前的位置：
-		<b class="center-navigation" style="font-weight:normal"></b>
+		<b class="center-navigation" style="font-weight:normal">${nav}</b>
 	</div>
 	
 	<div class="row-fluid row-merge"></div>
@@ -34,6 +34,8 @@
 					<div class="widget-titel">
 						<div class="span7">
 							<div class="input-append">
+								<input type="text" id="personName" name="personName" value="${personName}" placeholder="农户姓名" >&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="text" id="personId" name="personId" value="${personId}" placeholder="身份证号" >&nbsp;&nbsp;&nbsp;&nbsp;
 								<select id="year" name="year">
 									<c:forEach items="${dicList}" var="sdic">
 										<c:if test="${sdic.keyValue == 'planYear'}">
@@ -73,7 +75,7 @@
 								<td class="center">${sinfo.personId}</td>
 								<td class="center">${sinfo.personNation}</td>
 								<td class="center">${sinfo.personTel}</td>
-								<td class="center">${sinfo.departmentName}</td>
+								<td class="center">${sinfo.sonDepartmentName}</td>
 								<td class="center">
 									<c:choose>
 										<c:when test="${sinfo.state == 0}">编辑中</c:when>
@@ -144,6 +146,12 @@ jQuery(document).ready(function($) {
 	
 	$('.btn_Search').click(function(){
 		var para = "?fatherId=${fatherId}&state=${state}&currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val() + "&year=" + $('#year').val();
+		if ($("#personName").val() != '') {
+			para += "&personName=" + $("#personName").val();
+		}
+		if ($("#personId").val() != '') {
+			para += "&personId=" + $("#personId").val();
+		}
 		window.open("/bk/info/sublist/${mid}" + para, "_self");
 	});
 	

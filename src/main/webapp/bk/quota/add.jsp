@@ -6,7 +6,7 @@
 <!-- Modal heading -->
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h3>用户信息</h3>
+	<h3>指标信息</h3>
 </div>
 <!-- // Modal heading END -->
 
@@ -30,12 +30,6 @@
 		<!-- // Group END -->
 		</div>
 		
-		<!-- Group -->
-		<div class="control-group span4">
-			<label class="control-label span3" for="restNum">剩余数量：</label>
-			<div class="controls"><input class="span9" id="restNum" name="restNum" type="text" value="${quota.restNum}" /></div>
-		</div>
-		<!-- // Group END -->
 		</div>
 	</div>
 		
@@ -92,6 +86,27 @@
 		<div class="control-group span8">
 			<label class="control-label span3" for="num">指标数量：</label>
 			<div class="controls"><input class="span9" id="num" name="num" type="text" value="${quota.num}" /></div>
+		</div>
+		<!-- // Group END -->
+		
+		<!-- Group -->
+		<div class="control-group span2">
+		</div>
+		<!-- // Group END -->
+		</div>
+	</div>
+	
+	<div class="row-fluid">
+		<div>
+		<!-- Group -->
+		<div class="control-group span2">
+		</div>
+		<!-- // Group END -->
+		
+		<!-- Group -->
+		<div class="control-group span8">
+			<label class="control-label span3" for="restNum">剩余数量：</label>
+			<div class="controls"><input class="span9" id="restNum" name="restNum" type="text" value="${quota.restNum}" /></div>
 		</div>
 		<!-- // Group END -->
 		
