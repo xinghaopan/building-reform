@@ -304,7 +304,7 @@ function isDate(value) {
 
 function outLogin(o, url, para) {
 	alert("您未登录或登录超时！！！");
-	window.open("/login.html", "_self");
+	window.open("/index", "_self");
 }
 
 /** 遮罩层开关 * */
