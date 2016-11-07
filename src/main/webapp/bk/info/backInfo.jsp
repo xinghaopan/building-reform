@@ -200,7 +200,7 @@ jQuery(document).ready(function($) {
 	
 	$('.btn_Search').click(function(){
 		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val() + "&year=" + $('#year').val();
-		window.open("/bk/info/list/${mid}" + para, "_self");
+		window.open("/bk/info/backInfo/${mid}" + para, "_self");
 	});
 	
 });
