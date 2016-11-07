@@ -96,7 +96,7 @@
 	    <div class="pagination pagination-centered margin-none">
 		
 			<ul>
-				<li>&nbsp;&nbsp;&nbsp;&nbsp;每页条数d：<input id="count" name="count" type="text" value="${count}" class="page_count" style="width:25px;"/></li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;每页条数：<input id="count" name="count" type="text" value="${count}" class="page_count" style="width:25px;"/></li>
 				${pages}
 			</ul>
 		</div>
