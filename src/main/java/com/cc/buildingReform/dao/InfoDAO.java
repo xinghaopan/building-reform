@@ -195,11 +195,13 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
 		
 		criteria.add(Restrictions.eq("planYear", year));
-		
+
+		Disjunction disjunction = Restrictions.disjunction();
 		for (int i = 0; i < departmentId.size(); i ++) {
-			criteria.add(Restrictions.like("sonDepartmentId", departmentId.get(i), MatchMode.START));
+			disjunction.add(Restrictions.like("sonDepartmentId", departmentId.get(i), MatchMode.START));
 		}
-		
+		criteria.add(disjunction);
+
 		if (personName != null && !personName.isEmpty()) {
 			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
 		}
@@ -218,7 +220,7 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		// 第二个日期字段不为空
 		if (property2 != null) {
 			// 日期为空，或大于当前时间
-			Disjunction disjunction = Restrictions.disjunction();  
+			disjunction = Restrictions.disjunction();
 			disjunction.add(Property.forName(property2).isNull());
 			disjunction.add(Restrictions.gt(property2, now));
 			criteria.add(disjunction);
@@ -232,9 +234,11 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		Criteria criteria = getSession().createCriteria(Info.class);
 		
 		criteria.add(Restrictions.eq("planYear", year));
+		Disjunction disjunction = Restrictions.disjunction();
 		for (int i = 0; i < departmentId.size(); i ++) {
-			criteria.add(Restrictions.like("sonDepartmentId", departmentId.get(i), MatchMode.START));
+			disjunction.add(Restrictions.like("sonDepartmentId", departmentId.get(i), MatchMode.START));
 		}
+		criteria.add(disjunction);
 		
 		if (personName != null && !personName.isEmpty()) {
 			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
@@ -254,7 +258,7 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		// 第二个日期字段不为空
 		if (property2 != null) {
 			// 日期为空，或大于当前时间
-			Disjunction disjunction = Restrictions.disjunction();  
+			disjunction = Restrictions.disjunction();
 			disjunction.add(Property.forName(property2).isNull());
 			disjunction.add(Restrictions.gt(property2, now));
 			criteria.add(disjunction);
