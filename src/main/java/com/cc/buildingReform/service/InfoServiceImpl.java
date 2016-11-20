@@ -97,7 +97,9 @@ public class InfoServiceImpl implements InfoService {
 		list.get(0).setRestNum(list.get(0).getRestNum() + 1);
 		quotaDAO.saveOrUpdate(list.get(0));
 		infoDAO.delete(id);
-		idcardDAO.delete(id);
+		if (idcardDAO.get(id) != null) {
+			idcardDAO.delete(id);
+		}
 	}
 	
 	public void submit(User user, Integer id, String content) {
