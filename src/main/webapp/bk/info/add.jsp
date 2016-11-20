@@ -809,6 +809,9 @@
 </div>
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
+        var validating = false;
+        var posting = false;
+
         var edit = '${info.state}';
 
         $.fn.selectReadOnly = function () {
@@ -819,6 +822,9 @@
         }
 
         $("#personId").blur(function () {
+            if (validating) return;
+            if (posting) return;
+
             $("#checkPersonId").val("-1");
             $('#personIdError').attr("style", "display:none;");
             $('#personIdDuplicate').attr("style", "display:none;");
@@ -842,6 +848,8 @@
                     para = "idcard=" + idcard;
                 }
 
+                validating = true;
+
                 $.ajax({
                     type: "get",
                     url: '/bk/info/checkId/${mid}?' + para,
@@ -860,6 +868,9 @@
                     },
                     error: function (XMLHttpRequest, error, errorThrown) {
                         $('#personIdError').attr("style", "");
+                    },
+                    complete: function(msg) {
+                        validating = false;
                     }
                 });
             }
@@ -891,9 +902,15 @@
         }
 
         $("#btn_Submit").click(function () {
-            $("#btn_Submit").click = function () {
-                return false
-            };
+            if (validating) {
+                alert("正在验证身份证信息，请稍后保存！！！");
+                return;
+            }
+
+            if (posting) {
+                alert("正在保存信息，请稍后！！！");
+                return;
+            }
 
             if ($('#sonDepartmentId').val() == -1) {
                 alert("请选择村！！！");
@@ -1248,8 +1265,13 @@
                     else {
                         alert("农户信息信息保存失败！！！");
                     }
+                },
+                complete: function(msg) {
+                    posting = false;
                 }
             };
+
+            posting = true;
             $("#infoForm").ajaxSubmit(options);
         });
 
