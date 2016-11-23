@@ -18,7 +18,7 @@
 
         <div class="separator bottom"></div>
 
-        <form id="infoForm" method="post" name="infoForm" action="/bk/info/save/${mid}">
+        <form id="infoForm" method="post" name="infoForm" action="/bk/info/save/${mid}" enctype="multipart/form-data">
             <input id="id" name="id" value="${info.id}" type="hidden"/>
             <input id="state" name="state" value="${info.state}" type="hidden"/>
             <div class="widget" data-toggle="collapse-widget">
@@ -832,7 +832,7 @@
             if (!IdCardValidate($(this).val())) {
                 $('#personIdError').attr("style", "");
             } else {
-
+                $("#personId").val($.trim($("#personId").val()));
                 var id = $("#id").val();
                 var idcard = $("#personId").val();
 
