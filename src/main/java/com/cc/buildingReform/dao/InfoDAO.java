@@ -94,16 +94,36 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 	 */
 	public int getCountByDepartmentId(Integer year, Integer state, List<String> departmentIdList) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
-		
+
 		criteria.add(Restrictions.eq("planYear", year));
 		if (state != null) {
 			criteria.add(Restrictions.eq("state", state));
 		}
 		criteria.add(Restrictions.in("departmentId", departmentIdList));
-		
+
 		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
-	
+
+	public int getCountByDepartmentId(Integer year, Integer state, List<String> departmentIdList, String personName, String personId) {
+		Criteria criteria = this.getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		if (state != null) {
+			criteria.add(Restrictions.eq("state", state));
+		}
+		criteria.add(Restrictions.in("departmentId", departmentIdList));
+
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+
 	/**
 	 * 根据上报信息状态和所属机构查询上报信息（分页） 2016-07-19 by p
 	 * 
@@ -116,7 +136,7 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 	@SuppressWarnings("unchecked")
 	public List<Info> findByDepartmentId(Integer year, Integer state, List<String> departmentIdList, int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Info.class);
-		
+
 		criteria.add(Restrictions.eq("planYear", year));
 		if (state != null) {
 			criteria.add(Restrictions.eq("state", state));
@@ -125,30 +145,78 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
-		
+
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);
-		
+
 		return (List<Info>) criteria.list();
-		
+
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List<Info> findByDepartmentId(Integer year, Integer state, List<String> departmentIdList, int firstResult, int maxResult, String personName, String personId) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		if (state != null) {
+			criteria.add(Restrictions.eq("state", state));
+		}
+		criteria.add(Restrictions.in("departmentId", departmentIdList));
+
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+
+		return (List<Info>) criteria.list();
+
+	}
+
 	public int getCountByDepartmentId(Integer year, List<Integer> state, String departmentIdList) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
-		
+
 		criteria.add(Restrictions.eq("planYear", year));
 		if (state != null && !state.isEmpty()) {
 			criteria.add(Restrictions.in("state", state));
 		}
 		criteria.add(Restrictions.eq("departmentId", departmentIdList));
-		
+
 		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
-	
+
+	public int getCountByDepartmentId(Integer year, List<Integer> state, String departmentIdList, String personName, String personId) {
+		Criteria criteria = this.getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		if (state != null && !state.isEmpty()) {
+			criteria.add(Restrictions.in("state", state));
+		}
+		criteria.add(Restrictions.eq("departmentId", departmentIdList));
+
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Info> findByDepartmentId(Integer year, List<Integer> state, String departmentIdList, int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Info.class);
-		
+
 		criteria.add(Restrictions.eq("planYear", year));
 		if (state != null && !state.isEmpty()) {
 			criteria.add(Restrictions.in("state", state));
@@ -157,14 +225,42 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
-		
+
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);
-		
+
 		return (List<Info>) criteria.list();
-		
+
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List<Info> findByDepartmentId(Integer year, List<Integer> state, String departmentIdList, int firstResult, int maxResult, String personName, String personId) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		if (state != null && !state.isEmpty()) {
+			criteria.add(Restrictions.in("state", state));
+		}
+		criteria.add(Restrictions.eq("departmentId", departmentIdList));
+
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+
+		return (List<Info>) criteria.list();
+
+	}
+
 	public int getCountByAuditDepartmentId(Integer year, String departmentId) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
 		
@@ -273,48 +369,113 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		return (List<Info>) criteria.list();
 		
 	}
-	
+
 	public int getCountByDate(Integer year, String departmentId, String propertyName) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
-		
+
 		criteria.add(Restrictions.eq("planYear", year));
 		criteria.add(Restrictions.eq("departmentId", departmentId));
 		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
 		criteria.add(Property.forName(propertyName).isNull());
-		
+
 		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
-	
+
+	public int getCountByDate(Integer year, String departmentId, String propertyName, String personName, String personId) {
+		Criteria criteria = this.getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("departmentId", departmentId));
+		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
+		criteria.add(Property.forName(propertyName).isNull());
+
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Info> findByDate(Integer year, String departmentId, String propertyName, int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Info.class);
-		
+
 		criteria.add(Restrictions.eq("planYear", year));
 		criteria.add(Restrictions.eq("departmentId", departmentId));
 		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
 		criteria.add(Property.forName(propertyName).isNull());
-		
+
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
-		
+
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);
-		
+
 		return (List<Info>) criteria.list();
-		
+
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List<Info> findByDate(Integer year, String departmentId, String propertyName, int firstResult, int maxResult, String personName, String personId) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("departmentId", departmentId));
+		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
+		criteria.add(Property.forName(propertyName).isNull());
+
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+
+		return (List<Info>) criteria.list();
+
+	}
+
 	public int getCountByAcceptanceInfo(Integer year, String departmentId) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
-		
+
 		criteria.add(Restrictions.eq("planYear", year));
 		criteria.add(Restrictions.eq("departmentId", departmentId));
 		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
 		criteria.add(Restrictions.lt("acceptanceDate", new Date()));
-		
+
 		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
-	
+
+	public int getCountByAcceptanceInfo(Integer year, String departmentId, String personName, String personId) {
+		Criteria criteria = this.getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("departmentId", departmentId));
+		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
+		criteria.add(Restrictions.lt("acceptanceDate", new Date()));
+
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Info> findByAcceptanceInfo(Integer year, String departmentId, int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Info.class);
@@ -330,6 +491,32 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);
 		
+		return (List<Info>) criteria.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Info> findByAcceptanceInfo(Integer year, String departmentId, int firstResult, int maxResult, String personName, String personId) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("departmentId", departmentId));
+		criteria.add(Restrictions.eq("state", Info.STATE_OVER));
+		criteria.add(Restrictions.lt("acceptanceDate", new Date()));
+
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+
 		return (List<Info>) criteria.list();
 	}
 }

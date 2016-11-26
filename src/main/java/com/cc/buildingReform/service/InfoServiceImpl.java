@@ -289,28 +289,42 @@ public class InfoServiceImpl implements InfoService {
 				departmentDAO.findByRange(user.getDepartmentId(), length).stream().map(Department::getId).collect(Collectors.toList()), 
 				firstResult, maxResult);
 	}
-	
+
 	public int getCountByEdit(Integer year, User user) {
 		List<String> departmentIdList = new ArrayList<>();
 		departmentIdList.add(user.getDepartmentId());
-		
+
 		return infoDAO.getCountByDepartmentId(year, Info.STATE_EDIT, departmentIdList);
 	}
-	
+
+	public int getCountByEdit(Integer year, User user, String personName, String personId) {
+		List<String> departmentIdList = new ArrayList<>();
+		departmentIdList.add(user.getDepartmentId());
+
+		return infoDAO.getCountByDepartmentId(year, Info.STATE_EDIT, departmentIdList, personName, personId);
+	}
+
 	public List<Info> findByEdit(Integer year, User user) {
 		List<String> departmentIdList = new ArrayList<>();
 		departmentIdList.add(user.getDepartmentId());
 		
 		return infoDAO.findByDepartmentId(year, Info.STATE_EDIT, departmentIdList);
 	}
-	
+
 	public List<Info> findByEdit(Integer year, User user, int firstResult, int maxResult) {
 		List<String> departmentIdList = new ArrayList<>();
 		departmentIdList.add(user.getDepartmentId());
-		
+
 		return infoDAO.findByDepartmentId(year, Info.STATE_EDIT, departmentIdList, firstResult, maxResult);
 	}
-	
+
+	public List<Info> findByEdit(Integer year, User user, int firstResult, int maxResult, String personName, String personId) {
+		List<String> departmentIdList = new ArrayList<>();
+		departmentIdList.add(user.getDepartmentId());
+
+		return infoDAO.findByDepartmentId(year, Info.STATE_EDIT, departmentIdList, firstResult, maxResult, personName, personId);
+	}
+
 	public int getCountByWaitAudit(Integer year, User user) {
 		return infoDAO.getCountByAuditDepartmentId(year, user.getDepartmentId());
 	}
@@ -318,41 +332,75 @@ public class InfoServiceImpl implements InfoService {
 	public List<Info> findByWaitAudit(Integer year, User user, int firstResult, int maxResult) {
 		return infoDAO.findByAuditDepartmentId(year, user.getDepartmentId(), firstResult, maxResult);
 	}
-	
+
 	public int getCountByAuditInfo(Integer year, User user) {
 		List<Integer> stateList = new ArrayList<>();
 		stateList.add(Info.STATE_SUBMIT_TO_CITY);
 		stateList.add(Info.STATE_SUBMIT_TO_COUNTY);
 		stateList.add(Info.STATE_SUBMIT_TO_PROVINCE);
 		stateList.add(Info.STATE_SUBMIT_TO_TOWN);
-		
+
 		return infoDAO.getCountByDepartmentId(year, stateList, user.getDepartmentId());
 	}
-	
+
+	public int getCountByAuditInfo(Integer year, User user, String personName, String personId) {
+		List<Integer> stateList = new ArrayList<>();
+		stateList.add(Info.STATE_SUBMIT_TO_CITY);
+		stateList.add(Info.STATE_SUBMIT_TO_COUNTY);
+		stateList.add(Info.STATE_SUBMIT_TO_PROVINCE);
+		stateList.add(Info.STATE_SUBMIT_TO_TOWN);
+
+		return infoDAO.getCountByDepartmentId(year, stateList, user.getDepartmentId(), personName, personId);
+	}
+
 	public List<Info> findByAuditInfo(Integer year, User user, int firstResult, int maxResult) {
 		List<Integer> stateList = new ArrayList<>();
 		stateList.add(Info.STATE_SUBMIT_TO_CITY);
 		stateList.add(Info.STATE_SUBMIT_TO_COUNTY);
 		stateList.add(Info.STATE_SUBMIT_TO_PROVINCE);
 		stateList.add(Info.STATE_SUBMIT_TO_TOWN);
-		
+
 		return infoDAO.findByDepartmentId(year, stateList, user.getDepartmentId(), firstResult, maxResult);
 	}
-	
+
+	public List<Info> findByAuditInfo(Integer year, User user, int firstResult, int maxResult, String personName, String personId) {
+		List<Integer> stateList = new ArrayList<>();
+		stateList.add(Info.STATE_SUBMIT_TO_CITY);
+		stateList.add(Info.STATE_SUBMIT_TO_COUNTY);
+		stateList.add(Info.STATE_SUBMIT_TO_PROVINCE);
+		stateList.add(Info.STATE_SUBMIT_TO_TOWN);
+
+		return infoDAO.findByDepartmentId(year, stateList, user.getDepartmentId(), firstResult, maxResult, personName, personId);
+	}
+
 	public int getCountByBackInfo(Integer year, User user) {
 		List<Integer> stateList = new ArrayList<>();
 		stateList.add(Info.STATE_AUDIT_RETURN);
-		
+
 		return infoDAO.getCountByDepartmentId(year, stateList, user.getDepartmentId());
 	}
-	
+
+	public int getCountByBackInfo(Integer year, User user, String personName, String personId) {
+		List<Integer> stateList = new ArrayList<>();
+		stateList.add(Info.STATE_AUDIT_RETURN);
+
+		return infoDAO.getCountByDepartmentId(year, stateList, user.getDepartmentId(), personName, personId);
+	}
+
 	public List<Info> findByBackInfo(Integer year, User user, int firstResult, int maxResult) {
 		List<Integer> stateList = new ArrayList<>();
 		stateList.add(Info.STATE_AUDIT_RETURN);
-		
+
 		return infoDAO.findByDepartmentId(year, stateList, user.getDepartmentId(), firstResult, maxResult);
 	}
-	
+
+	public List<Info> findByBackInfo(Integer year, User user, int firstResult, int maxResult, String personName, String personId) {
+		List<Integer> stateList = new ArrayList<>();
+		stateList.add(Info.STATE_AUDIT_RETURN);
+
+		return infoDAO.findByDepartmentId(year, stateList, user.getDepartmentId(), firstResult, maxResult, personName, personId);
+	}
+
 	public int checkId(Integer id, String idcard) {
 		return idcardDAO.checkId(id, idcard);
 	}
@@ -414,39 +462,71 @@ public class InfoServiceImpl implements InfoService {
 		
 		return infoDAO.findByManageDepartmentId(year, list, personName, personId, property1, property2, firstResult, maxResult);
 	}
-	
+
 	public int getCountByNoOpen(Integer year, String departmentId) {
 		return infoDAO.getCountByDate(year, departmentId, "rebuildBeginDate");
 	}
-	
+
+	public int getCountByNoOpen(Integer year, String departmentId, String personName, String personId) {
+		return infoDAO.getCountByDate(year, departmentId, "rebuildBeginDate", personName, personId);
+	}
+
 	public List<Info> findByNoOpen(Integer year, String departmentId, int firstResult, int maxResult) {
 		return infoDAO.findByDate(year, departmentId, "rebuildBeginDate", firstResult, maxResult);
 	}
-	
+
+	public List<Info> findByNoOpen(Integer year, String departmentId, int firstResult, int maxResult, String personName, String personId) {
+		return infoDAO.findByDate(year, departmentId, "rebuildBeginDate", firstResult, maxResult, personName, personId);
+	}
+
 	public int getCountByNoOver(Integer year, String departmentId) {
 		return infoDAO.getCountByDate(year, departmentId, "rebuildEndDate");
 	}
-	
+
+	public int getCountByNoOver(Integer year, String departmentId, String personName, String personId) {
+		return infoDAO.getCountByDate(year, departmentId, "rebuildEndDate", personName, personId);
+	}
+
 	public List<Info> findByNoOver(Integer year, String departmentId, int firstResult, int maxResult) {
 		return infoDAO.findByDate(year, departmentId, "rebuildEndDate", firstResult, maxResult);
 	}
-	
+
+	public List<Info> findByNoOver(Integer year, String departmentId, int firstResult, int maxResult, String personName, String personId) {
+		return infoDAO.findByDate(year, departmentId, "rebuildEndDate", firstResult, maxResult, personName, personId);
+	}
+
 	public int getCountByNoAcceptance(Integer year, String departmentId) {
 		return infoDAO.getCountByDate(year, departmentId, "acceptanceDate");
 	}
-	
+
+	public int getCountByNoAcceptance(Integer year, String departmentId, String personName, String personId) {
+		return infoDAO.getCountByDate(year, departmentId, "acceptanceDate", personName, personId);
+	}
+
 	public List<Info> findByNoAcceptance(Integer year, String departmentId, int firstResult, int maxResult) {
 		return infoDAO.findByDate(year, departmentId, "acceptanceDate", firstResult, maxResult);
 	}
-	
+
+	public List<Info> findByNoAcceptance(Integer year, String departmentId, int firstResult, int maxResult, String personName, String personId) {
+		return infoDAO.findByDate(year, departmentId, "acceptanceDate", firstResult, maxResult, personName, personId);
+	}
+
 	public int getCountByAcceptanceInfo(Integer year, User user) {
 		return infoDAO.getCountByAcceptanceInfo(year, user.getDepartmentId());
 	}
-	
+
+	public int getCountByAcceptanceInfo(Integer year, User user, String personName, String personId) {
+		return infoDAO.getCountByAcceptanceInfo(year, user.getDepartmentId(), personName, personId);
+	}
+
 	public List<Info> findByAcceptanceInfo(Integer year, User user, int firstResult, int maxResult) {
 		return infoDAO.findByAcceptanceInfo(year, user.getDepartmentId(), firstResult, maxResult);
 	}
-	
+
+	public List<Info> findByAcceptanceInfo(Integer year, User user, int firstResult, int maxResult, String personName, String personId) {
+		return infoDAO.findByAcceptanceInfo(year, user.getDepartmentId(), firstResult, maxResult, personName, personId);
+	}
+
 	/**
 	 * 信息归档 2016-08-21 by p
 	 * 

@@ -355,8 +355,10 @@ public class InfoController {
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/other{path}/{mid}")
 	public String other(@PathVariable("mid") Integer mid, @PathVariable("path") String path, 
-			@RequestParam(value = "year", required = false) Integer year, 
-			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+			@RequestParam(value = "year", required = false) Integer year,
+                        @RequestParam(value = "personName", required = false) String personName,
+                        @RequestParam(value = "personId", required = false) String personId,
+                        @RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
 			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		try {
@@ -373,32 +375,32 @@ public class InfoController {
 			if (count == null || count == 0) {
 				count = 10;
 			}
-			
+
 			if ("NoOpen".equals(path)) {
-				int maxCount = infoService.getCountByNoOpen(year, user.getDepartmentId());
+				int maxCount = infoService.getCountByNoOpen(year, user.getDepartmentId(), personName, personId);
 				int maxPage = (maxCount - 1) / count + 1;
 				
 				model.addAttribute("maxPage", maxPage);
 				
-				model.addAttribute("list", infoService.findByNoOpen(year, user.getDepartmentId(), currentPage * count, count));
+				model.addAttribute("list", infoService.findByNoOpen(year, user.getDepartmentId(), currentPage * count, count, personName, personId));
 				model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			}
 			else if ("NoOver".equals(path)) {
-				int maxCount = infoService.getCountByNoOver(year, user.getDepartmentId());
+				int maxCount = infoService.getCountByNoOver(year, user.getDepartmentId(), personName, personId);
 				int maxPage = (maxCount - 1) / count + 1;
 				
 				model.addAttribute("maxPage", maxPage);
 				
-				model.addAttribute("list", infoService.findByNoOver(year, user.getDepartmentId(), currentPage * count, count));
+				model.addAttribute("list", infoService.findByNoOver(year, user.getDepartmentId(), currentPage * count, count, personName, personId));
 				model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			}
 			else if ("NoAcceptance".equals(path)) {
-				int maxCount = infoService.getCountByNoAcceptance(year, user.getDepartmentId());
+				int maxCount = infoService.getCountByNoAcceptance(year, user.getDepartmentId(), personName, personId);
 				int maxPage = (maxCount - 1) / count + 1;
 				
 				model.addAttribute("maxPage", maxPage);
 				
-				model.addAttribute("list", infoService.findByNoAcceptance(year, user.getDepartmentId(), currentPage * count, count));
+				model.addAttribute("list", infoService.findByNoAcceptance(year, user.getDepartmentId(), currentPage * count, count, personName, personId));
 				model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			}
 			model.addAttribute("count", count);
@@ -406,7 +408,9 @@ public class InfoController {
 			model.addAttribute("user", user);
 			model.addAttribute("path", path);
 			model.addAttribute("year", year);
-			model.addAttribute("dicList", dicService.findAll());
+            model.addAttribute("personName", personName);
+            model.addAttribute("personId", personId);
+            model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
 			log.error("/bk/info/other" + mid, e);
@@ -431,7 +435,9 @@ public class InfoController {
 	@RequestMapping("/bk/info/acceptanceInfo/{mid}")
 	public String acceptanceInfo(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "year", required = false) Integer year,
-			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+                                 @RequestParam(value = "personName", required = false) String personName,
+                                 @RequestParam(value = "personId", required = false) String personId,
+                                 @RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
 			HttpServletRequest request, Model model) throws Exception {
 		try {
@@ -448,19 +454,21 @@ public class InfoController {
 			if (count == null || count == 0) {
 				count = 10;
 			}
-			
-			int maxCount = infoService.getCountByAcceptanceInfo(year, user);
+
+			int maxCount = infoService.getCountByAcceptanceInfo(year, user, personName, personId);
 			int maxPage = (maxCount - 1) / count + 1;
-			
+
 			model.addAttribute("count", count);
 			model.addAttribute("maxPage", maxPage);
 			model.addAttribute("mid", mid);
 			model.addAttribute("user", user);
 			
-			model.addAttribute("list", infoService.findByAcceptanceInfo(year, user, currentPage * count, count));
+			model.addAttribute("list", infoService.findByAcceptanceInfo(year, user, currentPage * count, count, personName, personId));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			model.addAttribute("year", year);
-			model.addAttribute("dicList", dicService.findAll());
+            model.addAttribute("personName", personName);
+            model.addAttribute("personId", personId);
+            model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
 			log.error("/bk/info/acceptanceInfo/" + mid, e);
@@ -486,7 +494,9 @@ public class InfoController {
 	@RequestMapping("/bk/info/auditInfo/{mid}")
 	public String auditInfo(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "year", required = false) Integer year,
-			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+                            @RequestParam(value = "personName", required = false) String personName,
+                            @RequestParam(value = "personId", required = false) String personId,
+                            @RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
 			HttpServletRequest request, Model model) throws Exception {
 		try {
@@ -503,8 +513,8 @@ public class InfoController {
 			if (count == null || count == 0) {
 				count = 10;
 			}
-			
-			int maxCount = infoService.getCountByAuditInfo(year, user);
+
+			int maxCount = infoService.getCountByAuditInfo(year, user, personName, personId);
 			int maxPage = (maxCount - 1) / count + 1;
 			
 			model.addAttribute("count", count);
@@ -512,10 +522,12 @@ public class InfoController {
 			model.addAttribute("mid", mid);
 			model.addAttribute("user", user);
 			
-			model.addAttribute("list", infoService.findByAuditInfo(year, user, currentPage * count, count));
+			model.addAttribute("list", infoService.findByAuditInfo(year, user, currentPage * count, count, personName, personId));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			model.addAttribute("year", year);
-			model.addAttribute("dicList", dicService.findAll());
+            model.addAttribute("personName", personName);
+            model.addAttribute("personId", personId);
+            model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
 			log.error("/bk/info/auditInfo/" + mid, e);
@@ -540,7 +552,9 @@ public class InfoController {
 	@RequestMapping("/bk/info/backInfo/{mid}")
 	public String backInfo(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "year", required = false) Integer year,
-			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+                           @RequestParam(value = "personName", required = false) String personName,
+                           @RequestParam(value = "personId", required = false) String personId,
+                           @RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
 			HttpServletRequest request, Model model) throws Exception {
 		try {
@@ -557,8 +571,8 @@ public class InfoController {
 			if (count == null || count == 0) {
 				count = 10;
 			}
-			
-			int maxCount = infoService.getCountByBackInfo(year, user);
+
+			int maxCount = infoService.getCountByBackInfo(year, user, personName, personId);
 			int maxPage = (maxCount - 1) / count + 1;
 			
 			model.addAttribute("count", count);
@@ -566,10 +580,12 @@ public class InfoController {
 			model.addAttribute("mid", mid);
 			model.addAttribute("user", user);
 			
-			model.addAttribute("list", infoService.findByBackInfo(year, user, currentPage * count, count));
+			model.addAttribute("list", infoService.findByBackInfo(year, user, currentPage * count, count, personName, personId));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			model.addAttribute("year", year);
-			model.addAttribute("dicList", dicService.findAll());
+            model.addAttribute("personName", personName);
+            model.addAttribute("personId", personId);
+            model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
 			log.error("/bk/info/backInfo/" + mid, e);
@@ -592,8 +608,10 @@ public class InfoController {
 	 */
 	@Permissions(target = "loginUser", url = "/index")
 	@RequestMapping("/bk/info/waitSubmit/{mid}")
-	public String waitSubmit(@PathVariable("mid") Integer mid, 
-			@RequestParam(value = "year", required = false) Integer year,
+	public String waitSubmit(@PathVariable("mid") Integer mid,
+							 @RequestParam(value = "personName", required = false) String personName,
+							 @RequestParam(value = "personId", required = false) String personId,
+							 @RequestParam(value = "year", required = false) Integer year,
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
 			HttpServletRequest request, Model model) throws Exception {
@@ -611,17 +629,19 @@ public class InfoController {
 			if (count == null || count == 0) {
 				count = 10;
 			}
-			
-			int maxCount = infoService.getCountByEdit(year, user);
+
+			int maxCount = infoService.getCountByEdit(year, user, personName, personId);
 			int maxPage = (maxCount - 1) / count + 1;
 			model.addAttribute("count", count);
 			model.addAttribute("maxPage", maxPage);
 			model.addAttribute("mid", mid);
 			model.addAttribute("user", user);
-			model.addAttribute("list", infoService.findByEdit(year, user, currentPage * count, count));
+			model.addAttribute("list", infoService.findByEdit(year, user, currentPage * count, count, personName, personId));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			model.addAttribute("year", year);
-			model.addAttribute("dicList", dicService.findAll());
+            model.addAttribute("personName", personName);
+            model.addAttribute("personId", personId);
+            model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
 			log.error("/bk/info/waitSubmit/" + mid, e);

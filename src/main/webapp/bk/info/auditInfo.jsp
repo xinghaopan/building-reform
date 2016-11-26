@@ -34,6 +34,8 @@
 					<div class="widget-titel">
 						<div class="span7">
 							<div class="input-append">
+								<input type="text" id="personName" name="personName" value="${personName}" placeholder="农户姓名" >&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="text" id="personId" name="personId" value="${personId}" placeholder="身份证号" >&nbsp;&nbsp;&nbsp;&nbsp;
 								<select id="year" name="year">
 									<c:forEach items="${dicList}" var="sdic">
 										<c:if test="${sdic.keyValue == 'planYear'}">
@@ -196,6 +198,12 @@ jQuery(document).ready(function($) {
 	
 	$('.btn_Search').click(function(){
 		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val() + "&year=" + $('#year').val();
+		if ($("#personName").val() != '') {
+			para += "&personName=" + $("#personName").val();
+		}
+		if ($("#personId").val() != '') {
+			para += "&personId=" + $("#personId").val();
+		}
 		window.open("/bk/info/auditInfo/${mid}" + para, "_self");
 	});
 	
