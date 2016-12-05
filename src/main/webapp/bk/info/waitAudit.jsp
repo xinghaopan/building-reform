@@ -35,6 +35,7 @@
 							<div class="input-append">
 								<input type="text" id="personName" name="personName" value="${personName}" placeholder="农户姓名" >&nbsp;&nbsp;&nbsp;&nbsp;
 								<input type="text" id="personId" name="personId" value="${personId}" placeholder="身份证号" >&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="text" id="departmentId" name="departmentId" value="${departmentId}" placeholder="机构编码" >&nbsp;&nbsp;&nbsp;&nbsp;
 								<select id="year" name="year">
 									<c:forEach items="${dicList}" var="sdic">
 										<c:if test="${sdic.keyValue == 'planYear'}">
@@ -46,8 +47,9 @@
 							</div>
            				</div>
 						
-			           		<a href="#modal-simple" data-toggle="modal" url="/bk/info/editBatch/${mid}" class="action-edit btn btn-icon btn-info glyphicons circle_ok"><i></i>批量审核</a>
+
 			           	<div class=" pull-right">
+							<a href="#modal-simple" data-toggle="modal" url="/bk/info/editBatch/${mid}" class="action-edit btn btn-icon btn-info glyphicons circle_ok"><i></i>批量审核</a>
 			           	</div>
 					</div>
 	           </div>
@@ -79,7 +81,7 @@
 								<td class="center">${sinfo.departmentName}</td>
 								<td class="center">
 									<a href="#modal-simple" data-toggle="modal" url="/bk/info/editAudit/${mid}?id=${sinfo.id}" bname="${sinfo.personName}" class="btn-action glyphicons eye_open btn-success action-edit"><i></i></a>
-									
+									<a href="javascript:void(0);" url="/bk/info/back/${mid}?id=${sinfo.id}" class="btn-action glyphicons unshare btn-success action-list-audit-back" ><i></i></a>
 								</td>
 							</tr>
 							<!-- // Item END -->
@@ -102,9 +104,11 @@
 		
 		<div class="separator bottom"></div> 
 		
-		<div class="widget widget-tabs">		
+		<div class="widget widget-tabs" style="display: none;">
 			<div class="widget-body">
-	
+				<form id="backForm" method="post" name="backForm" action="">
+					<textarea id="auditInfo" name="auditInfo" rows="6" style="width:98%">批量退回</textarea>
+				</form>
 			</div>
 		</div>
 		<!-- // Google Vizualization DataTable Widget END -->
@@ -308,7 +312,39 @@ jQuery(document).ready(function($) {
 	        $("#infoForm").ajaxSubmit(options);
 		}
 	});
-	
+
+	$('.action-list-audit-back').live("click", function() {
+		if( confirm('您确定退回此上报信息吗？') ) {
+			var url = $(this).attr("url");
+			$("#backForm").attr("action", url);
+
+			var options = {
+				success : function(msg) {
+					if (msg == "-999") {
+						outLogin();
+					}
+					else if (msg == -1) {
+						alert("退回信息错误！！！");
+					}
+					else if (msg == -2) {
+						alert("退回信息状态错误！！！");
+					}
+					else if (msg == -4) {
+						alert("没有权限进行审核操作！！！");
+					}
+					else if (msg == 1) {
+						alert("上报信息退回成功！！！");
+						window.location.reload();
+					}
+					else {
+						alert('审核失败！！！');
+					}
+				}
+			};
+			$("#backForm").ajaxSubmit(options);
+		}
+	});
+
 	$('.action-edit').click(function(){
 		var url = $(this).attr("url");
 		
@@ -333,6 +369,9 @@ jQuery(document).ready(function($) {
 		}
 		if ($("#personId").val() != '') {
 			para += "&personId=" + $("#personId").val();
+		}
+		if ($("#departmentId").val() != '') {
+			para += "&departmentId=" + $("#departmentId").val();
 		}
 		window.open("/bk/info/waitAudit/${mid}" + para, "_self");
 	});

@@ -35,11 +35,11 @@ public interface InfoService {
 
 	public int getCountByWaitAudit(Integer year, User user);
 
-	public int getCountByWaitAudit(Integer year, User user, String personName, String personId);
+	public int getCountByWaitAudit(Integer year, User user, String personName, String personId, String departmentId);
 
 	public List<Info> findByWaitAudit(Integer year, User user, int firstResult, int maxResult);
 
-	public List<Info> findByWaitAudit(Integer year, User user, int firstResult, int maxResult, String personName, String personId);
+	public List<Info> findByWaitAudit(Integer year, User user, int firstResult, int maxResult, String personName, String personId, String departmentId);
 
 	public void batchSubmit(User user, String ids, String content);
 	

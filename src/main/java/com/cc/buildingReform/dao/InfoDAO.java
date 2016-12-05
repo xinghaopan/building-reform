@@ -270,18 +270,22 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 
-	public int getCountByAuditDepartmentId(Integer year, String departmentId, String personName, String personId) {
+	public int getCountByAuditDepartmentId(Integer year, String auditDepartmentId, String personName, String personId, String departmentId) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
 
 		criteria.add(Restrictions.eq("planYear", year));
-		criteria.add(Restrictions.eq("auditDepartmentId", departmentId));
-		criteria.add(Restrictions.eq("state", departmentId.length() * 10));
+		criteria.add(Restrictions.eq("auditDepartmentId", auditDepartmentId));
+		criteria.add(Restrictions.eq("state", auditDepartmentId.length() * 10));
 		if (personName != null && !personName.isEmpty()) {
 			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
 		}
 
 		if (personId != null && !personId.isEmpty()) {
 			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		if (departmentId != null && !departmentId.isEmpty()) {
+			criteria.add(Restrictions.ilike("sonDepartmentId", departmentId, MatchMode.START));
 		}
 
 		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
@@ -305,15 +309,12 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Info> findByAuditDepartmentId(Integer year, String departmentId, int firstResult, int maxResult, String personName, String personId) {
+	public List<Info> findByAuditDepartmentId(Integer year, String auditDepartmentId, int firstResult, int maxResult, String personName, String personId, String departmentId) {
 		Criteria criteria = getSession().createCriteria(Info.class);
 
 		criteria.add(Restrictions.eq("planYear", year));
-		criteria.add(Restrictions.eq("auditDepartmentId", departmentId));
-		criteria.add(Restrictions.eq("state", departmentId.length() * 10));
-		criteria.addOrder(Order.desc("date"));
-		criteria.addOrder(Order.desc("id"));
-
+		criteria.add(Restrictions.eq("auditDepartmentId", auditDepartmentId));
+		criteria.add(Restrictions.eq("state", auditDepartmentId.length() * 10));
 		if (personName != null && !personName.isEmpty()) {
 			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
 		}
@@ -321,6 +322,13 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		if (personId != null && !personId.isEmpty()) {
 			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
 		}
+
+		if (departmentId != null && !departmentId.isEmpty()) {
+			criteria.add(Restrictions.ilike("sonDepartmentId", departmentId, MatchMode.START));
+		}
+
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
 
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);

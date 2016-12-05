@@ -668,6 +668,7 @@ public class InfoController {
 			@RequestParam(value = "year", required = false) Integer year,
 							@RequestParam(value = "personName", required = false) String personName,
 							@RequestParam(value = "personId", required = false) String personId,
+							@RequestParam(value = "departmentId", required = false) String departmentId,
 							@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
 			HttpServletRequest request, Model model) throws Exception {
@@ -686,17 +687,18 @@ public class InfoController {
 				count = 10;
 			}
 			
-			int maxCount = infoService.getCountByWaitAudit(year, user, personName, personId);
+			int maxCount = infoService.getCountByWaitAudit(year, user, personName, personId, departmentId);
 			int maxPage = (maxCount - 1) / count + 1;
 			model.addAttribute("count", count);
 			model.addAttribute("maxPage", maxPage);
 			model.addAttribute("mid", mid);
 			model.addAttribute("user", user);
-			model.addAttribute("list", infoService.findByWaitAudit(year, user, currentPage * count, count, personName, personId));
+			model.addAttribute("list", infoService.findByWaitAudit(year, user, currentPage * count, count, personName, personId, departmentId));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			model.addAttribute("year", year);
 			model.addAttribute("personName", personName);
 			model.addAttribute("personId", personId);
+			model.addAttribute("departmentId", departmentId);
 			model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
