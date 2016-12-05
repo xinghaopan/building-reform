@@ -666,7 +666,9 @@ public class InfoController {
 	@RequestMapping("/bk/info/waitAudit/{mid}")
 	public String waitAudit(@PathVariable("mid") Integer mid, 
 			@RequestParam(value = "year", required = false) Integer year,
-			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+							@RequestParam(value = "personName", required = false) String personName,
+							@RequestParam(value = "personId", required = false) String personId,
+							@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "count", required = false) Integer count,
 			HttpServletRequest request, Model model) throws Exception {
 		try {
@@ -684,15 +686,17 @@ public class InfoController {
 				count = 10;
 			}
 			
-			int maxCount = infoService.getCountByWaitAudit(year, user);
+			int maxCount = infoService.getCountByWaitAudit(year, user, personName, personId);
 			int maxPage = (maxCount - 1) / count + 1;
 			model.addAttribute("count", count);
 			model.addAttribute("maxPage", maxPage);
 			model.addAttribute("mid", mid);
 			model.addAttribute("user", user);
-			model.addAttribute("list", infoService.findByWaitAudit(year, user, currentPage * count, count));
+			model.addAttribute("list", infoService.findByWaitAudit(year, user, currentPage * count, count, personName, personId));
 			model.addAttribute("pages", Common.pages(mid, currentPage, maxPage, "", ""));
 			model.addAttribute("year", year);
+			model.addAttribute("personName", personName);
+			model.addAttribute("personId", personId);
 			model.addAttribute("dicList", dicService.findAll());
 		}
 		catch(Exception e) {
@@ -1078,7 +1082,7 @@ public class InfoController {
 				if (file != null) {
 					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
 					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
-					info.setHouseInNewImage(fileName);
+					info.setPersonDelegateImage(fileName);
 				}
 			}  
 			

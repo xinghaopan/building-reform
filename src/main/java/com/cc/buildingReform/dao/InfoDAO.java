@@ -263,30 +263,72 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 
 	public int getCountByAuditDepartmentId(Integer year, String departmentId) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
-		
+
 		criteria.add(Restrictions.eq("planYear", year));
 		criteria.add(Restrictions.eq("auditDepartmentId", departmentId));
 		criteria.add(Restrictions.eq("state", departmentId.length() * 10));
 		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
-	
+
+	public int getCountByAuditDepartmentId(Integer year, String departmentId, String personName, String personId) {
+		Criteria criteria = this.getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("auditDepartmentId", departmentId));
+		criteria.add(Restrictions.eq("state", departmentId.length() * 10));
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		return ((Integer) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Info> findByAuditDepartmentId(Integer year, String departmentId, int firstResult, int maxResult) {
 		Criteria criteria = getSession().createCriteria(Info.class);
-		
+
 		criteria.add(Restrictions.eq("planYear", year));
 		criteria.add(Restrictions.eq("auditDepartmentId", departmentId));
 		criteria.add(Restrictions.eq("state", departmentId.length() * 10));
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
-		
+
 		criteria.setFirstResult(firstResult);
 		criteria.setMaxResults(maxResult);
-		
+
 		return (List<Info>) criteria.list();
-		
+
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List<Info> findByAuditDepartmentId(Integer year, String departmentId, int firstResult, int maxResult, String personName, String personId) {
+		Criteria criteria = getSession().createCriteria(Info.class);
+
+		criteria.add(Restrictions.eq("planYear", year));
+		criteria.add(Restrictions.eq("auditDepartmentId", departmentId));
+		criteria.add(Restrictions.eq("state", departmentId.length() * 10));
+		criteria.addOrder(Order.desc("date"));
+		criteria.addOrder(Order.desc("id"));
+
+		if (personName != null && !personName.isEmpty()) {
+			criteria.add(Restrictions.ilike("personName", personName, MatchMode.ANYWHERE));
+		}
+
+		if (personId != null && !personId.isEmpty()) {
+			criteria.add(Restrictions.ilike("personId", personId, MatchMode.ANYWHERE));
+		}
+
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResult);
+
+		return (List<Info>) criteria.list();
+
+	}
+
 	public int getCountByManageDepartmentId(Integer year, List<String> departmentId, String personName, String personId, String property1, String property2) {
 		Criteria criteria = this.getSession().createCriteria(Info.class);
 		

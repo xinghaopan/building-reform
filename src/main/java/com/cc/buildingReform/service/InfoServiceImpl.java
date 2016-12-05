@@ -328,9 +328,17 @@ public class InfoServiceImpl implements InfoService {
 	public int getCountByWaitAudit(Integer year, User user) {
 		return infoDAO.getCountByAuditDepartmentId(year, user.getDepartmentId());
 	}
-	
+
+	public int getCountByWaitAudit(Integer year, User user, String personName, String personId) {
+		return infoDAO.getCountByAuditDepartmentId(year, user.getDepartmentId(), personName, personId);
+	}
+
 	public List<Info> findByWaitAudit(Integer year, User user, int firstResult, int maxResult) {
 		return infoDAO.findByAuditDepartmentId(year, user.getDepartmentId(), firstResult, maxResult);
+	}
+
+	public List<Info> findByWaitAudit(Integer year, User user, int firstResult, int maxResult, String personName, String personId) {
+		return infoDAO.findByAuditDepartmentId(year, user.getDepartmentId(), firstResult, maxResult, personName, personId);
 	}
 
 	public int getCountByAuditInfo(Integer year, User user) {
