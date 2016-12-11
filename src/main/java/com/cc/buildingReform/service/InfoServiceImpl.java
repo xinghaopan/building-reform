@@ -26,6 +26,7 @@ import com.cc.buildingReform.form.User;
 @Service
 @Transactional
 public class InfoServiceImpl implements InfoService {
+	static Boolean lock = true;
 
 	@Autowired
 	private InfoDAO infoDAO;
@@ -46,59 +47,63 @@ public class InfoServiceImpl implements InfoService {
 	private AuditDAO auditDAO;
 	
 	public void save(Info info) {
-		if (info == null || info.getId() == null || info.getId() == 0) {
-			// 校验当前机构在指定的计划年度是否还有剩余指标
-			List<Quota> list =quotaDAO.findByDepartmentId(info.getPlanYear(), info.getDepartmentId());
-			if (list == null || list.isEmpty() || list.get(0).getRestNum() == 0) {
-				throw new RuntimeException("-1");
+		synchronized(InfoServiceImpl.lock) {
+			if (info == null || info.getId() == null || info.getId() == 0) {
+				// 校验当前机构在指定的计划年度是否还有剩余指标
+				List<Quota> list = quotaDAO.findByDepartmentId(info.getPlanYear(), info.getDepartmentId());
+				if (list == null || list.isEmpty() || list.get(0).getRestNum() == 0) {
+					throw new RuntimeException("-1");
+				}
+
+				// 校验身份证号是否被占用
+				if (idcardDAO.checkId(info.getId(), info.getPersonId()) == 0) {
+					throw new RuntimeException("-10");
+				}
+
+				// 剩余指标 - 1
+				list.get(0).setRestNum(list.get(0).getRestNum() - 1);
+
+				quotaDAO.saveOrUpdate(list.get(0));
+
 			}
-			
-			// 校验身份证号是否被占用
-			if (idcardDAO.checkId(info.getId(), info.getPersonId()) == 0) {
-				throw new RuntimeException("-10");
+
+			if (!info.getState().equals(Info.STATE_OVER)) {
+				// 保存上报信息，无论新增还是修改，都将状态置为 编辑状态
+				info.setState(Info.STATE_EDIT);
 			}
-			
-			// 剩余指标 - 1
-			list.get(0).setRestNum(list.get(0).getRestNum() - 1);
-			
-			quotaDAO.saveOrUpdate(list.get(0));
-			
+			infoDAO.saveOrUpdate(info);
+
+			// 保存身份证号
+			idcardDAO.saveOrUpdate(new Idcard(info));
 		}
-		
-		if (!info.getState().equals(Info.STATE_OVER)) {
-			// 保存上报信息，无论新增还是修改，都将状态置为 编辑状态
-			info.setState(Info.STATE_EDIT);
-		}
-		infoDAO.saveOrUpdate(info);
-		
-		// 保存身份证号
-		idcardDAO.saveOrUpdate(new Idcard(info));
 	}
 
 	public void remove(Integer id) {
-		Info info = infoDAO.get(id);
-		// 不能为空
-		if (info == null) {
-			throw new RuntimeException("-1");
-		}
-		
-		// 状态只能是 <= 编辑状态
-		if (info.getState() > Info.STATE_EDIT) {
-			throw new RuntimeException("-2");
-		}
-		
-		// 指标信息不能为空
-		List<Quota> list = quotaDAO.findByDepartmentId(info.getPlanYear(), info.getDepartmentId());
-		if (list == null || list.isEmpty()) {
-			throw new RuntimeException("-3");
-		}
-		
-		// 删除上报信息时，本机构指定年度的指标 + 1
-		list.get(0).setRestNum(list.get(0).getRestNum() + 1);
-		quotaDAO.saveOrUpdate(list.get(0));
-		infoDAO.delete(id);
-		if (idcardDAO.get(id) != null) {
-			idcardDAO.delete(id);
+		synchronized(InfoServiceImpl.lock) {
+			Info info = infoDAO.get(id);
+			// 不能为空
+			if (info == null) {
+				throw new RuntimeException("-1");
+			}
+
+			// 状态只能是 <= 编辑状态
+			if (info.getState() > Info.STATE_EDIT) {
+				throw new RuntimeException("-2");
+			}
+
+			// 指标信息不能为空
+			List<Quota> list = quotaDAO.findByDepartmentId(info.getPlanYear(), info.getDepartmentId());
+			if (list == null || list.isEmpty()) {
+				throw new RuntimeException("-3");
+			}
+
+			// 删除上报信息时，本机构指定年度的指标 + 1
+			list.get(0).setRestNum(list.get(0).getRestNum() + 1);
+			quotaDAO.saveOrUpdate(list.get(0));
+			infoDAO.delete(id);
+			if (idcardDAO.get(id) != null) {
+				idcardDAO.delete(id);
+			}
 		}
 	}
 	
