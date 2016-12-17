@@ -1216,6 +1216,9 @@
                     else if (msg == -1) {
                         alert("没有剩余的指标进行上报！！！");
                     }
+                    else if (msg == -5) {
+                        alert("上传图片错误！！！");
+                    }
                     else if (msg == -10) {
                         alert("身份证号已被注册！！！");
                     }

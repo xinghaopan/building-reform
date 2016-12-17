@@ -1032,57 +1032,88 @@ public class InfoController {
 				
 				MultipartFile file = multiRequest.getFile("personImg");
 				if (file != null) {
-					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
+					String ext = Common.getExtensionName(file.getOriginalFilename());
+					if (ext == "") {
+						throw new RuntimeException("-5");
+					}
+					String fileName = "/uploads/" + new Date().getTime() + "." + ext;
 					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setPersonImage(fileName);
 				}
 				
 				file = multiRequest.getFile("acceptanceImg");
 				if (file != null) {
-					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
-					//file.transferTo(new File(path + fileName)); 
+					String ext = Common.getExtensionName(file.getOriginalFilename());
+					if (ext == "") {
+						throw new RuntimeException("-5");
+					}
+					String fileName = "/uploads/" + new Date().getTime() + "." + ext;
 					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setAcceptanceImage(fileName);
 				}
 				
 				file = multiRequest.getFile("fundSendImg");
 				if (file != null) {
-					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
+					String ext = Common.getExtensionName(file.getOriginalFilename());
+					if (ext == "") {
+						throw new RuntimeException("-5");
+					}
+					String fileName = "/uploads/" + new Date().getTime() + "." + ext;
 					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setFundSendImage(fileName);
 				}
 				
 				file = multiRequest.getFile("houseOldImg");
 				if (file != null) {
-					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
+					String ext = Common.getExtensionName(file.getOriginalFilename());
+					if (ext == "") {
+						throw new RuntimeException("-5");
+					}
+					String fileName = "/uploads/" + new Date().getTime() + "." + ext;
 					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setHouseOldImage(fileName);
 				}
 				
 				file = multiRequest.getFile("houseBuildingImg");
 				if (file != null) {
-					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
+					String ext = Common.getExtensionName(file.getOriginalFilename());
+					if (ext == "") {
+						throw new RuntimeException("-5");
+					}
+					String fileName = "/uploads/" + new Date().getTime() + "." + ext;
 					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setHouseBuildingImage(fileName);
 				}
 				
 				file = multiRequest.getFile("houseOutNewImg");
 				if (file != null) {
-					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
+					String ext = Common.getExtensionName(file.getOriginalFilename());
+					if (ext == "") {
+						throw new RuntimeException("-5");
+					}
+					String fileName = "/uploads/" + new Date().getTime() + "." + ext;
 					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setHouseOutNewImage(fileName);
 				}
 				
 				file = multiRequest.getFile("houseInNewImg");
 				if (file != null) {
-					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
+					String ext = Common.getExtensionName(file.getOriginalFilename());
+					if (ext == "") {
+						throw new RuntimeException("-5");
+					}
+					String fileName = "/uploads/" + new Date().getTime() + "." + ext;
 					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setHouseInNewImage(fileName);
 				}
 				
 				file = multiRequest.getFile("personDelegateImg");
 				if (file != null) {
-					String fileName = "/uploads/" + new Date().getTime() + "." + Common.getExtensionName(file.getOriginalFilename());
+					String ext = Common.getExtensionName(file.getOriginalFilename());
+					if (ext == "") {
+						throw new RuntimeException("-5");
+					}
+					String fileName = "/uploads/" + new Date().getTime() + "." + ext;
 					Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
 					info.setPersonDelegateImage(fileName);
 				}
@@ -1103,6 +1134,10 @@ public class InfoController {
 				if (e.getMessage().equals("-1")) {
 					msg = -1;
 					log.warn("/bk/info/save/", "计划年度" + info.getPlanYear() + "没有剩余的指标进行上报！！！");
+				}
+				else if (e.getMessage().equals("-5")) {
+					msg = -10;
+					log.warn("/bk/info/save/", "上传图片错误！！！");
 				}
 				else if (e.getMessage().equals("-10")) {
 					msg = -10;
