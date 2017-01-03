@@ -22,9 +22,6 @@ import com.cc.buildingReform.Annotation.Permissions;
 import com.cc.buildingReform.service.MenuService;
 import com.cc.buildingReform.service.NewsService;
 import com.cc.buildingReform.service.QuotaService;
-import com.cc.buildingReform.service.RoleService;
-import com.cc.buildingReform.service.ViewStateService;
-
 
 @RestController
 public class MainController {
@@ -37,27 +34,35 @@ public class MainController {
 	private MenuService menuService;
 	
 	@Autowired
-	private ViewStateService viewStateService;
-	
-	@Autowired
 	private QuotaService quotaService;
-	
-	@Autowired
-	private RoleService roleService;
-	
-	@RequestMapping("/index")
-	public String index(HttpServletRequest request, Model model)	throws Exception {
+
+	@RequestMapping("/index{path}")
+	public String index(@PathVariable("path") String path, Model model)	throws Exception {
+		Integer year;
 		try {
 			long starTime = System.currentTimeMillis();
-			
+
+			if (path == null || path.isEmpty()) {
+				year = Quota.getCurrentYear();
+			}
+			else {
+				try {
+					year = Integer.parseInt(path);
+				}
+				catch (Exception e1) {
+					year = Quota.getCurrentYear();
+				}
+			}
+
 			model.addAttribute("mid", 0);
 			model.addAttribute("gzdt", newsService.findByMid(17, 1, 0, 5));
 			model.addAttribute("zcwj", newsService.findByMid(16, 1, 0, 5));
 			model.addAttribute("xtgx", newsService.findByMid(15, 1, 0, 5));
 			model.addAttribute("xzzq", newsService.findByMid(14, 1, 0, 5));
-			model.addAttribute("statistic", quotaService.yearsStatistics(Quota.getCurrentYear(), 13));
+			model.addAttribute("statistic", quotaService.yearsStatistics(year, 13));
+			model.addAttribute("year", year);
 			long endTime = System.currentTimeMillis();
-			viewStateService.findByFatherId(2016, "");
+			//viewStateService.findByFatherId(2016, "");
 			log.warn("首页加载耗时： " + (endTime-starTime));
 		}
 		catch(Exception e) {
@@ -79,7 +84,6 @@ public class MainController {
 			model.addAttribute("xzzq", newsService.findByMid(14, 1, 0, 5));
 			model.addAttribute("statistic", quotaService.yearsStatistics(Quota.getCurrentYear(), 13));
 			long endTime = System.currentTimeMillis();
-			viewStateService.findByFatherId(2016, "");
 			log.warn("首页加载耗时： " + (endTime-starTime));
 		}
 		catch(Exception e) {
@@ -151,13 +155,15 @@ public class MainController {
 		
 		return "/news/page" + path;
 	}
+
 	/**
 	 * 后台 主页面
-	 * 
-	 * @param model
+	 *
+	 * @param request
+	 * @param response
 	 * @return
 	 * @throws Exception
-	 */
+     */
 	@RequestMapping("/bk/main")
 	@Permissions(target = "loginUser", url = "/index")
 	public String list(HttpServletRequest request, HttpServletResponse response) throws Exception {

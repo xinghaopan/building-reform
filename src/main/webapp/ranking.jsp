@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<div class="container_left_title"><h2>验收完成度排行</h2></div>
+<div class="container_left_title"><h2>${year}年度验收完成度排行</h2></div>
 <div class="container_mytable" id="tab">
     <ul>
         <li><span>排行</span><em>地　区</em><span>完成度</span></li>
