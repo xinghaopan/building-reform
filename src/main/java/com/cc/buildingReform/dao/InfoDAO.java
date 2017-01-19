@@ -226,11 +226,12 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
 
-		criteria.setFirstResult(firstResult);
-		criteria.setMaxResults(maxResult);
+		if (maxResult > 0) {
+			criteria.setFirstResult(firstResult);
+			criteria.setMaxResults(maxResult);
+		}
 
 		return (List<Info>) criteria.list();
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -301,11 +302,12 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
 
-		criteria.setFirstResult(firstResult);
-		criteria.setMaxResults(maxResult);
+		if (maxResult > 0) {
+			criteria.setFirstResult(firstResult);
+			criteria.setMaxResults(maxResult);
+		}
 
 		return (List<Info>) criteria.list();
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -462,11 +464,12 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
 
-		criteria.setFirstResult(firstResult);
-		criteria.setMaxResults(maxResult);
+		if (maxResult > 0) {
+			criteria.setFirstResult(firstResult);
+			criteria.setMaxResults(maxResult);
+		}
 
 		return (List<Info>) criteria.list();
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -537,10 +540,12 @@ public class InfoDAO extends CcHibernateDao<Info, Integer> {
 		
 		criteria.addOrder(Order.desc("date"));
 		criteria.addOrder(Order.desc("id"));
-		
-		criteria.setFirstResult(firstResult);
-		criteria.setMaxResults(maxResult);
-		
+
+		if (maxResult > 0) {
+			criteria.setFirstResult(firstResult);
+			criteria.setMaxResults(maxResult);
+		}
+
 		return (List<Info>) criteria.list();
 	}
 

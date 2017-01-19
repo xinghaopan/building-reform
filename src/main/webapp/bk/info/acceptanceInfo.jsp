@@ -49,6 +49,8 @@
 						
 			           	<div class=" pull-right">
 			           		<a href="javascript:void(0);" url="/bk/info/archive/${mid}" class="action-batchArchive btn btn-icon btn-info glyphicons circle_ok"><i></i>批量审核</a>
+
+							<a href="javascript:void(0);" url="/bk/info/exportExcel/${mid}" class="btn-export btn btn-icon btn-info glyphicons circle_ok"><i></i>导出Excel</a>
 			           	</div>
 					</div>
 	           </div>
@@ -197,7 +199,12 @@ jQuery(document).ready(function($) {
 	        $("#infoForm").ajaxSubmit(options);
 		}
 	});
-	
+
+	$(".btn-export").live("click", function() {
+		var para = "?year=" + $('#year').val();
+		window.open("/bk/info/exportExcelacceptanceInfo/${mid}" + para, "_self");
+	});
+
 	$('.btn_Search').click(function(){
 		var para = "?currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val() + "&year=" + $('#year').val();
 		if ($("#personName").val() != '') {

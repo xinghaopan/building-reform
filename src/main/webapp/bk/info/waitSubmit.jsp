@@ -280,7 +280,7 @@ jQuery(document).ready(function($) {
 	
 	$(".btn-export").live("click", function() { 
 		var para = "?year=" + $('#year').val();
-		window.open("/bk/info/exportExcel/${mid}" + para, "_self");
+		window.open("/bk/info/exportExcelwaitSubmit/${mid}" + para, "_self");
 	});
 	
 	$('.btn_Search').click(function(){

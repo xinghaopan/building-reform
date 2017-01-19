@@ -50,6 +50,8 @@
 
 			           	<div class=" pull-right">
 							<a href="#modal-simple" data-toggle="modal" url="/bk/info/editBatch/${mid}" class="action-edit btn btn-icon btn-info glyphicons circle_ok"><i></i>批量审核</a>
+
+							<a href="javascript:void(0);" url="/bk/info/exportExcel/${mid}" class="btn-export btn btn-icon btn-info glyphicons circle_ok"><i></i>导出Excel</a>
 			           	</div>
 					</div>
 	           </div>
@@ -361,7 +363,12 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
-	
+
+	$(".btn-export").live("click", function() {
+		var para = "?year=" + $('#year').val();
+		window.open("/bk/info/exportExcelwaitAudit/${mid}" + para, "_self");
+	});
+
 	$('.btn_Search').click(function(){
 		var para = "?year=" + $('#year').val() + "&currentPage=" + $(this).attr("currentPage") + "&count=" + $('#count').val();
 		if ($("#personName").val() != '') {
