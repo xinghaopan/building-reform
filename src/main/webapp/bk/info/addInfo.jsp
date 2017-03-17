@@ -11,14 +11,14 @@
 <!-- // Modal heading END -->
 
 <!-- Modal body -->
-<div class="modal-body" style="max-height: 500px;">
+<div class="modal-body prints" style="max-height: 500px;">
 
 	<div class="row-fluid">
 		<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs" style="border-top:#dddddd 1px solid">
 			<tbody>
 				<tr class="selectable">
 					<td class="center" width="130">乡（镇、街道）：</td>
-					<td class="left">${info.departmentName}</td>
+					<td class="left">${departmentList}</td>
 					<td class="left" width="200"></td>
 				</tr>
 				
@@ -271,7 +271,17 @@
 
 <!-- Modal footer -->
 <div class="modal-footer">
-	<a href="javascript:void(0);" class="btn btn-default" data-dismiss="modal">打印</a>
+	<a href="javascript:void(0);" class="btn btn-default action-print">打印</a>
 	<a href="javascript:void(0);" class="btn btn-default" data-dismiss="modal">关闭</a> 
 </div>
 <!-- // Modal footer END -->
+<script language="javascript" src="/js/jquery.jqprint-0.3.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$('.action-print').live("click", function(){
+			$(".prints").css("max-height", "9999px");
+			$(".prints").jqprint();
+			$(".prints").css("max-height", "500px");
+		});
+	});
+</script>

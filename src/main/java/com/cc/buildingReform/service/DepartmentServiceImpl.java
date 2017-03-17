@@ -62,7 +62,15 @@ public class DepartmentServiceImpl implements DepartmentService {
 			return null;
 		}
 	}
-	
+
+	public Department findFatherDepartment(Department department) {
+		if (department != null && !department.getFatherId().equals("00")) {
+			return findById(department.getFatherId());
+		}
+
+		return null;
+	}
+
 	public List<Department> findByRange(String beginCode, List<Integer> length) {
 		return departmentDAO.findByRange(beginCode, length);
 	}
