@@ -11,7 +11,7 @@
 <!-- // Modal heading END -->
 
 <!-- Modal body -->
-<div class="modal-body">
+<div class="modal-body" style="max-height: 500px;">
 
 	<div class="row-fluid">
 		<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs" style="border-top:#dddddd 1px solid">
@@ -271,6 +271,7 @@
 
 <!-- Modal footer -->
 <div class="modal-footer">
+	<a href="javascript:void(0);" class="btn btn-default" data-dismiss="modal">打印</a>
 	<a href="javascript:void(0);" class="btn btn-default" data-dismiss="modal">关闭</a> 
 </div>
 <!-- // Modal footer END -->
