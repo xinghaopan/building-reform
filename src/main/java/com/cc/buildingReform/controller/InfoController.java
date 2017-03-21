@@ -968,17 +968,21 @@ public class InfoController {
             model.addAttribute("mid", mid);
             model.addAttribute("info", info);
 
-            // 查找所有父机构
-            String departmentList = "";
-            Department fd = departmentService.findById(info.getDepartmentId());
-            while (fd != null) {
-                fd = departmentService.findFatherDepartment(fd);
-                if (fd != null) {
-                    departmentList = fd.getName() + departmentList;
+            if (id != null) {
+                if (id != 0) {
+                    // 查找所有父机构
+                    String departmentList = "";
+                    Department fd = departmentService.findById(info.getDepartmentId());
+                    while (fd != null) {
+                        fd = departmentService.findFatherDepartment(fd);
+                        if (fd != null) {
+                            departmentList = fd.getName() + departmentList;
+                        }
+                    }
+                    departmentList += info.getDepartmentName();
+                    model.addAttribute("departmentList", departmentList);
                 }
             }
-            departmentList += info.getDepartmentName();
-            model.addAttribute("departmentList", departmentList);
 
             if (info.getId() != null && info.getId() != 0) {
                 model.addAttribute("auditList", auditService.findByInfoId(info.getId()));
