@@ -1,22 +1,8 @@
 package com.cc.buildingReform.Common;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -25,14 +11,28 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-
-import net.sf.json.JSONObject;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class Common {
-	
+
+	public static boolean isException(String s, String chars) {
+		String[] arr = s.split(",");
+		for (int i = 0; i < arr.length; i ++) {
+			if (chars.startsWith(arr[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
      * 按指定高度 等比例缩放图片
      * 

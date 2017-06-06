@@ -4,6 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fnb" uri="/WEB-INF/tag/fnb.tld" %>
 <%@ include file="/bk/top.jsp" %>
 <!-- Content -->
 <div id="content">
@@ -197,7 +198,7 @@
                                     <select id="toiletType" name="toiletType" class="span8">
                                         <option value="-1">请选择</option>
                                         <c:forEach items="${dicList}" var="sdic">
-                                            <c:if test="${sdic.keyValue == 'toiletType'}">
+                                            <c:if test="${sdic.keyValue == 'toiletType' && (sdic.exception == null || sdic.exception == '' || fnb:isException(sdic.exception, department.id))}">
                                                 <option value="${sdic.value}"
                                                         <c:if test="${sdic.value == info.toiletType}">selected</c:if> >${sdic.name}</option>
                                             </c:if>

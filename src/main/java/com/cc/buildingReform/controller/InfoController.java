@@ -1,23 +1,9 @@
 package com.cc.buildingReform.controller;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.cc.buildingReform.Annotation.Permissions;
+import com.cc.buildingReform.Common.Common;
+import com.cc.buildingReform.form.*;
+import com.cc.buildingReform.service.*;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -28,30 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.cc.buildingReform.Annotation.Permissions;
-import com.cc.buildingReform.Common.Common;
-import com.cc.buildingReform.form.Department;
-import com.cc.buildingReform.form.Info;
-import com.cc.buildingReform.form.Quota;
-import com.cc.buildingReform.form.StatisticsQuota;
-import com.cc.buildingReform.form.User;
-import com.cc.buildingReform.service.AuditService;
-import com.cc.buildingReform.service.DepartmentService;
-import com.cc.buildingReform.service.DicService;
-import com.cc.buildingReform.service.InfoService;
-import com.cc.buildingReform.service.QuotaService;
-import com.cc.buildingReform.service.StatisticsQuotaService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 public class InfoController {
@@ -950,6 +927,8 @@ public class InfoController {
             User user = (User) request.getSession().getAttribute("loginUser");
 
             Info info = new Info();
+            info.setDepartmentId(user.getDepartmentId());
+            info.setDepartmentName(user.getDepartmentName());
             info.setSumFund(0d);
             info.setGrantProvinceFund(0d);
             info.setGrantCountiesFund(0d);
