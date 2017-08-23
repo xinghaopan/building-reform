@@ -108,6 +108,9 @@ public class QuotaServiceImpl implements QuotaService {
 			
 			quotaDAO.saveOrUpdate(quota);
 		}
+		else {
+			throw new RuntimeException("-1");
+		}
 	}
 	
 	public void remove(Integer id) {
