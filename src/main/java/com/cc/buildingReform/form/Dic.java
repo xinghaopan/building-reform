@@ -35,6 +35,9 @@ public class Dic implements Serializable {
 	@Column(name = "DIC_VALUE")
 	private Integer value;
 
+	@Column(name = "DIC_EXCEPTION")
+	private String exception;
+
 	public Integer getId() {
 		return id;
 	}
@@ -81,5 +84,13 @@ public class Dic implements Serializable {
 
 	public void setValue(Integer value) {
 		this.value = value;
+	}
+
+	public String getException() {
+		return exception;
+	}
+
+	public void setException(String exception) {
+		this.exception = exception;
 	}
 }

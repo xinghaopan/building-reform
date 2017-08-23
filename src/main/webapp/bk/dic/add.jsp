@@ -68,7 +68,14 @@
 			<div class="controls"><input class="span9" id="value" name="value" type="text" value="${dic.value}" /></div>
 		</div>
 		<!-- // Group END -->
-		
+	</div>
+	<div class="row-fluid">
+		<!-- Group -->
+		<div class="control-group span6">
+			<label class="control-label span3" for="value">例外机构：</label>
+			<div class="controls"><input class="span9" id="exception" name="exception" type="text" value="${dic.exception}" /></div>
+		</div>
+		<!-- // Group END -->
 	</div>
 </div>
 <!-- // Modal body END -->
