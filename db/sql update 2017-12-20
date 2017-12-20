@@ -1,0 +1,4 @@
+alter table br_info add INFO_ACCEPTANCE_IMAGE2 varchar(255);
+alter table br_info add INFO_ACCEPTANCE_IMAGE3 varchar(255);
+alter table br_archive_info add INFO_ACCEPTANCE_IMAGE2 varchar(255);
+alter table br_archive_info add INFO_ACCEPTANCE_IMAGE3 varchar(255);

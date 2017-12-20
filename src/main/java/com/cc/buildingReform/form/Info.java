@@ -126,10 +126,16 @@ public class Info implements Serializable {
 	
 	@Column(name = "INFO_ACCEPTANCE_DATE")
 	private Date acceptanceDate;
-	
+
 	@Column(name = "INFO_ACCEPTANCE_IMAGE")
 	private String acceptanceImage;
-	
+
+	@Column(name = "INFO_ACCEPTANCE_IMAGE2")
+	private String acceptanceImage2;
+
+	@Column(name = "INFO_ACCEPTANCE_IMAGE3")
+	private String acceptanceImage3;
+
 	@Column(name = "INFO_FUND_SEND_DATE")
 	private Date fundSendDate;
 	
@@ -672,5 +678,21 @@ public class Info implements Serializable {
 
 	public static Integer getStateAuditReturn() {
 		return STATE_AUDIT_RETURN;
+	}
+
+	public String getAcceptanceImage2() {
+		return acceptanceImage2;
+	}
+
+	public void setAcceptanceImage2(String acceptanceImage2) {
+		this.acceptanceImage2 = acceptanceImage2;
+	}
+
+	public String getAcceptanceImage3() {
+		return acceptanceImage3;
+	}
+
+	public void setAcceptanceImage3(String acceptanceImage3) {
+		this.acceptanceImage3 = acceptanceImage3;
 	}
 }

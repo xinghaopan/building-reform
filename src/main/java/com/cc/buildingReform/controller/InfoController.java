@@ -1025,6 +1025,28 @@ public class InfoController {
                     info.setAcceptanceImage(fileName);
                 }
 
+                file = multiRequest.getFile("acceptanceImg2");
+                if (file != null) {
+                    String ext = Common.getExtensionName(file.getOriginalFilename());
+                    if (ext == "") {
+                        throw new RuntimeException("-5");
+                    }
+                    String fileName = "/uploads/" + new Date().getTime() + "." + ext;
+                    Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
+                    info.setAcceptanceImage2(fileName);
+                }
+
+                file = multiRequest.getFile("acceptanceImg3");
+                if (file != null) {
+                    String ext = Common.getExtensionName(file.getOriginalFilename());
+                    if (ext == "") {
+                        throw new RuntimeException("-5");
+                    }
+                    String fileName = "/uploads/" + new Date().getTime() + "." + ext;
+                    Common.zoomImageScale(file.getInputStream(), path + fileName, 500);
+                    info.setAcceptanceImage3(fileName);
+                }
+
                 file = multiRequest.getFile("fundSendImg");
                 if (file != null) {
                     String ext = Common.getExtensionName(file.getOriginalFilename());

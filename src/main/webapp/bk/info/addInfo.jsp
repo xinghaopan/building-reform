@@ -151,6 +151,12 @@
 						<c:if test="${info.acceptanceImage != null && info.acceptanceImage != ''}">
 							<img src="${info.acceptanceImage}" width="200" height="150" class="img-rounded" alt=""/>
 						</c:if>
+						<c:if test="${info.acceptanceImage2 != null && info.acceptanceImage2 != ''}">
+							<img src="${info.acceptanceImage2}" width="200" height="150" class="img-rounded" alt=""/>
+						</c:if>
+						<c:if test="${info.acceptanceImage3 != null && info.acceptanceImage3 != ''}">
+							<img src="${info.acceptanceImage3}" width="200" height="150" class="img-rounded" alt=""/>
+						</c:if>
 					</td>
 				</tr>
 				

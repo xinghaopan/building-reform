@@ -380,13 +380,71 @@
 
                         <div>
                             <div class="control-group span5">
-                                <label class="control-label span6" for="firstname">验收单照片：</label>
+                                <label class="control-label span6" for="acceptanceImage">验收单照片：</label>
                                 <div class="input-append span6">
                                     <input id="acceptanceImage" name="acceptanceImage" type="hidden"
                                            value="${info.acceptanceImage}"/>
                                     <input id="acceptanceImg" name="acceptanceImg" value="" type="file"
                                            style="display:none;">
                                     <button class="btn acceptanceImg" type="button">浏览</button>
+                                </div>
+                            </div>
+
+                            <div class="control-group span5">
+                                <label class="control-label span6" for="acceptanceImage2">验收单照片2：</label>
+                                <div class="input-append span6">
+                                    <input id="acceptanceImage2" name="acceptanceImage2" type="hidden"
+                                           value="${info.acceptanceImage2}"/>
+                                    <input id="acceptanceImg2" name="acceptanceImg2" value="" type="file"
+                                           style="display:none;">
+                                    <button class="btn acceptanceImg2" type="button">浏览</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="control-group span5">
+                                <label class="control-label span4" for="lastname"></label>
+                                <div class="input-append span8">
+                                    <c:choose>
+                                        <c:when test="${info.acceptanceImage != null && info.acceptanceImage != ''}">
+                                            <img id="acceptanceIg" name="acceptanceIg" src="${info.acceptanceImage}"
+                                                 class="img-polaroid img-sfz" alt=""/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img id="acceptanceIg" name="acceptanceIg" src="/images/nopic.png"
+                                                 class="img-polaroid img-sfz" alt=""/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+
+                            <div class="control-group span5">
+                                <label class="control-label span4" for="lastname"></label>
+                                <div class="input-append span8">
+                                    <c:choose>
+                                        <c:when test="${info.acceptanceImage2 != null && info.acceptanceImage2 != ''}">
+                                            <img id="acceptanceIg2" name="acceptanceIg2" src="${info.acceptanceImage2}"
+                                                 class="img-polaroid img-sfz" alt=""/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img id="acceptanceIg2" name="acceptanceIg2" src="/images/nopic.png"
+                                                 class="img-polaroid img-sfz" alt=""/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="control-group span5">
+                                <label class="control-label span6" for="acceptanceImage">验收单照片3：</label>
+                                <div class="input-append span6">
+                                    <input id="acceptanceImage3" name="acceptanceImage3" type="hidden"
+                                           value="${info.acceptanceImage3}"/>
+                                    <input id="acceptanceImg3" name="acceptanceImg3" value="" type="file"
+                                           style="display:none;">
+                                    <button class="btn acceptanceImg3" type="button">浏览</button>
                                 </div>
                             </div>
 
@@ -407,12 +465,12 @@
                                 <label class="control-label span4" for="lastname"></label>
                                 <div class="input-append span8">
                                     <c:choose>
-                                        <c:when test="${info.acceptanceImage != null && info.acceptanceImage != ''}">
-                                            <img id="acceptanceIg" name="acceptanceIg" src="${info.acceptanceImage}"
+                                        <c:when test="${info.acceptanceImage3 != null && info.acceptanceImage3 != ''}">
+                                            <img id="acceptanceIg3" name="acceptanceIg3" src="${info.acceptanceImage3}"
                                                  class="img-polaroid img-sfz" alt=""/>
                                         </c:when>
                                         <c:otherwise>
-                                            <img id="acceptanceIg" name="acceptanceIg" src="/images/nopic.png"
+                                            <img id="acceptanceIg3" name="acceptanceIg3" src="/images/nopic.png"
                                                  class="img-polaroid img-sfz" alt=""/>
                                         </c:otherwise>
                                     </c:choose>
@@ -1239,6 +1297,14 @@
                             clearFile($("#acceptanceImg"));
                             $("#acceptanceIg").attr("src", "/images/nopic.png");
 
+                            $("#acceptanceImage2").val("");
+                            clearFile($("#acceptanceImg2"));
+                            $("#acceptanceIg2").attr("src", "/images/nopic.png");
+
+                            $("#acceptanceImage3").val("");
+                            clearFile($("#acceptanceImg3"));
+                            $("#acceptanceIg3").attr("src", "/images/nopic.png");
+
                             $("#fundSendImage").val("");
                             clearFile($("#fundSendImg"));
                             $("#fundSendIg").attr("src", "/images/nopic.png");
@@ -1297,6 +1363,14 @@
             $("#acceptanceImg").click();
         });
 
+        $('.acceptanceImg2').click(function () {
+            $("#acceptanceImg2").click();
+        });
+
+        $('.acceptanceImg3').click(function () {
+            $("#acceptanceImg3").click();
+        });
+
         $("#acceptanceImg").live("change", function () {
             $("#acceptanceImage").val($(this).val());
             var objUrl = getObjectURL(this.files[0]);
@@ -1304,6 +1378,26 @@
                 $("#acceptanceIg").attr("src", objUrl);
             } else {
                 $("#acceptanceIg").attr("src", "/images/nopic.png");
+            }
+        });
+
+        $("#acceptanceImg2").live("change", function () {
+            $("#acceptanceImage2").val($(this).val());
+            var objUrl = getObjectURL(this.files[0]);
+            if (objUrl) {
+                $("#acceptanceIg2").attr("src", objUrl);
+            } else {
+                $("#acceptanceIg2").attr("src", "/images/nopic.png");
+            }
+        });
+
+        $("#acceptanceImg3").live("change", function () {
+            $("#acceptanceImage3").val($(this).val());
+            var objUrl = getObjectURL(this.files[0]);
+            if (objUrl) {
+                $("#acceptanceIg3").attr("src", objUrl);
+            } else {
+                $("#acceptanceIg3").attr("src", "/images/nopic.png");
             }
         });
 
