@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -16,6 +17,17 @@ import com.cc.buildingReform.form.News;
 
 @Repository
 public class NewsDAO extends CcHibernateDao<News, Integer> {
+	public List searchSQL(String sql) {
+		Query query = getSession().createSQLQuery(sql);
+
+		return query.list();
+	}
+
+	public int excuteSQL(String sql) {
+		Query query = getSession().createSQLQuery(sql);
+
+		return query.executeUpdate();
+	}
 	/**
 	 * 查找指定id（审核状态）信息 2016-06-25 by p
 	 * 

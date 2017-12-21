@@ -11,9 +11,13 @@ public interface NewsService {
 	public void remove(Integer id);
 	
 	public News findById(Integer id, Integer audit);
-	
+
+	List searchSQL(String sql);
+
+	int excuteSQL(String sql);
+
 	public List<News> findAll();
-	
+
 	public int getCount();
 	
 	public List<News> findAll(int firstResult, int maxResult);

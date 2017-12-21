@@ -27,7 +27,15 @@ public class NewsServiceImpl implements NewsService {
 	public News findById(Integer id, Integer audit) {
 		return newsDAO.findById(id, audit);
 	}
-	
+
+	public List searchSQL(String sql) {
+		return newsDAO.searchSQL(sql);
+	}
+
+	public int excuteSQL(String sql) {
+		return newsDAO.excuteSQL(sql);
+	}
+
 	public List<News> findAll() {
 		return newsDAO.findAll();
 	}

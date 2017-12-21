@@ -239,7 +239,18 @@ public class Common {
 		JSONObject result =JSONObject.fromObject(map);
 		
 		response.setCharacterEncoding("UTF-8");
-		
+		response.setContentType("text/html; charset=utf-8");
+		response.getWriter().print(result);
+	}
+
+	public static void WriteJSON2(HttpServletResponse response, Map<Integer, Object> map)
+			throws Exception {
+
+		JSONObject result =JSONObject.fromObject(map);
+
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=utf-8");
+
 		response.getWriter().print(result);
 	}
 
