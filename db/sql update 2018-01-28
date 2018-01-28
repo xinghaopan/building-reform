@@ -1,0 +1,18 @@
+DROP VIEW IF EXISTS `br_view_state`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `br_view_state` AS select `br_info`.`INFO_SON_DEPARTMENT_ID` AS `state_id`,`br_info`.`INFO_PLAN_YEAR` AS `state_year`,sum((case when (curdate() >= `br_info`.`INFO_REBUILD_BEGIN_DATE`) then 1 else 0 end)) AS `state_begin_num`,sum((case when (curdate() >= `br_info`.`INFO_REBUILD_END_DATE`) then 1 else 0 end)) AS `state_end_num`,sum((case when (curdate() >= `br_info`.`INFO_ACCEPTANCE_DATE`) then 1 else 0 end)) AS `state_acceptance_num`,sum((case when (curdate() >= `br_info`.`INFO_FUND_SEND_DATE`) then 1 else 0 end)) AS `state_fund_send_num`,count(0) AS `state_sum` from `br_info` group by `br_info`.`INFO_SON_DEPARTMENT_ID`,`br_info`.`INFO_PLAN_YEAR` order by `br_info`.`INFO_SON_DEPARTMENT_ID`;
+
+DROP PROCEDURE IF EXISTS `PRO_LOOP_YEAR`;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PRO_LOOP_YEAR`()
+BEGIN
+	DECLARE i INT DEFAULT 2016;
+	DECLARE curYear INT;
+
+	SELECT DATE_FORMAT(NOW(), '%Y') INTO curYear;
+	WHILE i <= curYear DO
+		CALL PRO_STATISTICS_QUOTA(i);
+		set i = i + 1;
+	END WHILE;
+END
+
+DROP EVENT IF EXISTS `statistics`;
+CREATE DEFINER=`root`@`%` EVENT `statistics` ON SCHEDULE EVERY 1 DAY STARTS '2016-10-14 01:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL PRO_LOOP_YEAR()
