@@ -94,6 +94,7 @@
 								</td>
 								<td class="center">
 									<a href="/bk/info/edit/${mid}?id=${sinfo.id}" class="btn-action glyphicons pencil btn-success action-edit"><i></i></a>
+									<a href="javascript:void(0);" url="/bk/info/del/${mid}?id=${sinfo.id}" bname="${sinfo.personName}" class="btn-action glyphicons remove_2 btn-danger action-del"><i></i></a>
 								</td>
 							</tr>
 							<!-- // Item END -->
@@ -128,31 +129,43 @@
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('.action-del').click(function(){
-		if( confirm('您确定要删除【' + $(this).attr("bname") + '】吗？') ){
-			var url = $(this).attr("url");
-			$.ajax({
-				type : "get",
-				url : url,
-				data : "radom=" + Math.random(),
-				dataType : "text",
-				success : function(msg) {
-					if (msg == "-999") {
-		        		outLogin();
-		        	}
-	            	else if (msg == 1) {
-	            		window.location.reload();
-					}
-					else {
-						alert('【' + $(this).attr("bname") + '】删除失败！！！');
-					}
-				},
-				error : function(XMLHttpRequest, error, errorThrown) {
-					//alert("请求超时！！！");
-				}
-			});
-		}
-	});
+    $('.action-del').click(function(){
+        if( confirm('您确定要删除【' + $(this).attr("bname") + '】吗？') ){
+            var url = $(this).attr("url");
+            $.ajax({
+                type : "get",
+                url : url,
+                data : "radom=" + Math.random(),
+                dataType : "text",
+                success : function(msg) {
+                    if (msg == "-999") {
+                        outLogin();
+                    }
+                    else if (msg == -1) {
+                        alert("上报信息错误！！！");
+                    }
+                    else if (msg == -2) {
+                        alert("上报信息状态错误！！！");
+                    }
+                    else if (msg == -3) {
+                        alert("上级机构不存在！！！");
+                    }
+                    else if (msg == -4) {
+                        alert("没有权限进行审核操作！！！");
+                    }
+                    else if (msg == 1) {
+                        window.location.reload();
+                    }
+                    else {
+                        alert('【' + $(this).attr("bname") + '】删除失败！！！');
+                    }
+                },
+                error : function(XMLHttpRequest, error, errorThrown) {
+                    //alert("请求超时！！！");
+                }
+            });
+        }
+    });
 	
 	$('.action-edit').click(function(){
 		var url = $(this).attr("url");
