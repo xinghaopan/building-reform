@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.cc.buildingReform.form.ResultMessage;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -32,24 +33,29 @@ public class Aop {
 				Permissions permissions = method.getAnnotation(Permissions.class);
 				Object u = request.getSession().getAttribute(permissions.target());
 				if (u == null) {
-					if (permissions.url().equals("")) {
-						return null;
-					} else {
-						return permissions.url();
+					if (!permissions.isJSON()) {
+						if (permissions.url().equals("")) {
+							return null;
+						} else {
+							return permissions.url();
+						}
 					}
-		
-					
+					else {
+						return new ResultMessage().setLogged(true).setMessage("未登录或登录超时！");
+					}
 				}
 				else {
-					Integer mid = 0;
-					if (jp.getArgs().length > 0) {
-						mid = (Integer) jp.getArgs()[0];
-					}
-					
-					if (mid != 0) {
+					if (!permissions.isJSON()) {
+						Integer mid = 0;
+						if (jp.getArgs().length > 0) {
+							mid = (Integer) jp.getArgs()[0];
+						}
+
+						if (mid != 0) {
 //						if (!((User)u).getRole().getPower().contains("," + mid + ",")) {
 //							return null;
 //						}
+						}
 					}
 				}
 			}

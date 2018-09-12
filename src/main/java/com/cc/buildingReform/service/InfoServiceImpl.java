@@ -45,7 +45,11 @@ public class InfoServiceImpl implements InfoService {
 	
 	@Autowired
 	private AuditDAO auditDAO;
-	
+
+	public int maintain(Info info) {
+		return infoDAO.maintain(info);
+	}
+
 	public void save(Info info) {
 		synchronized(InfoServiceImpl.lock) {
 			if (info == null || info.getId() == null || info.getId() == 0) {

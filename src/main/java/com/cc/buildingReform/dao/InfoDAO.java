@@ -17,6 +17,16 @@ import com.cc.buildingReform.form.Info;
 
 @Repository
 public class InfoDAO extends CcHibernateDao<Info, Integer> {
+	public int maintain(Info info) {
+		SQLQuery query = getSession().createSQLQuery("");
+		query.setInteger(0, info.getId() == null ? 0 : info.getId());
+		List list = query.list();
+		if (list == null || list.size() == 0) {
+			return -100;
+		}
+		return Integer.parseInt(list.get(0).toString());
+	}
+
 	public void statisticsQuota(Integer year) {
 		SQLQuery query = getSession().createSQLQuery("{CALL PRO_STATISTICS_QUOTA(?)}");
 		query.setInteger(0, year);

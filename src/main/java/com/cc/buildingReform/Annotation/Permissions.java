@@ -11,6 +11,6 @@ public @interface Permissions {
 	int level() default 0;
 
 	String target() default "";
-
+	boolean isJSON() default false;
 	String url() default "";
 }

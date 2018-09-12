@@ -6,6 +6,7 @@ import com.cc.buildingReform.form.Info;
 import com.cc.buildingReform.form.User;
 
 public interface InfoService {
+	public int maintain(Info info);
 
 	public void save(Info info);
 
